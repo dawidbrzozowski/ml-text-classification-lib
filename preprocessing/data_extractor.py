@@ -2,10 +2,10 @@ from enum import Enum
 
 import pandas as pd
 
-LARGE_DATA_DIR = 'large_data'
-TASK_A_PATH = f'{LARGE_DATA_DIR}/task_a_distant.tsv'
-TASK_B_PATH = f'{LARGE_DATA_DIR}/task_b_distant.tsv'
-TASK_C_PATH = f'{LARGE_DATA_DIR}/task_c_distant_ann.tsv'
+LARGE_DATA_INPUT_DIR = 'large_data/input'
+TASK_A_PATH = f'{LARGE_DATA_INPUT_DIR}/task_a_distant.tsv'
+TASK_B_PATH = f'{LARGE_DATA_INPUT_DIR}/task_b_distant.tsv'
+TASK_C_PATH = f'{LARGE_DATA_INPUT_DIR}/task_c_distant_ann.tsv'
 
 
 class DataType(Enum):

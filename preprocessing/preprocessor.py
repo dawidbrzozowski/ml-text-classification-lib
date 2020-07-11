@@ -1,5 +1,7 @@
 from typing import List
 
+GLOVE_EMBEDDINGS_DIR = '../../large_files/glove.6B'
+
 
 class TextPreprocessor:
 
@@ -8,10 +10,10 @@ class TextPreprocessor:
 
 
 class EmbeddingTextPreprocessor(TextPreprocessor):
-    def __init__(self):
-        pass
+    def __init__(self, dimension=50, vocab_size=10000):
+        self.file_name = f'glove.6B.{dimension}d.txt'
 
-    def preprocess(self, text: List[str]):
+    def preprocess(self, texts: List[str]):
         pass
 
 
@@ -19,7 +21,7 @@ class TfIdfTextPreprocessor(TextPreprocessor):
     def __init__(self):
         pass
 
-    def preprocess(self, text: List[str]):
+    def preprocess(self, texts: List[str]):
         pass
 
 
