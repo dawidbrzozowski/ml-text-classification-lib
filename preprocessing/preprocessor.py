@@ -55,6 +55,7 @@ class BasicOutputPreprocessor:
 
 
 class SemEvalDataPreprocessor:
+    # TODO Create Config class for configuring DataPreprocessor.
     def __init__(self, text_preprocessor: TextPreprocessor, output_preprocessor=BasicOutputPreprocessor()):
         self.text_preprocessor = text_preprocessor
         self.output_preprocessor = output_preprocessor
