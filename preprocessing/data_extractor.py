@@ -15,7 +15,7 @@ class DataType(Enum):
 
 
 class LargeDataExtractor:
-    def __init__(self, data_type: DataType):
+    def __init__(self, data_type: DataType = DataType.TASK_A):
         self.data = self._load_data(data_type)
 
     def _load_data(self, data_type: DataType):
