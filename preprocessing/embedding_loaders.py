@@ -1,13 +1,20 @@
+from abc import abstractmethod
+
 import numpy as np
 
 GLOVE_EMBEDDINGS_DIR = '../../large_files/glove.6B'
 
 
 class EmbeddingsLoader:
+    """
+    This class is a base for Embedding loaders.
+    It's goal is to return word2vec. (Dict with keys of type str and values ndarray of size embedding_dim)
+    """
     def __init__(self, embedding_dir):
         self.embedding_dir = embedding_dir
 
-    def load_word_vectors(self, embedding_dim):
+    @abstractmethod
+    def load_word_vectors(self, embedding_dim) -> dict:
         pass
 
 
