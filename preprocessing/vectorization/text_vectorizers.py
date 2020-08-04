@@ -13,6 +13,7 @@ class TextVectorizer:
     TODO In this case TfIdfTextVectorizer does not need embedding layer but EmbeddingTextVectorizer does.
     TODO That's why EmbeddingTextVectorizer should also offer get_embedding_matrix method.
     """
+
     @abstractmethod
     def fit(self, texts: List[str]):
         pass
