@@ -1,0 +1,6 @@
+pandas
+notebook
+numpy
+keras
+sklearn
+tensorflow
