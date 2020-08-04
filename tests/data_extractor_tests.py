@@ -1,5 +1,5 @@
 import unittest
-from preprocessing.data_extractor import LargeDataExtractor, DataType
+from preprocessing.extraction.data_extractor import LargeDataExtractor, DataType
 
 
 class MyTestCase(unittest.TestCase):

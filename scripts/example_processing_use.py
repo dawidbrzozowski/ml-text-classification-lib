@@ -1,10 +1,10 @@
-from preprocessing.data_cleaners import BaselineDataCleaner
-from preprocessing.data_extractor import LargeDataExtractor
-from preprocessing.data_vectorizers import DataVectorizer
-from preprocessing.output_vectorizers import BasicOutputVectorizer
+from preprocessing.cleaning.data_cleaners import BaselineDataCleaner
+from preprocessing.extraction.data_extractor import LargeDataExtractor
+from preprocessing.vectorization.data_vectorizers import DataVectorizer
+from preprocessing.vectorization.output_vectorizers import BasicOutputVectorizer
 from preprocessing.preprocessors import DataPreprocessor
-from preprocessing.text_vectorizers import EmbeddingTextVectorizer
-from preprocessing.text_encoders import TextEncoder
+from preprocessing.vectorization.text_vectorizers import EmbeddingTextVectorizer
+from preprocessing.vectorization.embeddings.text_encoders import TextEncoder
 
 GLOVE_EMBEDDINGS_DIR = '../../large_files/glove.6B'
 

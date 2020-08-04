@@ -1,5 +1,5 @@
-from preprocessing.output_vectorizers import OutputVectorizer
-from preprocessing.text_vectorizers import TextVectorizer
+from preprocessing.vectorization.output_vectorizers import OutputVectorizer
+from preprocessing.vectorization.text_vectorizers import TextVectorizer
 
 
 class DataVectorizer:

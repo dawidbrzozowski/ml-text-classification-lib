@@ -1,9 +1,9 @@
 from abc import abstractmethod
 from typing import List
 
-from preprocessing.embedding_loaders import GloveEmbeddingsLoader
-from preprocessing.embeddings import EmbeddingsMatrixPreparer
-from preprocessing.text_encoders import TextEncoderBase
+from preprocessing.vectorization.embeddings.embedding_loaders import GloveEmbeddingsLoader
+from preprocessing.vectorization.embeddings.embeddings import EmbeddingsMatrixPreparer
+from preprocessing.vectorization.embeddings.text_encoders import TextEncoderBase
 
 
 class TextVectorizer:

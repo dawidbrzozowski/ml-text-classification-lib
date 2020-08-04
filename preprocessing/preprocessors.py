@@ -1,7 +1,7 @@
 from typing import List
 
-from preprocessing.data_cleaners import DataCleaner
-from preprocessing.data_vectorizers import DataVectorizer
+from preprocessing.cleaning.data_cleaners import DataCleaner
+from preprocessing.vectorization.data_vectorizers import DataVectorizer
 
 
 class DataPreprocessor:
