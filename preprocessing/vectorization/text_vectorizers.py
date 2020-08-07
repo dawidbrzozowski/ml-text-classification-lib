@@ -42,7 +42,7 @@ class EmbeddingTextVectorizer(TextVectorizer):
     def fit(self, texts: List[str]):
         self.text_encoder.fit(texts)
         word2vec = self.embeddings_loader.load_word_vectors(self.embedding_dim)
-        emb_matrix_preparer = EmbeddingsMatrixPreparer(self.text_encoder.word2idx, self.embedding_dim, word2vec)
+        emb_matrix_preparer = EmbeddingsMatrixPreparer(self.text_encoder.word2idx, word2vec)
         self.embedding_matrix = emb_matrix_preparer.prepare_embedding_matrix()
 
     def vectorize(self, texts: List[str]):
