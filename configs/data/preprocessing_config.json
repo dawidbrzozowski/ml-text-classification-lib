@@ -1,0 +1,35 @@
+{
+  "preprocessor":
+  {
+    "data_cleaner":
+    {
+      "name": "BaselineDataCleaner"
+    },
+    "data_vectorizer":
+    {
+      "text_vectorizer":
+      {
+        "type": "embedding",
+        "name": "EmbeddingTextVectorizer",
+        "embeddings":
+        {
+          "embedding_type": "glove",
+          "embedding_dim": 50,
+          "text_encoder":
+          {
+            "name": "TextEncoder",
+            "max_vocab_size": 5000,
+            "max_seq_len": 25
+          }
+        }
+      },
+      "output_vectorizer":
+      {
+        "name": "BasicOutputVectorizer"
+      }
+    }
+  },
+  "model_training": {
+
+  }
+}

@@ -22,6 +22,10 @@ class TextVectorizer:
     def vectorize(self, texts: List[str]):
         pass
 
+    @abstractmethod
+    def get_vectorization_metainf(self):
+        pass
+
 
 class TfIdfTextVectorizer(TextVectorizer):
 
@@ -29,6 +33,9 @@ class TfIdfTextVectorizer(TextVectorizer):
         pass
 
     def vectorize(self, texts: List[str]):
+        pass
+
+    def get_vectorization_metainf(self):
         pass
 
 
@@ -49,5 +56,11 @@ class EmbeddingTextVectorizer(TextVectorizer):
         encoded = self.text_encoder.encode(texts)
         return encoded
 
-    def get_embedding_matrix(self):
-        return self.embedding_matrix
+    def get_vectorization_metainf(self):
+        return {
+            'type': 'embedding',
+            'embedding_dim': self.embedding_dim,
+            'embedding_matrix': self.embedding_matrix,
+            'max_seq_len': self.text_encoder.max_seq_len,
+            'max_vocab_size': self.text_encoder.max_vocab_size
+        }
