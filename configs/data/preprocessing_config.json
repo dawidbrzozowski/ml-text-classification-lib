@@ -21,7 +21,8 @@
             "max_vocab_size": 5000,
             "max_seq_len": 25
           }
-        }
+        },
+        "max_features": 1000
       },
       "output_vectorizer":
       {

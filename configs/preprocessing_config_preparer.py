@@ -71,8 +71,9 @@ class PreprocessingPreparer:
         return retrieved_obj
 
     def prepare_tfidf_text_vectorizer(self, text_vectorizer):
+        max_features = text_vectorizer['max_features']
         tfidf_vectorizers = {
-            'TfIdfTextVectorizer': TfIdfTextVectorizer()
+            'TfIdfTextVectorizer': TfIdfTextVectorizer(max_features)
         }
         retrieved_obj = tfidf_vectorizers.get(text_vectorizer['name'])
         assert retrieved_obj is not None, 'Wrong TfIdf Text Vectorizer name!'

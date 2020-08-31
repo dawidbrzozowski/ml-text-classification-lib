@@ -1,3 +1,4 @@
+import os
 from abc import abstractmethod
 
 import numpy as np
@@ -30,6 +31,7 @@ class NNModelTrainer:
                             y=y_test)
 
     def save(self, save_dir, model_name):
+        os.makedirs(save_dir, exist_ok=True)
         save_model(self.model, f'{save_dir}/{model_name}.h5')
 
 
@@ -40,15 +42,16 @@ class NNModelRunner:
     def load_model(self, model_path):
         return load_model(model_path)
 
-    @abstractmethod
     def evaluate(self, test_data):
-        pass
+        X_test, y_test = test_data
+        self.model.evaluate(x=X_test,
+                            y=y_test)
 
     @abstractmethod
     def run(self, data: list or np.array):
         pass
 
-
+#
 preprocessing_config = load_json('configs/data/preprocessing_config.json')
 model_config = load_json('configs/data/model_config.json')
 data_train = load_json('data/unprocessed/100000/train_corpus.json')
@@ -61,3 +64,7 @@ data_test = data_preprocessor.preprocess(data_test)
 vec_metainf = data_preprocessor.get_vectorization_metainf()
 m_trainer = NNModelTrainer(model_config, vec_metainf)
 m_trainer.train(data_train)
+m_trainer.save('models/_models', 'first_model')
+
+# runner = NNModelRunner(model_path='models/_models/first_model.h5')
+# runner.evaluate(data_test)

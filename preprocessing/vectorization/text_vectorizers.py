@@ -1,6 +1,8 @@
 from abc import abstractmethod
 from typing import List
 
+from sklearn.feature_extraction.text import TfidfVectorizer
+
 from preprocessing.vectorization.embeddings.embedding_loaders import GloveEmbeddingsLoader
 from preprocessing.vectorization.embeddings.embeddings import EmbeddingsMatrixPreparer
 from preprocessing.vectorization.embeddings.text_encoders import TextEncoderBase
@@ -28,15 +30,21 @@ class TextVectorizer:
 
 
 class TfIdfTextVectorizer(TextVectorizer):
+    def __init__(self, max_features):
+        self.tfidf_vec = TfidfVectorizer(max_features=max_features)
 
     def fit(self, texts: List[str]):
-        pass
+        self.tfidf_vec.fit(texts)
 
     def vectorize(self, texts: List[str]):
-        pass
+        return self.tfidf_vec.transform(texts).toarray()
 
     def get_vectorization_metainf(self):
-        pass
+        return {
+            'type': 'tfidf',
+            'max_features': self.tfidf_vec.max_features,
+            'vocab': self.tfidf_vec.vocabulary_
+        }
 
 
 class EmbeddingTextVectorizer(TextVectorizer):

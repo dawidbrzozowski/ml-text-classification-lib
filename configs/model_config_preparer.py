@@ -1,10 +1,8 @@
-from keras.layers import Input, Embedding, Flatten, Dense
+from keras.layers import Input, Embedding, Flatten, Dense, Bidirectional, LSTM, GlobalMaxPooling1D
 from keras import Model
 from keras.optimizers import Adam
 
-from configs.preprocessing_config_preparer import PreprocessingPreparer
 from configs.presets.training_config import TrainingConfig
-from utils.files_io import load_json
 
 
 class ModelPreparer:
@@ -19,25 +17,48 @@ class ModelPreparer:
     def prepare_model_arch(self, architecture_type: str):
         if architecture_type == 'FF':
             return self.prepare_feedforward_model_arch()
+        elif architecture_type == 'RNN':
+            return self.prepare_rnn_arch()
         else:
             print(f'Architecture for {architecture_type} not found.')
 
     def prepare_feedforward_model_arch(self):
+        input_ = None
+        hidden = None
         if self.vectorization_metainf['type'] == 'embedding':
             input_ = Input(shape=(self.vectorization_metainf['max_seq_len'],))
             emb_layer = self.get_embedding_layer()(input_)
             hidden = Flatten()(emb_layer)
-            for _ in range(self.training_config.hidden_layers):
-                hidden = self.get_hidden_dense()(hidden)
-            output_layer = Dense(1, activation=self.training_config.output_activation)(hidden)
-            model = Model(input_, output_layer)
-            optimizer = Adam(lr=self.training_config.lr) if self.training_config.optimizer == 'adam' else Adam()  # TODO
+        elif self.vectorization_metainf['type'] == 'tfidf':
+            input_ = Input(shape=(self.vectorization_metainf['max_features'],))
+            hidden = input_
+        for _ in range(self.training_config.hidden_layers):
+            hidden = self.get_hidden_dense()(hidden)
+        output_layer = Dense(1, activation=self.training_config.output_activation)(hidden)
+        model = Model(input_, output_layer)
+        optimizer = Adam(lr=self.training_config.lr) if self.training_config.optimizer == 'adam' else Adam()  # TODO
+        model.compile(
+            optimizer=optimizer,
+            loss=self.training_config.loss,
+            metrics=self.training_config.metrics
+        )
+        model.summary()
+        return model
+
+    def prepare_rnn_arch(self):
+        if self.vectorization_metainf['type'] == 'embedding':
+            input_ = Input(shape=(self.vectorization_metainf['max_seq_len'],))
+            emb_layer = self.get_embedding_layer()(input_)
+            hidden = emb_layer
+            hidden = Bidirectional(LSTM(15, return_sequences=True))(hidden)
+            hidden = GlobalMaxPooling1D()(hidden)
+            output = Dense(1, activation=self.training_config.output_activation)(hidden)
+            model = Model(input_, output)
             model.compile(
-                optimizer=optimizer,
-                loss=self.training_config.loss,
-                metrics=self.training_config.metrics
+                optimizer=Adam(lr=0.01),
+                loss='binary_crossentropy',
+                metrics=['accuracy']
             )
-            model.summary()
             return model
 
     def get_embedding_layer(self):
