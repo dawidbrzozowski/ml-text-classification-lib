@@ -51,7 +51,7 @@ class NNModelRunner:
     def run(self, data: list or np.array):
         pass
 
-#
+
 preprocessing_config = load_json('configs/data/preprocessing_config.json')
 model_config = load_json('configs/data/model_config.json')
 data_train = load_json('data/unprocessed/100000/train_corpus.json')

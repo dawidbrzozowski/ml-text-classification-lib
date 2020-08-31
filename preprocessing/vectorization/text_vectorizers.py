@@ -1,11 +1,15 @@
 from abc import abstractmethod
 from typing import List
 
-from sklearn.feature_extraction.text import TfidfVectorizer
-
+import os
 from preprocessing.vectorization.embeddings.embedding_loaders import GloveEmbeddingsLoader
 from preprocessing.vectorization.embeddings.embeddings import EmbeddingsMatrixPreparer
 from preprocessing.vectorization.embeddings.text_encoders import TextEncoderBase
+from utils.files_io import write_pickle, write_numpy
+from project_settings import PREPROCESSING_SAVE_DIR as SAVE_DIR
+
+VECTORIZER_NAME = 'vectorizer.vec'
+EMBEDDING_MATRIX_NAME = 'embedding_matrix.npy'
 
 
 class TextVectorizer:
@@ -30,11 +34,13 @@ class TextVectorizer:
 
 
 class TfIdfTextVectorizer(TextVectorizer):
-    def __init__(self, max_features):
-        self.tfidf_vec = TfidfVectorizer(max_features=max_features)
+    def __init__(self, max_features, vectorizer=None):
+        self.tfidf_vec = vectorizer if vectorizer is not None else TfIdfTextVectorizer(max_features=max_features)
 
     def fit(self, texts: List[str]):
         self.tfidf_vec.fit(texts)
+        os.makedirs(f'{SAVE_DIR}/tfidf', exist_ok=True)
+        write_pickle(f'{SAVE_DIR}/tfidf/{VECTORIZER_NAME}', self.tfidf_vec)
 
     def vectorize(self, texts: List[str]):
         return self.tfidf_vec.transform(texts).toarray()
@@ -59,10 +65,11 @@ class EmbeddingTextVectorizer(TextVectorizer):
         word2vec = self.embeddings_loader.load_word_vectors(self.embedding_dim)
         emb_matrix_preparer = EmbeddingsMatrixPreparer(self.text_encoder.word2idx, word2vec)
         self.embedding_matrix = emb_matrix_preparer.prepare_embedding_matrix()
+        os.makedirs(f'{SAVE_DIR}/embedding', exist_ok=True)
+        write_numpy(f'{SAVE_DIR}/embedding/{EMBEDDING_MATRIX_NAME}', self.embedding_matrix)
 
     def vectorize(self, texts: List[str]):
-        encoded = self.text_encoder.encode(texts)
-        return encoded
+        return self.text_encoder.encode(texts)
 
     def get_vectorization_metainf(self):
         return {

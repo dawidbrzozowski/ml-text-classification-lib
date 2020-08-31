@@ -1,1 +1,3 @@
 RANDOM_STATE = 42
+USE_CACHE = True
+PREPROCESSING_SAVE_DIR = 'preprocessing/_cache'

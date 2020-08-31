@@ -1,6 +1,6 @@
 {
   "model": {
-    "model_type": "RNN",
+    "model_type": "FF",
     "training_params": {
       "hidden_units": 32,
       "hidden_layers": 2,
