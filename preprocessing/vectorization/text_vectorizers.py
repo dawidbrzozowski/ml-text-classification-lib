@@ -54,10 +54,11 @@ class TfIdfTextVectorizer(TextVectorizer):
 
 
 class EmbeddingTextVectorizer(TextVectorizer):
-    def __init__(self, text_encoder: TextEncoderBase, embedding_dim, embeddings_loader=GloveEmbeddingsLoader()):
+    def __init__(self, text_encoder: TextEncoderBase, embedding_dim, embeddings_loader=GloveEmbeddingsLoader(),
+                 embedding_matrix=None):
         self.text_encoder = text_encoder
         self.embedding_dim = embedding_dim
-        self.embedding_matrix = None
+        self.embedding_matrix = embedding_matrix
         self.embeddings_loader = embeddings_loader
 
     def fit(self, texts: List[str]):
