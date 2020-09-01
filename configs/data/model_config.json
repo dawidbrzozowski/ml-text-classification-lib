@@ -1,32 +1,20 @@
 {
-  "preprocessor":
-  {
-    "data_cleaner":
-    {
-      "name": "BaselineDataCleaner"
-    },
-    "data_vectorizer":
-    {
-      "text_vectorizer":
-      {
-        "type": "embedding",
-        "name": "EmbeddingTextVectorizer",
-        "embeddings":
-        {
-          "embedding_type": "glove",
-          "embedding_dim": 50,
-          "text_encoder":
-          {
-            "name": "TextEncoder",
-            "max_vocab_size": 5000,
-            "max_seq_len": 25
-          }
-        }
-      },
-      "output_vectorizer":
-      {
-        "name": "BasicOutputVectorizer"
-      }
+  "model": {
+    "model_type": "RNN",
+    "training_params": {
+      "hidden_units": 32,
+      "hidden_layers": 2,
+      "epochs": 5,
+      "batch_size": 128,
+      "hidden_activation": "relu",
+      "output_activation": "sigmoid",
+      "trainable_embeddings": null,
+      "optimizer": "adam",
+      "loss": "binary_crossentropy",
+      "validation_split": null,
+      "metrics": ["accuracy"],
+      "callbacks": null,
+      "lr": 0.01
     }
   }
 }

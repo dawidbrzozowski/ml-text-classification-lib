@@ -1,6 +1,6 @@
 from abc import abstractmethod
 from typing import List
-
+import numpy as np
 
 class OutputVectorizer:
     @abstractmethod
@@ -21,4 +21,4 @@ class BasicOutputVectorizer(OutputVectorizer):
 
     def vectorize(self, output: List[dict]):
         averages = [o['average'] for o in output]
-        return [1 if average >= self.threshold else 0 for average in averages]
+        return np.array([1 if average >= self.threshold else 0 for average in averages])
