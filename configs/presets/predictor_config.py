@@ -1,10 +1,8 @@
 from models.model_creator import NNModelRunner
 from preprocessing.cleaning.data_cleaners import BaselineDataCleaner
-from preprocessing.preprocessors import DataPreprocessor
-from preprocessing.vectorization.data_vectorizers import DataVectorizer
+from preprocessing.preprocessors import RealDataPreprocessor
 from preprocessing.vectorization.embeddings.embedding_loaders import GloveEmbeddingsLoader
 from preprocessing.vectorization.embeddings.text_encoders import TextEncoder
-from preprocessing.vectorization.output_vectorizers import BasicOutputVectorizer
 from preprocessing.vectorization.text_vectorizers import EmbeddingTextVectorizer, TfIdfTextVectorizer
 from utils.files_io import read_pickle, read_numpy
 
@@ -13,8 +11,8 @@ class PredictorPreparer:
     def __init__(self, config):
         preprocessing_config = config.get('preprocessor')
         data_cleaner = self._prepare_data_cleaner(preprocessing_config.get('data_cleaner'))
-        data_vectorizer = self._prepare_data_vectorizer(preprocessing_config.get('data_vectorizer'))
-        self.data_preprocessor = DataPreprocessor(data_cleaner, data_vectorizer)
+        data_vectorizer = self._prepare_text_vectorizer(preprocessing_config.get('text_vectorizer'))
+        self.data_preprocessor = RealDataPreprocessor(data_cleaner, data_vectorizer)
         self.model_runner = NNModelRunner(model_path=config['model_path'])
 
     def get_preprocessor(self):
@@ -31,24 +29,11 @@ class PredictorPreparer:
         assert retrieved_obj is not None, 'Wrong DataCleaner name!'
         return retrieved_obj
 
-    def _prepare_data_vectorizer(self, data_vectorizer: dict):
-        text_vectorizer = self._prepare_text_vectorizer(data_vectorizer.get('text_vectorizer'))
-        output_vectorizer = self._prepare_output_vectorizer(data_vectorizer.get('output_vectorizer'))
-        return DataVectorizer(text_vectorizer, output_vectorizer)
-
     def _prepare_text_vectorizer(self, text_vectorizer: dict):
         if text_vectorizer['type'] == 'embedding':
             return self._prepare_embedding_text_vectorizer(text_vectorizer)
         elif text_vectorizer['type'] == 'tfidf':
             return self.prepare_tfidf_text_vectorizer(text_vectorizer)
-
-    def _prepare_output_vectorizer(self, output_vectorizer: dict):
-        output_vectorizers = {
-            'BasicOutputVectorizer': BasicOutputVectorizer()
-        }
-        retrieved_obj = output_vectorizers.get(output_vectorizer['name'])
-        assert retrieved_obj is not None, 'Wrong OutputVectorizer name!'
-        return retrieved_obj
 
     def _prepare_embedding_text_vectorizer(self, text_vectorizer: dict):
         embeddings_loaders = {

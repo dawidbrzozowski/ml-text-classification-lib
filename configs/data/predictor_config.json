@@ -1,13 +1,11 @@
 {
-  "model_path": "models/_models/first_model.h5",
+  "model_path": "models/_models/first_lstm.h5",
   "preprocessor":
   {
     "data_cleaner":
     {
       "name": "BaselineDataCleaner"
     },
-    "data_vectorizer":
-    {
       "text_vectorizer":
       {
         "type": "embedding",
@@ -27,11 +25,6 @@
         },
         "max_features": 1000,
         "tfidf_vec_path": "preprocessing/_cache/tfidf/vectorizer.vec"
-      },
-      "output_vectorizer":
-      {
-        "name": "BasicOutputVectorizer"
-      }
     }
   }
 }

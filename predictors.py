@@ -9,15 +9,11 @@ class Predictor:
         self.model_runner = predictor_preparer.get_model_runner()
 
     def predict(self, text: list or str):
-        preprocessed = self.preprocessor.preprocess([text])
+        preprocessed = self.preprocessor.preprocess([text]) if type(text) is str else self.preprocessor.preprocess(text)
         return self.model_runner.run(preprocessed)
 
 
 if __name__ == '__main__':
-    inp = {
-        'text': "Fuck donald trump.",
-        'std': 0.2,
-        'average': 0.5
-    }
+    inp = ["donald trump is a", 'barack obama is a']
     predictor = Predictor(load_json('configs/data/predictor_config.json'))
     print(predictor.predict(inp))
