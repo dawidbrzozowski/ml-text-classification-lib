@@ -1,16 +1,9 @@
 from rest_framework import serializers
 from .models import Post
-
-import sys
-sys.path.append('/Users/dawidbrzozowski/Projects/offensive-language-semeval')
-from predictors import Predictor
-from utils.files_io import load_json
-
-predictor = Predictor(load_json('configs/data/predictor_config.json'))
+from .apps import PostsConfig
 
 
 class PostSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = Post
         fields = (
@@ -22,5 +15,5 @@ class PostSerializer(serializers.ModelSerializer):
         )
 
     def create(self, validated_data):
-        validated_data['offensive_rating'] = predictor.predict(validated_data['text'])[0][0]
+        validated_data['offensive_rating'] = PostsConfig.predictor.predict(validated_data['text'])[0][0]
         return Post.objects.create(**validated_data)
