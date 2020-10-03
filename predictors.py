@@ -10,10 +10,10 @@ class Predictor:
 
     def predict(self, text: list or str):
         preprocessed = self.preprocessor.preprocess([text]) if type(text) is str else self.preprocessor.preprocess(text)
-        return self.model_runner.run(preprocessed)
+        return self.model_runner.run(preprocessed).tolist()
 
 
 if __name__ == '__main__':
     inp = ["donald trump is a", 'barack obama is a']
     predictor = Predictor(load_json('configs/data/predictor_config.json'))
-    print(predictor.predict(inp))
+    print(type(predictor.predict(inp)))
