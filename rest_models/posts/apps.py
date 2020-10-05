@@ -3,9 +3,11 @@ from django.apps import AppConfig
 import sys
 sys.path.append('/Users/dawidbrzozowski/Projects/offensive-language-semeval')
 from predictors.predictor import Predictor
-from utils.files_io import load_json
+from predictors.presets import PRESETS
 
 
 class PostsConfig(AppConfig):
+    preset_name = 'glove_rnn_predictor'
+    preset = PRESETS[preset_name]
     name = 'posts'
-    predictor = Predictor(load_json('configs/data/predictor_config.json'))
+    predictor = Predictor(preset)

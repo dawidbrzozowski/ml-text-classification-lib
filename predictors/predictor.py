@@ -12,7 +12,7 @@ class Predictor:
 
 
 if __name__ == '__main__':
-    preset_name = 'tfidf_predictor'
+    preset_name = 'glove_rnn_predictor'
     preset = PRESETS[preset_name]
     inp = "Barack Obama"
     predictor = Predictor(preset)
