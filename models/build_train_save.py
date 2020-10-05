@@ -1,4 +1,4 @@
-from models.model_creator import NNModelTrainer
+from models.model_commons import NNModelTrainer
 from models.presets import PRESETS
 
 
@@ -13,6 +13,6 @@ def train(preset: dict):
 
 
 if __name__ == '__main__':
-    preset_name = 'glove_rnn'
+    preset_name = 'glove_feedforward'
 
     train(PRESETS[preset_name])

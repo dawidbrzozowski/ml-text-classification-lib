@@ -7,7 +7,7 @@ from utils.files_io import write_pickle
 from project_settings import PREPROCESSING_SAVE_DIR as SAVE_DIR
 import os
 
-TEXT_ENCODER_NAME = 'text_encoder.pickle'
+TOKENIZER_NAME = 'tokenizer.pickle'
 
 
 class TextEncoderBase:
@@ -48,7 +48,7 @@ class TextEncoder(TextEncoderBase):
         self.tokenizer.fit_on_texts(texts)
         self.word2idx = {word: idx for word, idx in self.tokenizer.word_index.items() if idx < self.tokenizer.num_words}
         os.makedirs(f'{SAVE_DIR}/embedding', exist_ok=True)
-        write_pickle(f'{SAVE_DIR}/embedding/{TEXT_ENCODER_NAME}', self.tokenizer)
+        write_pickle(f'{SAVE_DIR}/embedding/{TOKENIZER_NAME}', self.tokenizer)
 
     def encode(self, texts):
         sequences = self.tokenizer.texts_to_sequences(texts)

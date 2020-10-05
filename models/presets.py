@@ -5,8 +5,8 @@ from models.model_builder import TfIdfFFModelBuilder, EmbeddingFFModelBuilder, E
 from preprocessing.cleaning.data_cleaners import BaselineDataCleaner
 from preprocessing.vectorization.output_vectorizers import BasicOutputVectorizer
 from preprocessing.vectorization.text_vectorizers import TfIdfTextVectorizer, EmbeddingTextVectorizer
-from models.tfidf.model_commons import prepare_tfidf_train_test_data
-from models.embedding.model_commons import prepare_embedding_train_test_data
+from models.tfidf.model_data import prepare_tfidf_train_test_data
+from models.embedding.model_data import prepare_embedding_train_test_data
 
 PRESETS = {
     'tfidf_feedforward': {
@@ -110,5 +110,5 @@ PRESETS = {
             'validation_split':     0.1,
             'callbacks':            None
         }
-    },
+    }
 }

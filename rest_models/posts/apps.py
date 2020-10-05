@@ -2,7 +2,7 @@ from django.apps import AppConfig
 
 import sys
 sys.path.append('/Users/dawidbrzozowski/Projects/offensive-language-semeval')
-from predictors import Predictor
+from predictors.predictor import Predictor
 from utils.files_io import load_json
 
 
