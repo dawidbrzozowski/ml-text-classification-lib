@@ -12,8 +12,8 @@ class Predictor:
 
 
 if __name__ == '__main__':
-    preset_name = 'glove_predictor'
+    preset_name = 'tfidf_predictor'
     preset = PRESETS[preset_name]
-    inp = "Alicia's boyfriend person"
+    inp = "Barack Obama"
     predictor = Predictor(preset)
     print(predictor.predict(inp))

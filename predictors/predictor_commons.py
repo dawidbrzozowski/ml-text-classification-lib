@@ -28,5 +28,17 @@ def get_embedding_preprocessor(preset: dict):
         ready_text_vectorizer=text_vectorizer)
 
 
+def get_tfidf_preprocessor(preset: dict):
+    data_cleaner = preset['data_params']['data_cleaner']()
+    vectorizer = read_pickle(preset['vectorizer_params']['vectorizer_path'])
+    text_vectorizer = preset['data_params']['text_vectorizer'](
+        max_features=preset['vectorizer_params']['vector_width'],
+        vectorizer=vectorizer)
+
+    return RealDataPreprocessor(
+        ready_text_cleaner=data_cleaner,
+        ready_text_vectorizer=text_vectorizer)
+
+
 def get_model(preset: dict):
     return NNModelRunner(model_path=preset['model_path'])
