@@ -18,6 +18,3 @@ class DataVectorizer:
 
     def vectorize(self, texts, outputs):
         return self.text_vectorizer.vectorize(texts), self.output_vectorizer.vectorize(outputs)
-
-    def get_vectorization_metainf(self):
-        return self.text_vectorizer.get_vectorization_metainf()

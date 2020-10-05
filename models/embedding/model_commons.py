@@ -1,11 +1,18 @@
 from preprocessing.preprocessors import DataPreprocessor
 from preprocessing.vectorization.data_vectorizers import DataVectorizer
+from preprocessing.vectorization.embeddings.text_encoders import TextEncoder
 
-def prepare_tfidf_train_test_data(data_params: dict, vectorizer_params: dict):
+
+def prepare_embedding_train_test_data(data_params: dict, vectorizer_params: dict):
     data_extractor = data_params['data_extractor']()
     train_corpus, test_corpus = data_extractor.get_train_test_corpus()
     data_cleaner = data_params['data_cleaner']()
-    text_vectorizer = data_params['text_vectorizer'](vectorizer_params['vector_width'])
+    text_encoder = TextEncoder(
+        max_vocab_size=vectorizer_params['max_vocab_size'],
+        max_seq_len=vectorizer_params['max_seq_len'])
+    text_vectorizer = data_params['text_vectorizer'](
+        text_encoder=text_encoder,
+        embedding_dim=vectorizer_params['embedding_dim'])
     output_vectorizer = data_params['output_vectorizer']()
     data_vectorizer = DataVectorizer(text_vectorizer, output_vectorizer)
     preprocessor = DataPreprocessor(data_cleaner, data_vectorizer)

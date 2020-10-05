@@ -30,9 +30,6 @@ class DataPreprocessor:
         processed_texts, processed_output = self.data_vectorizer.vectorize(texts, outputs)
         return processed_texts, processed_output
 
-    def get_vectorization_metainf(self) -> dict:
-        return self.data_vectorizer.get_vectorization_metainf()
-
 
 class RealDataPreprocessor:
     # TODO this parameter could also be changed for some kind of preset
