@@ -1,4 +1,4 @@
-from models.model_commons import NNModelRunner
+from models.model_trainer_runner import NNModelRunner
 from preprocessing.preprocessors import RealDataPreprocessor
 from preprocessing.vectorization.embeddings.text_encoders import LoadedTextEncoder
 from preprocessing.vectorization.text_vectorizers import LoadedEmbeddingTextVectorizer

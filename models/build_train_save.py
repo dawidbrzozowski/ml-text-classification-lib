@@ -1,4 +1,4 @@
-from models.model_commons import NNModelTrainer
+from models.model_trainer_runner import NNModelTrainer
 from models.presets import PRESETS
 
 
@@ -11,7 +11,7 @@ def train(preset: dict):
     model_trainer.train(data_train)
     print('Training process complete!')
     model_trainer.save(preset['model_save_dir'], preset['model_name'])
-    print(f'Model saved to: {preset["model_save_dir"]}/{preset["model_name"]}')
+    print(f'Model saved to: {preset["model_save_dir"]}. Model name: {preset["model_name"]}')
 
 
 if __name__ == '__main__':

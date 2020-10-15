@@ -28,14 +28,15 @@ PRESETS = {
             'hidden_layers':        2,
             'hidden_units':         32,
             'hidden_activation':   'relu',
-            'output_activation':   'sigmoid',
+            'output_activation':   'softmax',
             'optimizer':           'adam',
             'loss':                'binary_crossentropy',
             'lr':                   0.01,
-            'metrics':              ['accuracy']
+            'metrics':              ['accuracy'],
+            'output_units':         2
         },
         'training_params': {
-            'epochs':               5,
+            'epochs':               1,
             'batch_size':           128,
             'validation_split':     0.1,
             'callbacks':            None
@@ -65,12 +66,13 @@ PRESETS = {
             'hidden_layers':        2,
             'hidden_units':         32,
             'hidden_activation':   'relu',
-            'output_activation':   'sigmoid',
+            'output_activation':   'softmax',
             'optimizer':           'adam',
             'loss':                'binary_crossentropy',
             'lr':                   0.01,
             'metrics':              ['accuracy'],
-            'trainable_embedding':  False
+            'trainable_embedding':  False,
+            'output_units':         2
         },
         'training_params': {
             'epochs':               5,
@@ -102,12 +104,13 @@ PRESETS = {
             'hidden_layers':        2,
             'hidden_units':         32,
             'hidden_activation':   'relu',
-            'output_activation':   'sigmoid',
+            'output_activation':   'softmax',
             'optimizer':           'adam',
             'loss':                'binary_crossentropy',
             'lr':                   0.01,
             'metrics':              ['accuracy'],
-            'trainable_embedding':  False
+            'trainable_embedding':  False,
+            'output_units':         2
         },
         'training_params': {
             'epochs':               5,

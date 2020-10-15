@@ -17,7 +17,7 @@ class ModelBuilder:
 
     def prepare_output_layer(self):
         return layers.Dense(
-            units=1,
+            units=self.architecture_params['output_units'],
             activation=self.architecture_params['output_activation'])
 
     def create_model(self, input_layer, output_layer):
@@ -88,7 +88,7 @@ class EmbeddingRNNModelBuilder(EmbeddingModelBuilder):
             return_sequences=True))(hidden)
         hidden = layers.GlobalMaxPooling1D()(hidden)
         output = layers.Dense(
-            units=1,
+            units=self.architecture_params['output_units'],
             activation=self.architecture_params['output_activation'])(hidden)
         return self.create_model(input_, output)
 
