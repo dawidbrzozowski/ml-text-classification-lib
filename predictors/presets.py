@@ -1,6 +1,6 @@
 from predictors.predictor_commons import get_embedding_preprocessor, get_model, get_tfidf_preprocessor
 from preprocessing.cleaning.data_cleaners import BaselineDataCleaner
-from preprocessing.vectorization.text_vectorizers import EmbeddingTextVectorizer, TfIdfTextVectorizer
+from preprocessing.vectorization.text_vectorizers import LoadedEmbeddingTextVectorizer, LoadedTfIdfTextVectorizer
 
 PRESETS = {
     'glove_ff_predictor': {
@@ -9,10 +9,9 @@ PRESETS = {
         'model_func':                   get_model,
         'data_params': {
             'data_cleaner':             BaselineDataCleaner,
-            'text_vectorizer':          EmbeddingTextVectorizer,
+            'text_vectorizer':          LoadedEmbeddingTextVectorizer,
         },
         'vectorizer_params': {
-            'max_vocab_size':           5000,
             'max_seq_len':              25,
             'embedding_dim':            50,
             'embedding_matrix_path':   'preprocessing/_cache/embedding/embedding_matrix.npy',
@@ -25,7 +24,7 @@ PRESETS = {
         'model_func':                   get_model,
         'data_params': {
             'data_cleaner':             BaselineDataCleaner,
-            'text_vectorizer':          TfIdfTextVectorizer,
+            'text_vectorizer':          LoadedTfIdfTextVectorizer,
         },
         'vectorizer_params': {
             'vectorizer_path':          'preprocessing/_cache/tfidf/vectorizer.vec',
@@ -39,10 +38,9 @@ PRESETS = {
         'model_func':                   get_model,
         'data_params': {
             'data_cleaner':             BaselineDataCleaner,
-            'text_vectorizer':          EmbeddingTextVectorizer,
+            'text_vectorizer':          LoadedEmbeddingTextVectorizer,
         },
         'vectorizer_params': {
-            'max_vocab_size':           5000,
             'max_seq_len':              25,
             'embedding_dim':            50,
             'embedding_matrix_path':   'preprocessing/_cache/embedding/embedding_matrix.npy',

@@ -2,7 +2,7 @@ from typing import List
 
 from preprocessing.cleaning.data_cleaners import DataCleaner
 from preprocessing.vectorization.data_vectorizers import DataVectorizer
-from preprocessing.vectorization.text_vectorizers import TextVectorizer
+from preprocessing.vectorization.text_vectorizers import LoadedTextVectorizer
 
 
 class DataPreprocessor:
@@ -32,11 +32,10 @@ class DataPreprocessor:
 
 
 class RealDataPreprocessor:
-    # TODO this parameter could also be changed for some kind of preset
-    def __init__(self, ready_text_cleaner: DataCleaner, ready_text_vectorizer: TextVectorizer):
+    def __init__(self, text_cleaner: DataCleaner, loaded_text_vectorizer: LoadedTextVectorizer):
         # TODO for now it is DataCleaner. When Text and Output cleaner is implemented, change that to Text!
-        self.text_cleaner = ready_text_cleaner
-        self.text_vectorizer = ready_text_vectorizer
+        self.text_cleaner = text_cleaner
+        self.text_vectorizer = loaded_text_vectorizer
 
     def preprocess(self, data: str or List[str]):
         if type(data) is str:

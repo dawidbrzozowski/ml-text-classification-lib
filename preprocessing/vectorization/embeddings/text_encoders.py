@@ -33,22 +33,26 @@ class TextEncoderBase:
 
 
 class TextEncoder(TextEncoderBase):
-    def __init__(self, max_vocab_size, max_seq_len, tokenizer=None):
+    def __init__(self, max_vocab_size, max_seq_len):
         super().__init__(max_vocab_size, max_seq_len)
-        if tokenizer is not None:
-            self.tokenizer = self.load_tokenizer(tokenizer)
-        else:
-            self.tokenizer = Tokenizer(num_words=max_vocab_size, lower=True)
-
-    def load_tokenizer(self, tokenizer):
-        self.word2idx = {word: idx for word, idx in tokenizer.word_index.items() if idx < tokenizer.num_words}
-        return tokenizer
+        self.tokenizer = Tokenizer(num_words=max_vocab_size, lower=True)
 
     def fit(self, texts):
         self.tokenizer.fit_on_texts(texts)
         self.word2idx = {word: idx for word, idx in self.tokenizer.word_index.items() if idx < self.tokenizer.num_words}
         os.makedirs(f'{SAVE_DIR}/embedding', exist_ok=True)
         write_pickle(f'{SAVE_DIR}/embedding/{TOKENIZER_NAME}', self.tokenizer)
+
+    def encode(self, texts):
+        sequences = self.tokenizer.texts_to_sequences(texts)
+        padded = pad_sequences(sequences=sequences, maxlen=self.max_seq_len)
+        return padded
+
+
+class LoadedTextEncoder:
+    def __init__(self, tokenizer, max_seq_len):
+        self.tokenizer = tokenizer
+        self.max_seq_len = max_seq_len
 
     def encode(self, texts):
         sequences = self.tokenizer.texts_to_sequences(texts)
