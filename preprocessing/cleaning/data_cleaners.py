@@ -1,3 +1,4 @@
+import re
 from abc import abstractmethod
 from typing import List
 
@@ -10,17 +11,50 @@ class DataCleaner:
     """
 
     @abstractmethod
-    def fit(self, data: List[dict]):
-        pass
-
-    @abstractmethod
     def clean(self, data: List[dict]):
         pass
 
 
 class BaselineDataCleaner(DataCleaner):
-    def fit(self, data: List[dict]):
-        return data
-
     def clean(self, data: List[dict]):
         return data
+
+
+class TextCleaner:
+    def clean(
+            self,
+            texts: List[str],
+            replace_numbers=False):
+        if replace_numbers:
+            texts = self._replace_numbers_with_symbol(texts)
+        return texts
+
+    def _replace_numbers_with_symbol(self, texts):
+        number_pattern = re.compile(r'\d+')
+        return [number_pattern.sub('number_encoded', text) for text in texts]
+
+
+class OutputCleaner:
+    """
+    Output cleaner will remove rows, for which output is invalid.
+    """
+    def clean(self, data: List[dict]):
+        correct_data = []
+        for sample in data:
+            if sample['offensive'] in (0, 1):
+                correct_data.append(sample)
+        return correct_data
+
+
+class PresetDataCleaner(DataCleaner):
+    def __init__(self, text_cleaner: TextCleaner, output_cleaner: OutputCleaner):
+        self.text_cleaner = text_cleaner
+        self.output_cleaner = output_cleaner
+
+    def clean(self, data: List[dict]):
+        texts = [sample['text'] for sample in data]
+        cleaned_texts = self.text_cleaner.clean(texts)
+        for sample, cleaned_text in zip(data, cleaned_texts):
+            sample['text'] = cleaned_text
+        return self.output_cleaner.clean(data)
+

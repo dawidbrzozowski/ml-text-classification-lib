@@ -18,17 +18,17 @@ class DataPreprocessor:
         self.data_vectorizer = data_vectorizer
 
     def fit(self, data: List[dict]):
-        self.data_cleaner.fit(data)
-        texts = [record['text'] for record in data]
-        outputs = [{'average': record['average'], 'std':record['std']} for record in data]
+        data = self.data_cleaner.clean(data)
+        texts = [sample['text'] for sample in data]
+        outputs = [sample['offensive'] for sample in data]
         self.data_vectorizer.fit(texts, outputs)
 
     def preprocess(self, data: List[dict]):
         self.data_cleaner.clean(data)
         texts = [record['text'] for record in data]
-        outputs = [{'average': record['average'], 'std': record['std']} for record in data]
-        processed_texts, processed_output = self.data_vectorizer.vectorize(texts, outputs)
-        return processed_texts, processed_output
+        outputs = [sample['offensive'] for sample in data]
+        processed_texts, processed_outputs = self.data_vectorizer.vectorize(texts, outputs)
+        return processed_texts, processed_outputs
 
 
 class RealDataPreprocessor:

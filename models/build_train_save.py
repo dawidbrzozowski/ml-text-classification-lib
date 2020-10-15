@@ -11,10 +11,10 @@ def train(preset: dict):
     model_trainer.train(data_train)
     print('Training process complete!')
     model_trainer.save(preset['model_save_dir'], preset['model_name'])
-    print(f'Model saved to: {preset["modeL_save_dir"]}/{preset["model_name"]}')
+    print(f'Model saved to: {preset["model_save_dir"]}/{preset["model_name"]}')
 
 
 if __name__ == '__main__':
-    preset_name = 'glove_rnn'
+    preset_name = 'tfidf_feedforward'
 
     train(PRESETS[preset_name])

@@ -42,6 +42,9 @@ class BaselineJsonDataExtractor(DataExtractor):
     def get_train_test_corpus(self, amount=1000000):
         data_train = load_json(f'{BASELINE_DATA_DIR}/{amount}/train_corpus.json')
         data_test = load_json(f'{BASELINE_DATA_DIR}/{amount}/test_corpus.json')
+        data_train = list(map(add_offensive_drop_avg_std, data_train))
+        data_test = list(map(add_offensive_drop_avg_std, data_test))
+
         return data_train, data_test
 
 
@@ -134,4 +137,11 @@ class SingleFileCustomPathTxtDataExtractor(SingleFileDataExtractor, TxtDataExtra
 
 def change_to_number(sample):
     sample['offensive'] = 1 if sample['offensive'] else 0
+    return sample
+
+
+def add_offensive_drop_avg_std(sample):
+    sample['offensive'] = 1 if sample['average'] >= 0.5 else 0
+    del sample['average']
+    del sample['std']
     return sample
