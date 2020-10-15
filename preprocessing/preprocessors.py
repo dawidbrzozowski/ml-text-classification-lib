@@ -27,8 +27,12 @@ class DataPreprocessor:
         self.data_cleaner.clean(data)
         texts = [record['text'] for record in data]
         outputs = [sample['offensive'] for sample in data]
-        processed_texts, processed_outputs = self.data_vectorizer.vectorize(texts, outputs)
-        return processed_texts, processed_outputs
+        texts_vectorized, processed_outputs = self.data_vectorizer.vectorize(texts, outputs)
+        return {
+            'text_vectorized': texts_vectorized,
+            'text': texts,
+            'output': processed_outputs
+        }
 
 
 class RealDataPreprocessor:
@@ -41,4 +45,7 @@ class RealDataPreprocessor:
         if type(data) is str:
             data = [data]
         data = self.text_cleaner.clean(data)
-        return self.text_vectorizer.vectorize(data)
+        return {
+            'text_vectorized': self.text_vectorizer.vectorize(data),
+            'text': data
+        }

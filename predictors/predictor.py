@@ -7,13 +7,13 @@ class Predictor:
         self.model_runner = preset['model_func'](preset)
 
     def predict(self, text: list or str):
-        preprocessed = self.preprocessor.preprocess([text]) if type(text) is str else self.preprocessor.preprocess(text)
+        preprocessed = self.preprocessor.preprocess(text)['text_vectorized']
         return self.model_runner.run(preprocessed).tolist()
 
 
 if __name__ == '__main__':
     preset_name = 'tfidf_predictor'
     preset = PRESETS[preset_name]
-    inp = "Barack Obama"
+    inp = ["Barack Obama"]
     predictor = Predictor(preset)
     print(predictor.predict(inp))
