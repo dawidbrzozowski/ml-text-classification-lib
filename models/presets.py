@@ -3,6 +3,7 @@ from keras import layers
 from data_preparation.data_extracton import BaselineJsonDataExtractor
 from models.model_builder import TfIdfFFModelBuilder, EmbeddingFFModelBuilder, EmbeddingRNNModelBuilder
 from preprocessing.cleaning.data_cleaners import BaselineDataCleaner
+from preprocessing.vectorization.embeddings.embedding_loaders import GloveEmbeddingsLoader
 from preprocessing.vectorization.output_vectorizers import BasicOutputVectorizer
 from preprocessing.vectorization.text_vectorizers import TfIdfTextVectorizer, EmbeddingTextVectorizer
 from models.tfidf.model_data import prepare_tfidf_train_test_data
@@ -48,6 +49,8 @@ PRESETS = {
             'data_extractor':       BaselineJsonDataExtractor,
             'data_cleaner':         BaselineDataCleaner,
             'text_vectorizer':      EmbeddingTextVectorizer,
+            'embeddings_loader':    GloveEmbeddingsLoader,
+            'embedding_type':      'wiki',
             'output_vectorizer':    BasicOutputVectorizer,
         },
         'model_name':              'nn_embedding',
@@ -85,6 +88,8 @@ PRESETS = {
             'data_cleaner':         BaselineDataCleaner,
             'text_vectorizer':      EmbeddingTextVectorizer,
             'output_vectorizer':    BasicOutputVectorizer,
+            'embeddings_loader':    GloveEmbeddingsLoader,
+            'embedding_type':      'twitter',
         },
         'model_name':              'nn_embedding',
         'model_save_dir':          'models/embedding/rnn/_models',

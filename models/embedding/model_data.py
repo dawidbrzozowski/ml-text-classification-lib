@@ -12,7 +12,8 @@ def prepare_embedding_train_test_data(data_params: dict, vectorizer_params: dict
         max_seq_len=vectorizer_params['max_seq_len'])
     text_vectorizer = data_params['text_vectorizer'](
         text_encoder=text_encoder,
-        embedding_dim=vectorizer_params['embedding_dim'])
+        embedding_dim=vectorizer_params['embedding_dim'],
+        embeddings_loader=data_params['embeddings_loader'](data_params['embedding_type']))
     output_vectorizer = data_params['output_vectorizer']()
     data_vectorizer = DataVectorizer(text_vectorizer, output_vectorizer)
     preprocessor = DataPreprocessor(data_cleaner, data_vectorizer)

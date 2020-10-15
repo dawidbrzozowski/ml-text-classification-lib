@@ -5,7 +5,7 @@ import os
 
 from sklearn.feature_extraction.text import TfidfVectorizer
 
-from preprocessing.vectorization.embeddings.embedding_loaders import GloveEmbeddingsLoader
+from preprocessing.vectorization.embeddings.embedding_loaders import EmbeddingsLoader
 from preprocessing.vectorization.embeddings.embeddings import EmbeddingsMatrixPreparer
 from preprocessing.vectorization.embeddings.text_encoders import TextEncoderBase
 from utils.files_io import write_pickle, write_numpy
@@ -46,7 +46,7 @@ class TfIdfTextVectorizer(TextVectorizer):
 
 
 class EmbeddingTextVectorizer(TextVectorizer):
-    def __init__(self, text_encoder: TextEncoderBase, embedding_dim, embeddings_loader=GloveEmbeddingsLoader(),
+    def __init__(self, text_encoder: TextEncoderBase, embedding_dim=None, embeddings_loader: EmbeddingsLoader = None,
                  embedding_matrix=None):
         self.text_encoder = text_encoder
         self.embedding_dim = embedding_dim

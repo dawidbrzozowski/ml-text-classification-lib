@@ -15,6 +15,6 @@ def train(preset: dict):
 
 
 if __name__ == '__main__':
-    preset_name = 'tfidf_feedforward'
+    preset_name = 'glove_rnn'
 
     train(PRESETS[preset_name])

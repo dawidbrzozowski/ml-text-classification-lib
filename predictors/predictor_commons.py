@@ -16,11 +16,9 @@ def get_embedding_preprocessor(preset: dict):
         max_vocab_size=max_vocab_size,
         max_seq_len=max_seq_len,
         tokenizer=tokenizer)
-    embedding_loader = preset['vectorizer_params']['embedding_loader']()
     text_vectorizer = EmbeddingTextVectorizer(
         text_encoder=text_encoder,
         embedding_dim=embedding_dim,
-        embeddings_loader=embedding_loader,
         embedding_matrix=embedding_matrix)
 
     return RealDataPreprocessor(

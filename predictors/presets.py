@@ -1,6 +1,5 @@
 from predictors.predictor_commons import get_embedding_preprocessor, get_model, get_tfidf_preprocessor
 from preprocessing.cleaning.data_cleaners import BaselineDataCleaner
-from preprocessing.vectorization.embeddings.embedding_loaders import GloveEmbeddingsLoader
 from preprocessing.vectorization.text_vectorizers import EmbeddingTextVectorizer, TfIdfTextVectorizer
 
 PRESETS = {
@@ -18,7 +17,6 @@ PRESETS = {
             'embedding_dim':            50,
             'embedding_matrix_path':   'preprocessing/_cache/embedding/embedding_matrix.npy',
             'text_encoder_path':       'preprocessing/_cache/embedding/tokenizer.pickle',
-            'embedding_loader':         GloveEmbeddingsLoader
         },
     },
     'tfidf_predictor': {
@@ -49,7 +47,6 @@ PRESETS = {
             'embedding_dim':            50,
             'embedding_matrix_path':   'preprocessing/_cache/embedding/embedding_matrix.npy',
             'text_encoder_path':       'preprocessing/_cache/embedding/tokenizer.pickle',
-            'embedding_loader':         GloveEmbeddingsLoader
         },
     },
 }
