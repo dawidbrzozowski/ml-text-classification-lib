@@ -2,6 +2,7 @@ from abc import abstractmethod
 from typing import List
 import numpy as np
 
+
 class OutputVectorizer:
     @abstractmethod
     def fit(self, output: List[dict]):

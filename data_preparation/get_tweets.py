@@ -3,7 +3,7 @@ from argparse import ArgumentParser
 
 from sklearn.model_selection import train_test_split
 
-from data_preparation.data_extracton import LargeDataExtractor
+from data_preparation.data_extracton import SemevalDataRetriever
 from utils.files_io import write_json_file, load_json
 from project_settings import RANDOM_STATE
 
@@ -26,7 +26,7 @@ def download_corpus(size: int, verbose=1):
     if verbose == 1:
         print(f'Performing download for {size} rows.')
     assert 0 < size < MAX_AMOUNT, f'Pick a number between {MIN_AMOUNT} and {MAX_AMOUNT}'
-    data_extractor = LargeDataExtractor()
+    data_extractor = SemevalDataRetriever()
     corpus = data_extractor.process_n_rows(size)
     return corpus
 

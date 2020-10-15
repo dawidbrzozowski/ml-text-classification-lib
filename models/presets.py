@@ -1,6 +1,6 @@
 from keras import layers
 
-from data_preparation.data_extracton import BaselineDataExtractor
+from data_preparation.data_extracton import BaselineJsonDataExtractor
 from models.model_builder import TfIdfFFModelBuilder, EmbeddingFFModelBuilder, EmbeddingRNNModelBuilder
 from preprocessing.cleaning.data_cleaners import BaselineDataCleaner
 from preprocessing.vectorization.output_vectorizers import BasicOutputVectorizer
@@ -13,7 +13,7 @@ PRESETS = {
         'model_builder_class':      TfIdfFFModelBuilder,
         'data_func':                prepare_tfidf_train_test_data,
         'data_params': {
-            'data_extractor':       BaselineDataExtractor,
+            'data_extractor':       BaselineJsonDataExtractor,
             'data_cleaner':         BaselineDataCleaner,
             'text_vectorizer':      TfIdfTextVectorizer,
             'output_vectorizer':    BasicOutputVectorizer,
@@ -45,7 +45,7 @@ PRESETS = {
         'model_builder_class':      EmbeddingFFModelBuilder,
         'data_func':                prepare_embedding_train_test_data,
         'data_params': {
-            'data_extractor':       BaselineDataExtractor,
+            'data_extractor':       BaselineJsonDataExtractor,
             'data_cleaner':         BaselineDataCleaner,
             'text_vectorizer':      EmbeddingTextVectorizer,
             'output_vectorizer':    BasicOutputVectorizer,
@@ -81,7 +81,7 @@ PRESETS = {
         'model_builder_class':      EmbeddingRNNModelBuilder,
         'data_func':                prepare_embedding_train_test_data,
         'data_params': {
-            'data_extractor':       BaselineDataExtractor,
+            'data_extractor':       BaselineJsonDataExtractor,
             'data_cleaner':         BaselineDataCleaner,
             'text_vectorizer':      EmbeddingTextVectorizer,
             'output_vectorizer':    BasicOutputVectorizer,
