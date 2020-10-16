@@ -14,6 +14,6 @@ class Predictor:
 if __name__ == '__main__':
     preset_name = 'tfidf_predictor'
     preset = PRESETS[preset_name]
-    inp = ["Barack Obama"]
+    inp = ["Netflix decides to finally release the second season of Mindhunter and it's on Flare-On 6 day?  You insidious bastards."]
     predictor = Predictor(preset)
     print(predictor.predict(inp))
