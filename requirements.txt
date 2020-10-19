@@ -1,7 +1,6 @@
-pandas
-notebook
 numpy
 keras
 sklearn
 tensorflow
-flask
+djangorestframework
+pandas

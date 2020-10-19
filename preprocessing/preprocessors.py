@@ -23,7 +23,7 @@ class DataPreprocessor:
         outputs = [sample['offensive'] for sample in data]
         self.data_vectorizer.fit(texts, outputs)
 
-    def preprocess(self, data: List[dict]):
+    def preprocess(self, data: List[dict]) -> dict:
         self.data_cleaner.clean(data)
         texts = [record['text'] for record in data]
         outputs = [sample['offensive'] for sample in data]
@@ -41,11 +41,11 @@ class RealDataPreprocessor:
         self.text_cleaner = text_cleaner
         self.text_vectorizer = loaded_text_vectorizer
 
-    def preprocess(self, data: str or List[str]):
+    def preprocess(self, data: str or List[str]) -> dict:
         if type(data) is str:
             data = [data]
         data = self.text_cleaner.clean(data)
         return {
-            'text_vectorized': self.text_vectorizer.vectorize(data),
-            'text': data
+            'text': data,
+            'text_vectorized': self.text_vectorizer.vectorize(data)
         }

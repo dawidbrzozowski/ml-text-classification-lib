@@ -33,7 +33,7 @@ PRESETS = {
         },
     },
     'glove_rnn_predictor': {
-        'model_path':                  'models/embedding/ff/_models/nn_embedding.h5',
+        'model_path':                  'models/embedding/rnn/_models/nn_embedding.h5',
         'preprocessor_func':            get_embedding_preprocessor,
         'model_func':                   get_model,
         'data_params': {

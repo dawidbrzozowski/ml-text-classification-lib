@@ -6,7 +6,8 @@ def train(preset: dict):
     data_func = preset['data_func']
     data_params = preset['data_params']
     vectorizer_params = preset['vectorizer_params']
-    data_train, data_test = data_func(data_params=data_params, vectorizer_params=vectorizer_params)
+    data_train, _ = data_func(data_params=data_params, vectorizer_params=vectorizer_params)
+    data_train = (data_train['text_vectorized'], data_train['output'])
     model_trainer = NNModelTrainer(preset)
     model_trainer.train(data_train)
     print('Training process complete!')

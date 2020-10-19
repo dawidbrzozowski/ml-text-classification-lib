@@ -113,7 +113,7 @@ PRESETS = {
             'output_units':         2
         },
         'training_params': {
-            'epochs':               5,
+            'epochs':               2,
             'batch_size':           128,
             'validation_split':     0.1,
             'callbacks':            None

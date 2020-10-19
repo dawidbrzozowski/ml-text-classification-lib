@@ -1,9 +1,11 @@
+from typing import Tuple
+
 from preprocessing.preprocessors import DataPreprocessor
 from preprocessing.vectorization.data_vectorizers import DataVectorizer
 from preprocessing.vectorization.embeddings.text_encoders import TextEncoder
 
 
-def prepare_embedding_train_test_data(data_params: dict, vectorizer_params: dict):
+def prepare_embedding_train_test_data(data_params: dict, vectorizer_params: dict) -> Tuple[dict, dict]:
     data_extractor = data_params['data_extractor']()
     train_corpus, test_corpus = data_extractor.get_train_test_corpus()
     data_cleaner = data_params['data_cleaner']()
