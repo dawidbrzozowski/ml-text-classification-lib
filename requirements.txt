@@ -4,3 +4,4 @@ sklearn
 tensorflow
 djangorestframework
 pandas
+sortedcontainers==2.2.2

@@ -25,4 +25,4 @@ if __name__ == '__main__':
     preset_name = 'glove_rnn_predictor'
     preset = PRESETS[preset_name]
     predictor = Predictor(preset)
-    print(deep_predictor_test_on_sample(predictor, "Hi this is my fucking stupid bitch offensive love text"))
+    print(deep_predictor_test_on_sample(predictor, "Me as fuck the past few weeks or more. I love you all I’m just dealin"))

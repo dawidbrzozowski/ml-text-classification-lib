@@ -14,6 +14,6 @@ class Predictor:
 if __name__ == '__main__':
     preset_name = 'glove_rnn_predictor'
     preset = PRESETS[preset_name]
-    inp = ["Netflix decides to finally release the second season of Mindhunter and it's on Flare-On 6 day?  You insidious bastards."]
+    inp = ["Me as fuck the past few weeks or more. I love you all I’m just dealin w a lot and trying the best I can❤️I’m the distant friend. The I haven’t texted u back and we havent spoken in 2 weeks but I still love u friend. 🥺🥺"]
     predictor = Predictor(preset)
     print(predictor.predict(inp))
