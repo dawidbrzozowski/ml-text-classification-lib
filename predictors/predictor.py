@@ -7,7 +7,7 @@ class Predictor:
         self.model_runner = preset['model_func'](preset)
 
     def predict(self, text: list or str):
-        preprocessed = self.preprocessor.preprocess(text)['text_vectorized']
+        preprocessed = self.preprocessor.clean_vectorize(text)
         return self.model_runner.run(preprocessed).tolist()
 
 

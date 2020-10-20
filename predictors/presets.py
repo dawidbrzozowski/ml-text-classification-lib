@@ -8,7 +8,11 @@ PRESETS = {
         'preprocessor_func':            get_embedding_preprocessor,
         'model_func':                   get_model,
         'data_params': {
-            'data_cleaner':             BaselineDataCleaner,
+            'text_cleaning_params': {
+                'use_ner':              False,
+                'use_ner_converter':    True,
+                'use_twitter_data_preprocessing': True
+            },
             'text_vectorizer':          LoadedEmbeddingTextVectorizer,
         },
         'vectorizer_params': {
@@ -23,7 +27,11 @@ PRESETS = {
         'preprocessor_func':            get_tfidf_preprocessor,
         'model_func':                   get_model,
         'data_params': {
-            'data_cleaner':             BaselineDataCleaner,
+            'text_cleaning_params':{
+                'use_ner':              False,
+                'use_ner_converter':    True,
+                'use_twitter_data_preprocessing': True
+            },
             'text_vectorizer':          LoadedTfIdfTextVectorizer,
         },
         'vectorizer_params': {
@@ -37,7 +45,11 @@ PRESETS = {
         'preprocessor_func':            get_embedding_preprocessor,
         'model_func':                   get_model,
         'data_params': {
-            'data_cleaner':             BaselineDataCleaner,
+            'text_cleaning_params':{
+                'use_ner':              False,
+                'use_ner_converter':    True,
+                'use_twitter_data_preprocessing': True
+            },
             'text_vectorizer':          LoadedEmbeddingTextVectorizer,
         },
         'vectorizer_params': {

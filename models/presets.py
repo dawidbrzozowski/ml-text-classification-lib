@@ -2,7 +2,6 @@ from keras import layers
 
 from data_preparation.data_extracton import BaselineJsonDataExtractor
 from models.model_builder import TfIdfFFModelBuilder, EmbeddingFFModelBuilder, EmbeddingRNNModelBuilder
-from preprocessing.cleaning.data_cleaners import BaselineDataCleaner
 from preprocessing.vectorization.embeddings.embedding_loaders import GloveEmbeddingsLoader
 from preprocessing.vectorization.output_vectorizers import BasicOutputVectorizer
 from preprocessing.vectorization.text_vectorizers import TfIdfTextVectorizer, EmbeddingTextVectorizer
@@ -15,7 +14,11 @@ PRESETS = {
         'data_func':                prepare_tfidf_train_test_data,
         'data_params': {
             'data_extractor':       BaselineJsonDataExtractor,
-            'data_cleaner':         BaselineDataCleaner,
+            'text_cleaning_params':{
+                'use_ner':          False,
+                'use_ner_converter':True,
+                'use_twitter_data_preprocessing': True
+            },
             'text_vectorizer':      TfIdfTextVectorizer,
             'output_vectorizer':    BasicOutputVectorizer,
         },
@@ -48,7 +51,11 @@ PRESETS = {
         'data_func':                prepare_embedding_train_test_data,
         'data_params': {
             'data_extractor':       BaselineJsonDataExtractor,
-            'data_cleaner':         BaselineDataCleaner,
+            'text_cleaning_params':{
+                'use_ner':          False,
+                'use_ner_converter':True,
+                'use_twitter_data_preprocessing': True
+            },
             'text_vectorizer':      EmbeddingTextVectorizer,
             'embeddings_loader':    GloveEmbeddingsLoader,
             'embedding_type':      'wiki',
@@ -87,7 +94,11 @@ PRESETS = {
         'data_func':                prepare_embedding_train_test_data,
         'data_params': {
             'data_extractor':       BaselineJsonDataExtractor,
-            'data_cleaner':         BaselineDataCleaner,
+            'text_cleaning_params':{
+                'use_ner':          False,
+                'use_ner_converter':True,
+                'use_twitter_data_preprocessing': True
+            },
             'text_vectorizer':      EmbeddingTextVectorizer,
             'output_vectorizer':    BasicOutputVectorizer,
             'embeddings_loader':    GloveEmbeddingsLoader,

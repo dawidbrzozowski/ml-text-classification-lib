@@ -1,6 +1,6 @@
-from typing import List
+from typing import List, Tuple
 
-from preprocessing.cleaning.data_cleaners import DataCleaner
+from preprocessing.cleaning.data_cleaners import TextCleaner, DataCleaner
 from preprocessing.vectorization.data_vectorizers import DataVectorizer
 from preprocessing.vectorization.text_vectorizers import LoadedTextVectorizer
 
@@ -17,35 +17,33 @@ class DataPreprocessor:
         self.data_cleaner = data_cleaner
         self.data_vectorizer = data_vectorizer
 
-    def fit(self, data: List[dict]):
-        data = self.data_cleaner.clean(data)
-        texts = [sample['text'] for sample in data]
-        outputs = [sample['offensive'] for sample in data]
+    def clean(self, data: List[dict]):
+        return self.data_cleaner.clean(data)
+
+    def fit(self, cleaned_data: List[dict]):
+        texts, outputs = cleaned_data
         self.data_vectorizer.fit(texts, outputs)
 
-    def preprocess(self, data: List[dict]) -> dict:
-        self.data_cleaner.clean(data)
-        texts = [record['text'] for record in data]
-        outputs = [sample['offensive'] for sample in data]
-        texts_vectorized, processed_outputs = self.data_vectorizer.vectorize(texts, outputs)
-        return {
-            'text_vectorized': texts_vectorized,
-            'text': texts,
-            'output': processed_outputs
-        }
+    def vectorize(self, data: Tuple[list, list]):
+        texts, outputs = data
+        return self.data_vectorizer.vectorize(texts, outputs)
 
 
 class RealDataPreprocessor:
-    def __init__(self, text_cleaner: DataCleaner, loaded_text_vectorizer: LoadedTextVectorizer):
-        # TODO for now it is DataCleaner. When Text and Output cleaner is implemented, change that to Text!
+    def __init__(self, text_cleaner: TextCleaner, loaded_text_vectorizer: LoadedTextVectorizer):
         self.text_cleaner = text_cleaner
         self.text_vectorizer = loaded_text_vectorizer
 
-    def preprocess(self, data: str or List[str]) -> dict:
+    def clean(self, data: str or List[str]):
         if type(data) is str:
             data = [data]
-        data = self.text_cleaner.clean(data)
-        return {
-            'text': data,
-            'text_vectorized': self.text_vectorizer.vectorize(data)
-        }
+        return self.text_cleaner.clean(texts=data)
+
+    def vectorize(self, data: str or List[str]):
+        if type(data) is str:
+            data = [data]
+        return self.text_vectorizer.vectorize(texts=data)
+
+    def clean_vectorize(self, data: str or List[str]):
+        data = self.clean(data)
+        return self.vectorize(data)

@@ -1,6 +1,6 @@
 import re
 from abc import abstractmethod
-from typing import List
+from typing import List, Tuple
 import en_core_web_sm
 
 from utils.files_io import load_json
@@ -16,7 +16,7 @@ class DataCleaner:
     """
 
     @abstractmethod
-    def clean(self, data: List[dict]):
+    def clean(self, data: List[dict]) -> Tuple[list, list]:
         pass
 
 
@@ -39,12 +39,17 @@ class TextCleaner:
             self.ner_converter = load_json(NER_CONVERTER_DEF_PATH)
 
     def clean(self, texts: List[str]):
+        print('Started data preprocessing...')
         if self.use_twitter_data_preprocessing:
+            print('Twitter data preprocessing...')
             texts = self._preprocess_twitter_data(texts)
         if self.ner_tagger:
+            print('NER tagging...')
             texts = self._perform_ner_on_texts(texts)
         if self.replace_numbers:
+            print('Replacing numbers...')
             texts = self._replace_numbers(texts)
+        print('Data preprocessing finished!')
         return texts
 
     def _perform_ner_on_texts(self, texts):
@@ -100,12 +105,18 @@ class PresetDataCleaner(DataCleaner):
         self.text_cleaner = text_cleaner
         self.output_cleaner = output_cleaner
 
-    def clean(self, data: List[dict]):
+    def clean(self, data: List[dict]) -> Tuple[list, list]:
         texts = [sample['text'] for sample in data]
         cleaned_texts = self.text_cleaner.clean(texts)
+        cleaned_data = []
         for sample, cleaned_text in zip(data, cleaned_texts):
-            sample['text'] = cleaned_text
-        return self.output_cleaner.clean(data)
+            cleaned_data.append({
+                'text': cleaned_text,
+                'offensive': sample['offensive']})
+        cleaned_data = self.output_cleaner.clean(cleaned_data)
+        cleaned_texts = [sample['text'] for sample in cleaned_data]
+        cleaned_outputs = [sample['offensive'] for sample in cleaned_data]
+        return cleaned_texts, cleaned_outputs
 
 
 if __name__ == '__main__':
