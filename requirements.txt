@@ -1,7 +1,8 @@
-numpy
+numpy==1.19.2
 keras
 sklearn
 tensorflow
 djangorestframework
 pandas
 sortedcontainers==2.2.2
+spacy==2.3.2
