@@ -15,5 +15,5 @@ class PostSerializer(serializers.ModelSerializer):
         )
 
     def create(self, validated_data):
-        validated_data['offensive_rating'] = PostsConfig.predictor.predict(validated_data['text'])[0][0]
+        validated_data['offensive_rating'] = PostsConfig.predictor.predict(validated_data['text'])[0][1]
         return Post.objects.create(**validated_data)
