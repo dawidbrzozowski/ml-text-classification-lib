@@ -12,7 +12,6 @@ class DataCleaner:
     """
     This class is meant to be responsible for cleaning text data and output data.
     It should remove damaged records and process the rest.
-    TODO It should be split on two classes just like in vectorizer, where each one is responsible for text and output.
     """
 
     @abstractmethod
@@ -87,15 +86,22 @@ class TextCleaner:
         return processed_texts
 
 
+def binary_output(output):
+    return True if output in (0, 1) else False
+
+
 class OutputCleaner:
     """
     Output cleaner will remove rows, for which output is invalid.
     """
 
+    def __init__(self, verifier_func=None):
+        self.verifier_func = verifier_func
+
     def clean(self, data: List[dict]):
         correct_data = []
         for sample in data:
-            if sample['offensive'] in (0, 1):
+            if self.verifier_func is None or self.verifier_func(sample['offensive']):
                 correct_data.append(sample)
         return correct_data
 
@@ -118,7 +124,3 @@ class PresetDataCleaner(DataCleaner):
         cleaned_outputs = [sample['offensive'] for sample in cleaned_data]
         return cleaned_texts, cleaned_outputs
 
-
-if __name__ == '__main__':
-    tw = TextCleaner(use_twitter_data_preprocessing=True, use_ner=True, use_ner_converter=True)
-    print(tw.clean(['@USER claims that #NationalDay <3 CI/CD is not important to Donald Trump :-/']))

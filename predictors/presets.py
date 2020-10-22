@@ -1,5 +1,4 @@
 from predictors.predictor_commons import get_embedding_preprocessor, get_model, get_tfidf_preprocessor
-from preprocessing.cleaning.data_cleaners import BaselineDataCleaner
 from preprocessing.vectorization.text_vectorizers import LoadedEmbeddingTextVectorizer, LoadedTfIdfTextVectorizer
 
 PRESETS = {

@@ -1,5 +1,5 @@
 import unittest
-from data_preparation.data_extracton import BaselineJsonDataExtractor, CustomPathJsonDataExtractor, DataExtractor, \
+from data_preparation.data_extracton import CustomPathJsonDataExtractor, BaselineJsonDataExtractor, \
     CustomPathSingleFileJsonDataExtractor, SingleFileCustomPathTxtDataExtractor, CustomPathTxtDataExtractor
 
 DATA_EXTRACTOR_TEST_DIR = 'tests/resources/data_extractor_tests'
@@ -13,7 +13,7 @@ class DataExtractionTest(unittest.TestCase):
     def test_json_train_test_baseline(self):
         extr = BaselineJsonDataExtractor()
         data_tr, data_te = extr.get_train_test_corpus()
-        req_fields = ('id', 'text', 'average', 'std')
+        req_fields = ('id', 'text', 'offensive')
         for field in req_fields:
             self.assertIn(field, data_tr[0].keys())
 

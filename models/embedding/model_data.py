@@ -8,7 +8,7 @@ def prepare_embedding_train_test_data(data_params: dict, vectorizer_params: dict
     data_extractor = data_params['data_extractor']()
     train_corpus, test_corpus = data_extractor.get_train_test_corpus()
     text_cleaner = TextCleaner(**data_params['text_cleaning_params'])
-    output_cleaner = OutputCleaner()
+    output_cleaner = OutputCleaner(verifier_func=data_params['output_verification_func'])
     data_cleaner = PresetDataCleaner(text_cleaner, output_cleaner)
     text_encoder = TextEncoder(
         max_vocab_size=vectorizer_params['max_vocab_size'],
