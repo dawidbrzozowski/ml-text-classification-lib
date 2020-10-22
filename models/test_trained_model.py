@@ -1,4 +1,4 @@
-from models.eval.model_evaluations import deep_samples_test, metrics_test
+from models.eval.model_evaluations import deep_samples_test, metrics_test, metrics_test_multiple_models
 from models.model_trainer_runner import NNModelRunner
 from models.presets import PRESETS
 
@@ -12,9 +12,16 @@ def test(preset: dict):
     data_test_vec = data['test_vectorized']
     results = model_runner.test(data_test_vec)
     test_texts, _ = data['test_cleaned']
-    deep_samples_test(test_texts, results['predictions'], results['labels'],
-                      show_worst_samples=10, to_file='worst_samples.txt')
-    print(metrics_test(results['predictions'], results['labels'], True, True, True))
+    # deep_samples_test(test_texts, results['predictions'], results['labels'],
+    # show_worst_samples=10, to_file='worst_samples.txt')
+    # print(metrics_test(results['predictions'], results['labels'], True, True, True))
+
+    print(metrics_test_multiple_models(
+        {
+            'glove_rnn': {'predictions': results['predictions'], 'true_labels': results['labels']},
+            'glove_rnn2': {'predictions': results['predictions'], 'true_labels': results['labels']}
+        },
+        True, True, True))
 
 
 if __name__ == '__main__':

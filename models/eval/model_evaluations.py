@@ -1,10 +1,14 @@
+from collections import defaultdict
 from typing import List
 import numpy as np
 from sortedcontainers.sortedlist import SortedList
 from sklearn import metrics
 from models.eval.model_prediction import ModelPrediction
 import matplotlib
-import matplotlib.pyplot as plt
+
+from models.eval.plots import _plot_multiple_precision_recall_curves, _plot_multiple_roc_curves, \
+    _plot_multiple_conf_matrices, _plot_precision_recall, _plot_roc_curve, _plot_confusion_matrix
+
 matplotlib.use('TkAgg')
 
 
@@ -65,6 +69,44 @@ def _get_top_n_samples(model_predictions: List[ModelPrediction], n: int, best: b
     return [sample for sample in top_n_samples]  # so that it returns a normal list instead of SortedList
 
 
+def metrics_test_multiple_models(model_output_true_label: dict,
+                                 plot_precision_recall=False,
+                                 plot_roc_curve=False,
+                                 plot_conf_matrix=False) -> dict:
+    model_metrics = defaultdict(dict)
+    model_curves = defaultdict(dict)
+    for model_name in model_output_true_label:
+        true_labels = model_output_true_label[model_name]['true_labels']
+        predictions = model_output_true_label[model_name]['predictions']
+        offensive_predictions = [prediction[1] for prediction in predictions]
+        pred_labels = [np.argmax(prediction) for prediction in predictions]
+        if plot_precision_recall:
+            model_curves['precision_recall'][model_name] = metrics.precision_recall_curve(true_labels,
+                                                                                          offensive_predictions)
+        if plot_roc_curve:
+            model_curves['roc'][model_name] = metrics.roc_curve(true_labels, offensive_predictions)
+
+        if plot_conf_matrix:
+            model_curves['confusion_matrix'][model_name] = metrics.confusion_matrix(true_labels, pred_labels)
+
+        model_metrics['precision'][model_name] = metrics.precision_score(true_labels, pred_labels)
+        model_metrics['recall'][model_name] = metrics.recall_score(true_labels, pred_labels)
+        model_metrics['f1_score'][model_name] = metrics.f1_score(true_labels, pred_labels)
+        model_metrics['roc_auc_score'][model_name] = metrics.roc_auc_score(true_labels, pred_labels)
+        model_metrics['confusion_matrix'][model_name] = metrics.confusion_matrix(true_labels, pred_labels)
+
+    if plot_precision_recall:
+        _plot_multiple_precision_recall_curves(model_curves['precision_recall'])
+
+    if plot_roc_curve:
+        _plot_multiple_roc_curves(model_curves['roc'])
+
+    if plot_conf_matrix:
+        _plot_multiple_conf_matrices(model_curves['confusion_matrix'])
+
+    return model_metrics
+
+
 def metrics_test(predictions, true_labels,
                  plot_precision_recall=False,
                  plot_roc_curve=False,
@@ -83,43 +125,3 @@ def metrics_test(predictions, true_labels,
         'roc_auc_score': metrics.roc_auc_score(true_labels, pred_labels),
         'confusion_matrix': metrics.confusion_matrix(true_labels, pred_labels)
     }
-
-
-def _plot_precision_recall(predictions, true_labels, idx):
-    scores = [prediction[idx] for prediction in predictions]
-    precisions, recalls, thresholds = metrics.precision_recall_curve(true_labels, scores)
-    plt.plot(thresholds, precisions[:-1], 'b--', label='Precision')
-    plt.plot(thresholds, recalls[:-1], 'g-', label='Recall')
-    plt.xlabel('Threshold')
-    plt.legend(loc='center left')
-    plt.title('Precision Recall Curve')
-    fig = plt.gcf()
-    fig.canvas.set_window_title('Precision Recall Curve')
-    plt.ylim([0, 1])
-    plt.show()
-
-
-def _plot_roc_curve(predictions, true_labels, idx):
-    scores = [prediction[idx] for prediction in predictions]
-    fpr, tpr, thresholds = metrics.roc_curve(true_labels, scores)
-    plt.plot(fpr, tpr, linewidth=2)
-    plt.plot([0, 1], [0, 1], 'k--')
-    plt.axis([0, 1, 0, 1])
-    plt.xlabel('False Positive Rate')
-    plt.ylabel('True Positive Rate')
-    plt.title('ROC Curve')
-    fig = plt.gcf()
-    fig.canvas.set_window_title('ROC Curve')
-    plt.show()
-
-
-def _plot_confusion_matrix(pred_labels, true_labels):
-    confusion_matrix = metrics.confusion_matrix(true_labels, pred_labels)
-    row_sums = confusion_matrix.sum(axis=1, keepdims=True)
-    normalized_confusion_matrix = confusion_matrix/row_sums
-    np.fill_diagonal(normalized_confusion_matrix, 0)
-    plt.matshow(normalized_confusion_matrix, cmap=plt.cm.get_cmap('gray'))
-    plt.title('Confusion Matrix')
-    fig = plt.gcf()
-    fig.canvas.set_window_title('Confusion Matrix')
-    plt.show()
