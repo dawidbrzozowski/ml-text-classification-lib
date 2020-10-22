@@ -1,4 +1,4 @@
-from models.eval.model_evaluations import deep_model_test
+from models.eval.model_evaluations import deep_samples_test, metrics_test
 from models.model_trainer_runner import NNModelRunner
 from models.presets import PRESETS
 
@@ -12,10 +12,11 @@ def test(preset: dict):
     data_test_vec = data['test_vectorized']
     results = model_runner.test(data_test_vec)
     test_texts, _ = data['test_cleaned']
-    deep_model_test(test_texts, results['predictions'], results['labels'],
-                    show_worst_samples=10, to_file='worst_samples.txt')
+    deep_samples_test(test_texts, results['predictions'], results['labels'],
+                      show_worst_samples=10, to_file='worst_samples.txt')
+    print(metrics_test(results['predictions'], results['labels'], True, True, True))
 
 
 if __name__ == '__main__':
-    preset_name = 'tfidf_feedforward'
+    preset_name = 'glove_rnn'
     test(PRESETS[preset_name])
