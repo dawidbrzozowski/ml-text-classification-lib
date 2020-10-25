@@ -110,7 +110,8 @@ def metrics_test_multiple_models(model_output_true_label: dict,
     if plot_model_metrics:
         _plot_model_metrics(model_metrics)
 
-    model_metrics.update(model_confusion_matrices)
+    for model_name in model_metrics:
+        model_metrics[model_name].update(model_confusion_matrices[model_name])
     return model_metrics
 
 
