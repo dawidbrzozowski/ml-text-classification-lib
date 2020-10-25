@@ -38,9 +38,9 @@ class TextCleaner:
             self.ner_converter = load_json(NER_CONVERTER_DEF_PATH)
 
     def clean(self, texts: List[str]):
-        print('Started data preprocessing...')
+        print('Started data cleaning...')
         if self.use_twitter_data_preprocessing:
-            print('Twitter data preprocessing...')
+            print('Twitter data cleaning...')
             texts = self._preprocess_twitter_data(texts)
         if self.ner_tagger:
             print('NER tagging...')
@@ -48,7 +48,7 @@ class TextCleaner:
         if self.replace_numbers:
             print('Replacing numbers...')
             texts = self._replace_numbers(texts)
-        print('Data preprocessing finished!')
+        print('Data cleaning finished!')
         return texts
 
     def _perform_ner_on_texts(self, texts):

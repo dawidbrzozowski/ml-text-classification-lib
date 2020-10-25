@@ -7,9 +7,9 @@ from utils.files_io import read_numpy
 
 
 class ModelBuilder:
-    def __init__(self, preset):
-        self.architecture_params = preset['architecture_params']
-        self.vectorizer_params = preset['vectorizer_params']
+    def __init__(self, architecture_params, vectorizer_params):
+        self.architecture_params = architecture_params
+        self.vectorizer_params = vectorizer_params
 
     @abstractmethod
     def prepare_model_architecture(self):
