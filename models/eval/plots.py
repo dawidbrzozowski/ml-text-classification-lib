@@ -5,21 +5,63 @@ from matplotlib import pyplot as plt
 from sklearn import metrics
 
 
+def _plot_model_metrics(model_metrics: dict):
+    metric_names = [metric_name for metric_name in next(iter(model_metrics.values()))]
+    x = np.arange(len(metric_names))
+    width_per_score = 0.76
+
+    fig, ax = plt.subplots()
+    fig.canvas.set_window_title('Model scores')
+
+    rects = []
+    models_amount = len(model_metrics)
+    width_per_model = width_per_score / models_amount
+    for i, model_name in enumerate(model_metrics):
+        bias = i * width_per_model
+        model_scores = [round(value, 2) for value in model_metrics[model_name].values()]
+        rects.append(ax.bar(x - width_per_model * models_amount / 2 + bias, model_scores, width_per_model,
+                            label=model_name, align='edge'))
+
+    ax.set_ylabel('Scores')
+    ax.set_title('Model scores')
+    ax.set_xticks(x)
+    ax.set_xticklabels(metric_names)
+    ax.legend(loc='center left', bbox_to_anchor=(1, 0.5))
+
+    def label_rects(rects):
+        """Attach a text label above each bar in *rects*, displaying its height."""
+        for rect in rects:
+            height = rect.get_height()
+            ax.annotate(str(height),
+                        xy=(rect.get_x() + rect.get_width() / 2, height),
+                        xytext=(0, 2),  # 3 points vertical offset
+                        fontsize=8,
+                        textcoords="offset points",
+                        ha='center', va='bottom')
+
+    for rect in rects:
+        label_rects(rect)
+
+    fig.tight_layout()
+    plt.show()
+
+
 def _plot_multiple_precision_recall_curves(precision_recall_curves: dict):
     curves_amount = len(precision_recall_curves)
     fig, axs, rows_amount, columns_amount = _setup_plot(curves_amount=curves_amount,
                                                         plot_title='Precision Recall Curves')
-
+    i = None
     for i, model_name in enumerate(precision_recall_curves):
         precisions, recalls, thresholds = precision_recall_curves[model_name]
         axs[i // columns_amount][i % columns_amount].set_title(model_name)
         axs[i // columns_amount][i % columns_amount].plot(thresholds, precisions[:-1], 'b--', label='Precision')
         axs[i // columns_amount][i % columns_amount].plot(thresholds, recalls[:-1], 'g-', label='Recall')
         axs[i // columns_amount][i % columns_amount].set_xlabel('Threshold')
-
+    if i is not None:
+        handles, labels = axs[i // columns_amount][i % columns_amount].get_legend_handles_labels()
+        fig.legend(handles, labels, loc='lower right')
     _switch_off_unused_subplots(axs, curves_amount, rows_amount, columns_amount)
 
-    plt.legend(loc='center right')
     plt.tight_layout()
     plt.ylim([0, 1])
     plt.show()
@@ -115,62 +157,22 @@ def _plot_confusion_matrix(pred_labels, true_labels):
     plt.show()
 
 
-def _plot_model_metrics(model_metrics: dict):
-    metric_names = [metric_name for metric_name in next(iter(model_metrics.values()))]
-    x = np.arange(len(metric_names))
-    width_per_score = 0.76
-
-    fig, ax = plt.subplots()
-
-    rects = []
-    models_amount = len(model_metrics)
-    width_per_model = width_per_score/models_amount
-    for i, model_name in enumerate(model_metrics):
-        bias = i*width_per_model
-        model_scores = [round(value, 2) for value in model_metrics[model_name].values()]
-        rects.append(ax.bar(x - width_per_model*models_amount/2 + bias, model_scores, width_per_model,
-                            label=model_name, align='edge'))
-
-    ax.set_ylabel('Scores')
-    ax.set_title('Model scores')
-    ax.set_xticks(x)
-    ax.set_xticklabels(metric_names)
-    ax.legend(loc='center left', bbox_to_anchor=(1, 0.5))
-
-    def label_rects(rects):
-        """Attach a text label above each bar in *rects*, displaying its height."""
-        for rect in rects:
-            height = rect.get_height()
-            ax.annotate(str(height),
-                        xy=(rect.get_x() + rect.get_width() / 2, height),
-                        xytext=(0, 2),  # 3 points vertical offset
-                        fontsize=8,
-                        textcoords="offset points",
-                        ha='center', va='bottom')
-
-    for rect in rects:
-        label_rects(rect)
-
-    fig.tight_layout()
-    plt.show()
-
-
 if __name__ == '__main__':
     model_metrics = {
-        'glove_rnn':{
+        'glove_rnn': {
             'precision': np.float(0.567653),
             'recall': 0.5,
             'roc': 0.4,
             'f1': 0.5,
         },
-        'tfidf':{
+        'tfidf': {
             'precision': 0.32,
             'recall': 0.5,
             'roc': 0.3,
             'f1': 0.8
 
         },
-        'sds':{
+        'sds': {
             'precision': 0.32,
             'recall': 0.5,
             'roc': 0.3,

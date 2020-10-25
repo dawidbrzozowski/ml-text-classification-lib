@@ -75,6 +75,7 @@ def metrics_test_multiple_models(model_output_true_label: dict,
                                  plot_conf_matrix=False,
                                  plot_model_metrics=False) -> dict:
     model_metrics = defaultdict(dict)
+    model_confusion_matrices = defaultdict(dict)
     model_curves = defaultdict(dict)
     for model_name in model_output_true_label:
         true_labels = model_output_true_label[model_name]['true_labels']
@@ -94,6 +95,7 @@ def metrics_test_multiple_models(model_output_true_label: dict,
         model_metrics[model_name]['recall'] = metrics.recall_score(true_labels, pred_labels)
         model_metrics[model_name]['f1_score'] = metrics.f1_score(true_labels, pred_labels)
         model_metrics[model_name]['roc_auc_score'] = metrics.roc_auc_score(true_labels, pred_labels)
+        model_confusion_matrices[model_name]['confusion_matrix'] = metrics.confusion_matrix(true_labels, pred_labels)
 
     model_metrics = dict(model_metrics)
     if plot_precision_recall:
@@ -108,12 +110,7 @@ def metrics_test_multiple_models(model_output_true_label: dict,
     if plot_model_metrics:
         _plot_model_metrics(model_metrics)
 
-    for model_name in model_output_true_label:
-        true_labels = model_output_true_label[model_name]['true_labels']
-        predictions = model_output_true_label[model_name]['predictions']
-        pred_labels = [np.argmax(prediction) for prediction in predictions]
-        model_metrics[model_name]['confusion_matrix'] = metrics.confusion_matrix(true_labels, pred_labels)
-
+    model_metrics.update(model_confusion_matrices)
     return model_metrics
 
 

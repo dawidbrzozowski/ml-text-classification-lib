@@ -28,7 +28,7 @@ def test_multiple_models(preset_names: List[str]):
         predictions, labels = test_single_model(preset_name)
         model_name_to_scores[preset_name]['predictions'] = predictions
         model_name_to_scores[preset_name]['true_labels'] = labels
-    metrics_test_multiple_models(model_name_to_scores, True, True, True, True)
+    print(metrics_test_multiple_models(model_name_to_scores, True, True, True, True))
 
 
 if __name__ == '__main__':
