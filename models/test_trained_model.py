@@ -2,6 +2,7 @@ from collections import defaultdict
 from typing import List
 
 from models.eval.model_evaluations import deep_samples_test, metrics_test, metrics_test_multiple_models
+from models.model_data import prepare_model_data
 from models.model_trainer_runner import NNModelRunner
 from models.presets import PRESETS
 
@@ -9,10 +10,10 @@ from models.presets import PRESETS
 def test_single_model(preset_name: str, verb=0):
     preset = PRESETS[preset_name]
     model_runner = NNModelRunner(model_path=f"{preset['model_save_dir']}/{preset['model_name']}.h5")
-    data_func = preset['data_func']
     data_params = preset['data_params']
     vectorizer_params = preset['vectorizer_params']
-    data = data_func(data_params=data_params, vectorizer_params=vectorizer_params)
+    data = prepare_model_data(data_params, vectorizer_params)
+
     data_test_vec = data['test_vectorized']
     predictions, labels = model_runner.test(data_test_vec)
     if verb > 0:
