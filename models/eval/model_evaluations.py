@@ -7,7 +7,7 @@ from models.eval.model_prediction import ModelPrediction
 import matplotlib
 
 from models.eval.plots import _plot_multiple_precision_recall_curves, _plot_multiple_roc_curves, \
-    _plot_multiple_conf_matrices, _plot_precision_recall, _plot_roc_curve, _plot_confusion_matrix
+    _plot_multiple_conf_matrices, _plot_precision_recall, _plot_roc_curve, _plot_confusion_matrix, _plot_model_metrics
 
 matplotlib.use('TkAgg')
 
@@ -72,7 +72,8 @@ def _get_top_n_samples(model_predictions: List[ModelPrediction], n: int, best: b
 def metrics_test_multiple_models(model_output_true_label: dict,
                                  plot_precision_recall=False,
                                  plot_roc_curve=False,
-                                 plot_conf_matrix=False) -> dict:
+                                 plot_conf_matrix=False,
+                                 plot_model_metrics=False) -> dict:
     model_metrics = defaultdict(dict)
     model_curves = defaultdict(dict)
     for model_name in model_output_true_label:
@@ -89,12 +90,12 @@ def metrics_test_multiple_models(model_output_true_label: dict,
         if plot_conf_matrix:
             model_curves['confusion_matrix'][model_name] = metrics.confusion_matrix(true_labels, pred_labels)
 
-        model_metrics['precision'][model_name] = metrics.precision_score(true_labels, pred_labels)
-        model_metrics['recall'][model_name] = metrics.recall_score(true_labels, pred_labels)
-        model_metrics['f1_score'][model_name] = metrics.f1_score(true_labels, pred_labels)
-        model_metrics['roc_auc_score'][model_name] = metrics.roc_auc_score(true_labels, pred_labels)
-        model_metrics['confusion_matrix'][model_name] = metrics.confusion_matrix(true_labels, pred_labels)
+        model_metrics[model_name]['precision'] = metrics.precision_score(true_labels, pred_labels)
+        model_metrics[model_name]['recall'] = metrics.recall_score(true_labels, pred_labels)
+        model_metrics[model_name]['f1_score'] = metrics.f1_score(true_labels, pred_labels)
+        model_metrics[model_name]['roc_auc_score'] = metrics.roc_auc_score(true_labels, pred_labels)
 
+    model_metrics = dict(model_metrics)
     if plot_precision_recall:
         _plot_multiple_precision_recall_curves(model_curves['precision_recall'])
 
@@ -103,6 +104,15 @@ def metrics_test_multiple_models(model_output_true_label: dict,
 
     if plot_conf_matrix:
         _plot_multiple_conf_matrices(model_curves['confusion_matrix'])
+
+    if plot_model_metrics:
+        _plot_model_metrics(model_metrics)
+
+    for model_name in model_output_true_label:
+        true_labels = model_output_true_label[model_name]['true_labels']
+        predictions = model_output_true_label[model_name]['predictions']
+        pred_labels = [np.argmax(prediction) for prediction in predictions]
+        model_metrics[model_name]['confusion_matrix'] = metrics.confusion_matrix(true_labels, pred_labels)
 
     return model_metrics
 
