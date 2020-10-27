@@ -15,7 +15,7 @@ class NNModelTrainer:
         self.training_params = training_params
         self.model: Model = model_builder.prepare_model_architecture()
 
-    def train(self, train_data, name='curr_model') -> None:
+    def train(self, train_data) -> None:
         X_train, y_train = train_data
         y_train = to_categorical(y_train)
         self.model.fit(x=X_train,
@@ -24,7 +24,6 @@ class NNModelTrainer:
                        epochs=self.training_params['epochs'],
                        validation_split=self.training_params['validation_split'],
                        callbacks=self.training_params['callbacks'])
-        self.save(MODEL_SAVE_DIR, name)
 
     def test(self, test_data, show_sklearn_report=True) -> tuple:
         return test_model(self.model, test_data, show_sklearn_report)

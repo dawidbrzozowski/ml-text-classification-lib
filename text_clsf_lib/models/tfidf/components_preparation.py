@@ -1,4 +1,4 @@
-from preprocessing.vectorization.data_vectorizers import DataVectorizer
+from text_clsf_lib.preprocessing.vectorization.data_vectorizers import DataVectorizer
 
 
 def prepare_tfidf_data_vectorizer(vectorizer_params):

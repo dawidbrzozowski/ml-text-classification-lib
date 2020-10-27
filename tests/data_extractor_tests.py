@@ -1,5 +1,5 @@
 import unittest
-from data_preparation.data_extracton import CustomPathJsonDataExtractor, BaselineJsonDataExtractor, \
+from text_clsf_lib.data_preparation.data_extracton import CustomPathJsonDataExtractor, BaselineJsonDataExtractor, \
     CustomPathSingleFileJsonDataExtractor, SingleFileCustomPathTxtDataExtractor, CustomPathTxtDataExtractor
 
 DATA_EXTRACTOR_TEST_DIR = 'tests/resources/data_extractor_tests'

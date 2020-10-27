@@ -1,8 +1,8 @@
 from typing import List, Tuple
 
-from preprocessing.cleaning.data_cleaners import TextCleaner, DataCleaner
-from preprocessing.vectorization.data_vectorizers import DataVectorizer
-from preprocessing.vectorization.text_vectorizers import LoadedTextVectorizer
+from text_clsf_lib.preprocessing.cleaning.data_cleaners import TextCleaner, DataCleaner
+from text_clsf_lib.preprocessing.vectorization.data_vectorizers import DataVectorizer
+from text_clsf_lib.preprocessing.vectorization.text_vectorizers import LoadedTextVectorizer
 
 
 class DataPreprocessor:
@@ -23,6 +23,9 @@ class DataPreprocessor:
     def fit(self, cleaned_data: List[dict]):
         texts, outputs = cleaned_data
         self.data_vectorizer.fit(texts, outputs)
+
+    def save(self, save_dir):
+        self.data_vectorizer.save(save_dir)
 
     def vectorize(self, data: Tuple[list, list]):
         texts, outputs = data

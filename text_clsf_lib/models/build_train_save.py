@@ -1,14 +1,14 @@
-from models.model_data import prepare_model_data
-from models.model_trainer_runner import NNModelTrainer
-from models.presets import PRESETS
+from text_clsf_lib.models.model_data import prepare_model_data
+from text_clsf_lib.models.model_trainer_runner import NNModelTrainer, NNModelRunner
+from text_clsf_lib.models.presets.presets_base import PRESETS
 
 
 def train(preset: dict):
-    model_trainer = get_model_trainer(preset)
-
     data = prepare_model_data(
         data_params=preset['data_params'],
         vectorizer_params=preset['vectorizer_params'])
+
+    model_trainer = get_model_trainer(preset)
 
     data_train = data['train_vectorized']
 
@@ -16,6 +16,7 @@ def train(preset: dict):
     print('Training process complete!')
     model_trainer.save(preset['model_save_dir'], preset['model_name'])
     print(f'Model saved to: {preset["model_save_dir"]}. Model name: {preset["model_name"]}')
+    return NNModelRunner(model=model_trainer.model)
 
 
 def get_model_trainer(preset: dict):

@@ -1,5 +1,5 @@
-from preprocessing.vectorization.output_vectorizers import OutputVectorizer
-from preprocessing.vectorization.text_vectorizers import TextVectorizer
+from text_clsf_lib.preprocessing.vectorization.output_vectorizers import OutputVectorizer
+from text_clsf_lib.preprocessing.vectorization.text_vectorizers import TextVectorizer
 
 
 class DataVectorizer:
@@ -18,3 +18,6 @@ class DataVectorizer:
 
     def vectorize(self, texts, outputs):
         return self.text_vectorizer.vectorize(texts), self.output_vectorizer.vectorize(outputs)
+
+    def save(self, save_dir):
+        self.text_vectorizer.save(save_dir)

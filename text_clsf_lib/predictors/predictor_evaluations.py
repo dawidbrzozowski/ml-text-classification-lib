@@ -1,7 +1,7 @@
 from typing import List
 
-from predictors.predictor import Predictor
-from predictors.presets import PRESETS
+from text_clsf_lib.predictors.predictor import Predictor
+from text_clsf_lib.predictors.presets import PRESETS
 import numpy as np
 
 

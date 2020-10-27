@@ -1,8 +1,8 @@
-from models.model_trainer_runner import NNModelRunner
-from preprocessing.cleaning.data_cleaners import TextCleaner
-from preprocessing.preprocessors import RealDataPreprocessor
-from preprocessing.vectorization.embeddings.text_encoders import LoadedTextEncoder
-from preprocessing.vectorization.text_vectorizers import LoadedEmbeddingTextVectorizer, LoadedTfIdfTextVectorizer
+from text_clsf_lib.models.model_trainer_runner import NNModelRunner
+from text_clsf_lib.preprocessing.cleaning.data_cleaners import TextCleaner
+from text_clsf_lib.preprocessing.preprocessors import RealDataPreprocessor
+from text_clsf_lib.preprocessing.vectorization.embeddings.text_encoders import LoadedTextEncoder
+from text_clsf_lib.preprocessing.vectorization.text_vectorizers import LoadedEmbeddingTextVectorizer, LoadedTfIdfTextVectorizer
 from utils.files_io import read_pickle, read_numpy
 
 

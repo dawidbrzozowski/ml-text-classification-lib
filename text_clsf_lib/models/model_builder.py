@@ -1,8 +1,6 @@
 from abc import abstractmethod
 from keras import layers, Model
 from keras.optimizers import Adam
-
-from project_settings import PREPROCESSING_SAVE_DIR
 from utils.files_io import read_numpy
 
 
@@ -61,7 +59,7 @@ class EmbeddingModelBuilder(ModelBuilder):
         pass
 
     def get_embedding_layer(self):
-        embedding_matrix = read_numpy(f'{PREPROCESSING_SAVE_DIR}/embedding/embedding_matrix.npy')
+        embedding_matrix = read_numpy(f'{self.vectorizer_params["save_dir"]}/embedding_matrix.npy')
         embedding_layer = layers.Embedding(
             input_dim=len(embedding_matrix),
             output_dim=self.vectorizer_params['embedding_dim'],

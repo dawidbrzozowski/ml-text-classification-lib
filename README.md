@@ -11,6 +11,7 @@ ISSUES & TODO'S
 - MAX_SEQ_LEN of text. It the text is too long in embedding model, it just doesn't see bad words.
 - Look at the text_encoder!!!
 - Seq2Cat
+- PATH DO GLOVE
 
 Important links:
 https://www.kaggle.com/c/jigsaw-toxic-comment-classification-challenge/notebooks

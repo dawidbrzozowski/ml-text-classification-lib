@@ -3,7 +3,7 @@ from argparse import ArgumentParser
 
 from sklearn.model_selection import train_test_split
 
-from data_preparation.data_extracton import SemevalDataRetriever
+from text_clsf_lib.data_preparation.data_extracton import SemevalDataRetriever
 from utils.files_io import write_json_file, load_json
 from project_settings import RANDOM_STATE
 

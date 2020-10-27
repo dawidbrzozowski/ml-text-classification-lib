@@ -1,5 +1,5 @@
-from preprocessing.cleaning.data_cleaners import PresetDataCleaner, TextCleaner, OutputCleaner
-from preprocessing.preprocessors import DataPreprocessor
+from text_clsf_lib.preprocessing.cleaning.data_cleaners import PresetDataCleaner, TextCleaner, OutputCleaner
+from text_clsf_lib.preprocessing.preprocessors import DataPreprocessor
 
 
 def prepare_model_data(data_params: dict, vectorizer_params: dict) -> dict:
@@ -8,7 +8,7 @@ def prepare_model_data(data_params: dict, vectorizer_params: dict) -> dict:
 
     # prepare components for data processing
     data_cleaner = prepare_data_cleaner(data_params['cleaning_params'])
-    vectorizer_func = vectorizer_params.pop('vectorizer_retriever_func')
+    vectorizer_func = vectorizer_params.get('vectorizer_retriever_func')
     data_vectorizer = vectorizer_func(vectorizer_params)
     preprocessor = DataPreprocessor(data_cleaner, data_vectorizer)
 
@@ -17,6 +17,7 @@ def prepare_model_data(data_params: dict, vectorizer_params: dict) -> dict:
     test_corpus = preprocessor.clean(test_corpus)
 
     preprocessor.fit(train_corpus)
+    preprocessor.save(vectorizer_params['save_dir'])
 
     train_corpus_vec = preprocessor.vectorize(train_corpus)
     test_corpus_vec = preprocessor.vectorize(test_corpus)

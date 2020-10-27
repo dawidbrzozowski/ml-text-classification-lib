@@ -2,8 +2,8 @@ from django.apps import AppConfig
 
 import sys
 sys.path.append('/Users/dawidbrzozowski/Projects/offensive-language-semeval')
-from predictors.predictor import Predictor
-from predictors.presets import PRESETS
+from text_clsf_lib.predictors.predictor import Predictor
+from text_clsf_lib.predictors.presets import PRESETS
 
 
 class PostsConfig(AppConfig):

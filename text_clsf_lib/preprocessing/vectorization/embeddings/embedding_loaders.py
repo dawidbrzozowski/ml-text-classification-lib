@@ -2,7 +2,7 @@ from abc import abstractmethod
 
 import numpy as np
 
-EMBEDDINGS_DIR = 'preprocessing/vectorization/resources/embeddings/glove'
+EMBEDDINGS_DIR = 'text_clsf_lib/preprocessing/vectorization/resources/embeddings/glove'
 
 
 class EmbeddingsLoader:

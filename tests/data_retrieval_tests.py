@@ -1,6 +1,6 @@
 import unittest
 
-from data_preparation.data_extracton import SemevalDataRetriever, DataType
+from text_clsf_lib.data_preparation.data_extracton import SemevalDataRetriever, DataType
 
 
 class DataRetrievalTest(unittest.TestCase):

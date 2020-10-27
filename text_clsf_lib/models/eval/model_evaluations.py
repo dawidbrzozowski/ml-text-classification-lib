@@ -3,10 +3,10 @@ from typing import List
 import numpy as np
 from sortedcontainers.sortedlist import SortedList
 from sklearn import metrics
-from models.eval.model_prediction import ModelPrediction
+from text_clsf_lib.models.eval.model_prediction import ModelPrediction
 import matplotlib
 
-from models.eval.plots import _plot_multiple_precision_recall_curves, _plot_multiple_roc_curves, \
+from text_clsf_lib.models.eval.plots import _plot_multiple_precision_recall_curves, _plot_multiple_roc_curves, \
     _plot_multiple_conf_matrices, _plot_precision_recall, _plot_roc_curve, _plot_confusion_matrix, _plot_model_metrics
 
 matplotlib.use('TkAgg')
