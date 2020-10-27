@@ -1,0 +1,2 @@
+123;First sample train text;0
+124;Second sample train text;1

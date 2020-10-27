@@ -1,7 +1,9 @@
-pandas
-notebook
-numpy
+numpy==1.19.2
 keras
 sklearn
 tensorflow
-flask
+djangorestframework
+pandas
+sortedcontainers==2.2.2
+spacy==2.3.2
+matplotlib==3.3.2

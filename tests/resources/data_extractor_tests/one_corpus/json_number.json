@@ -1,0 +1,22 @@
+[
+  {
+    "id": 123,
+    "text": "First train sample text",
+    "offensive": 0
+  },
+  {
+    "id": 124,
+    "text": "Second train sample text",
+    "offensive": 1
+  },
+  {
+    "id": 123,
+    "text": "First test sample text",
+    "offensive": 0
+  },
+  {
+    "id": 124,
+    "text": "Second test sample text",
+    "offensive": 1
+  }
+]

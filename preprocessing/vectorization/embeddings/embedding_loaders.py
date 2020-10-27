@@ -2,7 +2,7 @@ from abc import abstractmethod
 
 import numpy as np
 
-GLOVE_EMBEDDINGS_DIR = '../../large_files/glove.6B'
+EMBEDDINGS_DIR = 'preprocessing/vectorization/resources/embeddings/glove'
 
 
 class EmbeddingsLoader:
@@ -19,14 +19,14 @@ class EmbeddingsLoader:
 
 
 class GloveEmbeddingsLoader(EmbeddingsLoader):
-    def __init__(self):
-        embedding_dir = GLOVE_EMBEDDINGS_DIR
+    def __init__(self, glove_type):
+        embedding_dir = f'{EMBEDDINGS_DIR}/{glove_type}'
         super().__init__(embedding_dir)
 
     def load_word_vectors(self, embedding_dim) -> dict:
-        print('Loading pre-trained GloVe word vectors.')
+        print(f'Loading pre-trained GloVe word vectors from {self.embedding_dir}/{embedding_dim}d.txt.')
         word2vec = {}
-        with open(f'{self.embedding_dir}/glove.6B.{embedding_dim}d.txt') as f:
+        with open(f'{self.embedding_dir}/{embedding_dim}d.txt') as f:
             for line in f:
                 values = line.split()
                 word = values[0]
