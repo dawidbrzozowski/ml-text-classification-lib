@@ -129,7 +129,7 @@ PRESETS = {
             'embedding_type':                      'twitter',
             'output_vectorizer':                    BasicOutputVectorizer,
             'max_vocab_size':                       5000,
-            'max_seq_len':                          25,
+            'max_seq_len':                          200,
             'embedding_dim':                        50
         },
         'architecture_params': {
