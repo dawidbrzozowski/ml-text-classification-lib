@@ -38,6 +38,7 @@ PRESETS = {
         },
 
         'architecture_params': {
+            'hidden_layers_list':                   [],
             'hidden_layers':                        2,
             'hidden_units':                         32,
             'hidden_activation':                   'relu',
@@ -87,6 +88,7 @@ PRESETS = {
         },
 
         'architecture_params': {
+            'hidden_layers_list':                   [],
             'dimension_reducer':                    layers.Flatten,
             'hidden_layers':                        2,
             'hidden_units':                         32,
@@ -137,6 +139,7 @@ PRESETS = {
 
         },
         'architecture_params': {
+            'hidden_layers_list':                   [],
             'hidden_layers':                        2,
             'hidden_units':                         32,
             'hidden_activation':                   'relu',

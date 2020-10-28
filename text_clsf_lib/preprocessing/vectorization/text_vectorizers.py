@@ -9,6 +9,7 @@ from text_clsf_lib.preprocessing.vectorization.embeddings.embedding_loaders impo
 from text_clsf_lib.preprocessing.vectorization.embeddings.matrix_preparer import EmbeddingsMatrixPreparer
 from text_clsf_lib.preprocessing.vectorization.embeddings.text_encoders import TextEncoderBase, LoadedTextEncoder
 from utils.files_io import write_pickle, write_numpy
+import numpy as np
 
 VECTORIZER_NAME = 'vectorizer.vec'
 EMBEDDING_MATRIX_NAME = 'embedding_matrix.npy'
@@ -39,6 +40,11 @@ class TfIdfTextVectorizer(TextVectorizer):
     def save(self, save_dir):
         os.makedirs(f'{save_dir}', exist_ok=True)
         write_pickle(f'{save_dir}/{VECTORIZER_NAME}', self.tfidf_vec)
+        sorted_vocab = [item[0] for item in sorted(self.tfidf_vec.vocabulary_.items(), key=lambda item: item[1])]
+        np.savetxt(f'{save_dir}/idf.txt', self.tfidf_vec.idf_, fmt='%f')
+        with open(f'{save_dir}/vocab.txt', 'w') as f:
+            for word in sorted_vocab:
+                f.write(f'{word}\n')
 
     def vectorize(self, texts: List[str]):
         return self.tfidf_vec.transform(texts).toarray()
@@ -60,6 +66,7 @@ class EmbeddingTextVectorizer(TextVectorizer):
     def save(self, save_dir):
         os.makedirs(f'{save_dir}', exist_ok=True)
         write_numpy(f'{save_dir}/{EMBEDDING_MATRIX_NAME}', self.embedding_matrix)
+        self.text_encoder.save(save_dir)
 
     def vectorize(self, texts: List[str]):
         return self.text_encoder.encode(texts)

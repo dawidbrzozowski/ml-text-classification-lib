@@ -17,6 +17,7 @@ def create_preset(
         preprocessor_save_dir: str = None,
         # architecture_parameters
         hidden_layers: int = None,
+        hidden_layers_list: list = None,
         hidden_units: int = None,
         hidden_activation: str = None,
         output_activation: str = None,
@@ -46,6 +47,7 @@ def create_preset(
     preprocessor_save_dir = preprocessor_save_dir if preprocessor_save_dir is not None else preset['vectorizer_params']['save_dir']
     _put_or_default(preset, f'{model_save_dir}/{model_name}/{preprocessor_save_dir}', 'vectorizer_params', 'save_dir')
     _put_or_default(preset, hidden_layers, 'architecture_params', 'hidden_layers')
+    _put_or_default(preset, hidden_layers_list, 'architecture_params', 'hidden_layers_list')
     _put_or_default(preset, hidden_units, 'architecture_params', 'hidden_units')
     _put_or_default(preset, hidden_activation, 'architecture_params', 'hidden_activation')
     _put_or_default(preset, output_activation, 'architecture_params', 'output_activation')

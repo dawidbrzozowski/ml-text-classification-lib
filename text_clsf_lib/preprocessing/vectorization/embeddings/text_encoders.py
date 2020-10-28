@@ -30,6 +30,10 @@ class TextEncoderBase:
     def encode(self, texts: List[str]):
         pass
 
+    @abstractmethod
+    def save(self, save_dir):
+        pass
+
 
 class TextEncoder(TextEncoderBase):
     def __init__(self, max_vocab_size, max_seq_len):
@@ -43,6 +47,11 @@ class TextEncoder(TextEncoderBase):
     def save(self, save_dir):
         os.makedirs(f'{save_dir}', exist_ok=True)
         write_pickle(f'{save_dir}/{TOKENIZER_NAME}', self.tokenizer)
+        vocab = [item[0] for item in self.word2idx.items()]
+        with open(f'{save_dir}/vocab.txt', 'w') as f:
+            f.write('<pad>\n')
+            for word in vocab:
+                f.write(f'{word}\n')
 
     def encode(self, texts):
         sequences = self.tokenizer.texts_to_sequences(texts)

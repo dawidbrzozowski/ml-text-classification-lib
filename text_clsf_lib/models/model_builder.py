@@ -1,6 +1,8 @@
 from abc import abstractmethod
 from keras import layers, Model
 from keras.optimizers import Adam
+
+from text_clsf_lib.models.layers_builder import build_layers
 from utils.files_io import read_numpy
 
 
@@ -35,11 +37,14 @@ class FFModelBuilder(ModelBuilder):
         if emb_layer is None:
             emb_layer = input_
         hidden = emb_layer
-        for _ in range(self.architecture_params['hidden_layers']):
-            hidden = layers.Dense(
-                units=self.architecture_params['hidden_units'],
-                activation=self.architecture_params['hidden_activation'])(hidden)
-        output_layer = self.prepare_output_layer()(hidden)
+        if self.architecture_params['hidden_layers_list']:
+            output_layer = build_layers(hidden, self.architecture_params['hidden_layers_list'])
+        else:
+            for _ in range(self.architecture_params['hidden_layers']):
+                hidden = layers.Dense(
+                    units=self.architecture_params['hidden_units'],
+                    activation=self.architecture_params['hidden_activation'])(hidden)
+            output_layer = self.prepare_output_layer()(hidden)
         return self.create_model(input_, output_layer)
 
     @abstractmethod
@@ -81,13 +86,16 @@ class EmbeddingRNNModelBuilder(EmbeddingModelBuilder):
     def prepare_model_architecture(self):
         input_, emb_layer = self.prepare_input_layers()
         hidden = emb_layer
-        hidden = layers.Bidirectional(layers.LSTM(
-            units=self.architecture_params['hidden_units'],
-            return_sequences=True))(hidden)
-        hidden = layers.GlobalMaxPooling1D()(hidden)
-        output = layers.Dense(
-            units=self.architecture_params['output_units'],
-            activation=self.architecture_params['output_activation'])(hidden)
+        if self.architecture_params['hidden_layers_list']:
+            output = build_layers(hidden, self.architecture_params['hidden_layers_list'])
+        else:
+            hidden = layers.Bidirectional(layers.LSTM(
+                units=self.architecture_params['hidden_units'],
+                return_sequences=True))(hidden)
+            hidden = layers.GlobalMaxPooling1D()(hidden)
+            output = layers.Dense(
+                units=self.architecture_params['output_units'],
+                activation=self.architecture_params['output_activation'])(hidden)
         return self.create_model(input_, output)
 
     def prepare_input_layers(self):

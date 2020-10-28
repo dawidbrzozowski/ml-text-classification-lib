@@ -4,8 +4,8 @@ from keras import Model
 from keras.models import load_model, save_model
 from sklearn.metrics import classification_report
 from keras.utils import to_categorical
+from tensorflow.lite.python.lite import TFLiteConverter
 
-MODEL_SAVE_DIR = 'models/_models/'
 TARGET_NAMES = ['Offenseless', 'Offensive']
 
 
@@ -30,7 +30,15 @@ class NNModelTrainer:
 
     def save(self, save_dir, model_name):
         os.makedirs(save_dir, exist_ok=True)
-        save_model(self.model, f'{save_dir}/{model_name}.h5')
+        model_path = f'{save_dir}/{model_name}.h5'
+        save_model(self.model, model_path)
+
+    def save_tflite(self, save_dir, model_name):
+        self.model.save(f'{save_dir}', save_format='tf')
+        converter = TFLiteConverter.from_saved_model(f'{save_dir}')
+        tflite_model = converter.convert()
+        with open(f'{save_dir}/{model_name}.tflite', 'wb') as f:
+            f.write(tflite_model)
 
 
 class NNModelRunner:
