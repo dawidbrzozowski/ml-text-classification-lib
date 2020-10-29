@@ -2,7 +2,7 @@ from keras import layers
 
 from text_clsf_lib.data_preparation.data_extracton import BaselineJsonDataExtractor
 from text_clsf_lib.models.embedding.components_preparation import prepare_embedding_data_vectorizer
-from text_clsf_lib.models.model_builder import TfIdfFFModelBuilder, EmbeddingFFModelBuilder, EmbeddingRNNModelBuilder
+from text_clsf_lib.models.build.model_builder import TfIdfFFModelBuilder, EmbeddingFFModelBuilder, EmbeddingRNNModelBuilder
 from text_clsf_lib.models.tfidf.components_preparation import prepare_tfidf_data_vectorizer
 from text_clsf_lib.preprocessing.cleaning.data_cleaners import binary_output
 from text_clsf_lib.preprocessing.vectorization.embeddings.embedding_loaders import GloveEmbeddingsLoader

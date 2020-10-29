@@ -2,7 +2,7 @@ from abc import abstractmethod
 from keras import layers, Model
 from keras.optimizers import Adam
 
-from text_clsf_lib.models.layers_builder import build_layers
+from text_clsf_lib.models.build.layers_builder import build_layers
 from utils.files_io import read_numpy
 
 
