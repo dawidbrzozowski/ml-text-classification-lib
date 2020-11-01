@@ -21,6 +21,26 @@ def deep_samples_test(
         show_best_samples: int or None = None,
         show_wrong_samples_only: bool = False,
         to_file: None or str = None):
+    """
+    This test enables preview of model predictions for each sample.
+    It is possible to run this function in a few different modes.
+    1. show_all = True:
+    Run deep_samples_test for all provided samples.
+    2. show_worst_samples = n (int_value): Run deep_samples_test for n WORST model predictions.(Biggest model failures).
+    3. show_best_samples = n (int_value): Run deep_samples_test for n BEST model predictions.(Biggest model success).
+    4. show_wrong_samples_only = True: Run deep_samples_test for wrong samples only.
+    to_file = 'path/to/your/file' instead of std output, the results will be stored to a file.
+
+    :param texts: List[str] texts for the user preview only.
+    :param predictions:
+    :param true_labels:
+    :param show_all:
+    :param show_worst_samples:
+    :param show_best_samples:
+    :param show_wrong_samples_only:
+    :param to_file:
+    :return:
+    """
     model_predictions = []
     for text, prediction, true_label in zip(texts, predictions, true_labels):
         model_predictions.append(ModelPrediction(text, prediction, true_label))
@@ -74,6 +94,22 @@ def metrics_test_multiple_models(model_output_true_label: dict,
                                  plot_roc_curve=False,
                                  plot_conf_matrix=False,
                                  plot_model_metrics=False) -> dict:
+    """
+    This function performs metric test for many different models at the same time.
+    It lets the user preview different metrics on these models and also view/save plots for these metrics.
+    :param model_output_true_label: dict.
+    Should look like this:
+    {   'model_name1': {'predictions': <model_predictions>, 'true_labels': <true_labels>},
+        'model_name2': {'predictions': <model_predictions>, 'true_labels': <true_labels>},
+        ...
+    }
+
+    :param plot_precision_recall: bool. Plots precision_recall curve if set to True.
+    :param plot_roc_curve: bool. Plots ROC curve if set to True.
+    :param plot_conf_matrix: bool. Plots Confusion Matrices if set to True.
+    :param plot_model_metrics: bool. Plots precision, recall, f1-score and roc_auc_score if set to True.
+    :return: dict. Metrics and confusion matrix for models.
+    """
     model_metrics = defaultdict(dict)
     model_confusion_matrices = defaultdict(dict)
     model_curves = defaultdict(dict)
@@ -119,6 +155,16 @@ def metrics_test(predictions, true_labels,
                  plot_precision_recall=False,
                  plot_roc_curve=False,
                  plot_conf_matrix=False) -> dict:
+    """
+    Metrics test for a single model.
+    Provides: precision, recall, f1-score, roc_auc_score, confusion matrix.
+    :param predictions: model predictions
+    :param true_labels: true labels
+    :param plot_precision_recall: plots precision recall curve if set to True.
+    :param plot_roc_curve: plots ROC curve if set to True.
+    :param plot_conf_matrix: plots confusion matrix if set to True.
+    :return: dict containing metrics for provided predictions and true labels.
+    """
     pred_labels = [np.argmax(prediction) for prediction in predictions]
     if plot_precision_recall:
         _plot_precision_recall(predictions, true_labels, 1)

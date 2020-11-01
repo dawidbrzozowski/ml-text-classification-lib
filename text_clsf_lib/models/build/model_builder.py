@@ -7,6 +7,12 @@ from utils.files_io import read_numpy
 
 
 class ModelBuilder:
+    """
+    Base class for creating model architecture.
+    Takes in architecture and vectorizer params from the preset and creates a model ready to be trained.
+    ModelBuilder is meant to create models for classification task.
+    It is not recommended to use it for regression tasks.
+    """
     def __init__(self, architecture_params, vectorizer_params):
         self.architecture_params = architecture_params
         self.vectorizer_params = vectorizer_params
@@ -32,6 +38,11 @@ class ModelBuilder:
 
 
 class FFModelBuilder(ModelBuilder):
+    """
+    Base class for Feedforward architecture builders.
+    One abstract method to be implemented:
+    def prepare_input_layers(self).
+    """
     def prepare_model_architecture(self):
         input_, emb_layer = self.prepare_input_layers()
         if emb_layer is None:
@@ -58,6 +69,10 @@ class TfIdfFFModelBuilder(FFModelBuilder):
 
 
 class EmbeddingModelBuilder(ModelBuilder):
+    """
+    Base class for embedding-oriented model architectures.
+    Implements embedding_layer retrieval.
+    """
 
     @abstractmethod
     def prepare_model_architecture(self):
@@ -76,6 +91,9 @@ class EmbeddingModelBuilder(ModelBuilder):
 
 
 class EmbeddingFFModelBuilder(FFModelBuilder, EmbeddingModelBuilder):
+    """
+    Class implements preparation of input layers for feedforward embedding-based models.
+    """
     def prepare_input_layers(self):
         input_ = layers.Input(shape=(self.vectorizer_params['max_seq_len'],))
         emb_layer = self.get_embedding_layer()(input_)
@@ -83,6 +101,9 @@ class EmbeddingFFModelBuilder(FFModelBuilder, EmbeddingModelBuilder):
 
 
 class EmbeddingRNNModelBuilder(EmbeddingModelBuilder):
+    """
+    Class implements preparation of architecture for embedding RNN models.
+    """
     def prepare_model_architecture(self):
         input_, emb_layer = self.prepare_input_layers()
         hidden = emb_layer

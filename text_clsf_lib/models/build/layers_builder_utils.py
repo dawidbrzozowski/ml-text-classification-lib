@@ -1,6 +1,11 @@
 import re
 from keras import layers
 
+"""
+This module provides private functions for creating custom layers from descriptions.
+These functions are not meant to be used for any other reasons.
+"""
+
 ACTIVATIONS = ['relu', 'softmax', 'tanh', 'sigmoid']
 
 ACTIVATION_NAMES = '\n'.join([activation_name for activation_name in ACTIVATIONS])

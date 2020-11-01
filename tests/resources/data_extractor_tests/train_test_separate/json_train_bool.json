@@ -1,11 +1,9 @@
 [
   {
-    "id": 123,
     "text": "First train sample text",
     "offensive": false
   },
   {
-    "id": 124,
     "text": "Second train sample text",
     "offensive": true
   }

@@ -4,6 +4,12 @@ import numpy as np
 from matplotlib import pyplot as plt
 from sklearn import metrics
 
+"""
+This module provides plotting options for metric tests.
+These functions are meant to be used from inside metric tests only.
+It is not recommended to use them in other cases.
+"""
+
 
 def _plot_model_metrics(model_metrics: dict):
     metric_names = [metric_name for metric_name in next(iter(model_metrics.values()))]

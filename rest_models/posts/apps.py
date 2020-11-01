@@ -8,10 +8,7 @@ from text_clsf_lib.predictors.presets import create_predictor_preset
 
 
 class PostsConfig(AppConfig):
-    preset = create_predictor_preset(
-        model_name='glove_rnn',
-        type_='embedding',
-        max_seq_len=200,
-        twitter_preprocessing=True)
+    preset = create_predictor_preset(model_name='my_tfidf',
+                                     type_='tfidf')
     name = 'posts'
     predictor = Predictor(preset)
