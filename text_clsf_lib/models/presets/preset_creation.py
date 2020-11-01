@@ -31,6 +31,50 @@ def create_preset(
         batch_size: int = None,
         validation_split: float = None,
         callbacks: list = None):
+    """
+    This function creates a preset for a custom model architecture.
+    :param preset_base: Each model should be based on a base preset.
+        This helps to speed up the process of model creation.
+        Currently implemented preset_base:
+            - tfidf_feedforward : use if you want your model to be based on tfidf vectorizer.
+            - glove_feedforward : use if you want your model to be based on embeddings but not RNN.
+            - glove_rnn : use if you want your model to be based on embeddings and RNN architecture.
+    :param model_name: this will be the name of your model and also the directory in which it will be stored.
+    :param model_save_dir: model parent directory. _models for default.
+    :param data_extractor: If you want to train your model on custom data,
+     use one of the provided data_extractor from the library or create your own.
+     More in: text_clsf_lib/data_preparation/data_extraction.py
+    :param ner_cleaning: whether to use or not NER (Named Entity Recognition) preprocessor. This NER comes from SpaCy.
+    It is not recommended for large dataset, since this might take a long time.
+    :param ner_converter: When ner_cleaning is set to True, NER converter translates the names for better emedding understanding.
+    :param twitter_preprocessing: When set to True, it will run twitter data preprocessing.
+        Recommended especially when using GloVe Twitter embeddings.
+    :param output_verification_func: provide your own function, for data verification.
+        This function should check if the model output is correct.
+    :param vector_width: Used for Tfidf vectorizer if used.
+    :param preprocessor_save_dir: if you want to have a custom preprocessor_save_dir provide it here.
+    :param hidden_layers_list: If you want to create your model architecture using layer descriptions,
+        provide layer descriptions here.
+    :param hidden_layers: If layer descriptions is not used, basic model architecture will be used.
+        Here you can provide amount of hidden layers.
+    :param hidden_units: If layer descriptions is not used, basic model architecture will be used.
+        Here you can provide amount of hidden units.
+    :param hidden_activation: If layer descriptions is not used, basic model architecture will be used.
+        Here you can provide hidden layer activation.
+    :param output_activation: If layer descriptions is not used, basic model architecture will be used.
+        Here you can provide output activation.
+    :param optimizer: Provide your custom optimizer. Recommended usage of Keras optimizers.
+    :param loss: Provide your custom loss. Recommended usage of Keras loss.
+    :param lr: float. Pick your learning rate.
+    :param metrics: Pick your metrics from Keras backend.
+    :param output_units: If layer descriptions is not used, basic model architecture will be used.
+        Here you can provide amount of output units.
+    :param epochs: int.
+    :param batch_size: int.
+    :param validation_split: float.
+    :param callbacks: Provide callbacks for your model. Recommended usage of Keras callbacks.
+    :return: dict. Model preset.
+    """
 
     preset = PRESETS[preset_base]
     _put_or_default(preset, model_name, '', 'model_name')
