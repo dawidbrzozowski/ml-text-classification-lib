@@ -16,6 +16,9 @@ EMBEDDING_MATRIX_NAME = 'embedding_matrix.npy'
 
 
 class TextVectorizer:
+    """
+    Base class for TextVectorizers.
+    """
 
     @abstractmethod
     def fit(self, texts: List[str]):
@@ -73,6 +76,10 @@ class EmbeddingTextVectorizer(TextVectorizer):
 
 
 class LoadedTextVectorizer:
+    """
+    This is a base class for LoadedTextVectorizers.
+    Their goal is to vectorize data, using preprocessing files created during training.
+    """
     @abstractmethod
     def vectorize(self, texts: List[str]):
         pass

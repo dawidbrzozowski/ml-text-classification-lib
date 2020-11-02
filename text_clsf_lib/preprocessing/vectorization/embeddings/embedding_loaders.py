@@ -19,6 +19,9 @@ class EmbeddingsLoader:
 
 
 class GloveEmbeddingsLoader(EmbeddingsLoader):
+    """
+    Loads in GloVe embeddings for twitter or wiki, depending on glove_type.
+    """
     def __init__(self, glove_type):
         embedding_dir = f'{EMBEDDINGS_DIR}/{glove_type}'
         super().__init__(embedding_dir)

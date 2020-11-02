@@ -33,6 +33,10 @@ class DataPreprocessor:
 
 
 class RealDataPreprocessor:
+    """
+    This class allows preprocessing texts for prediction from any source.
+    It uses DataCleaner and LoadedTextVectorizer, which has already been trained on data to perform preprocessing.
+    """
     def __init__(self, text_cleaner: TextCleaner, loaded_text_vectorizer: LoadedTextVectorizer):
         self.text_cleaner = text_cleaner
         self.text_vectorizer = loaded_text_vectorizer

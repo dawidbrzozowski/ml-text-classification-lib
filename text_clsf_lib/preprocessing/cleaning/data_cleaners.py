@@ -25,6 +25,16 @@ class BaselineDataCleaner(DataCleaner):
 
 
 class TextCleaner:
+    """
+    This class allows text cleaning.
+    has 4 main options:
+    - replace_numbers: replaces numbers with special encoding <number> if set to True.
+    - use_ner: uses NER (Named Entity Recognition) from SpaCy for feature extraction if set to True.
+    - use_ner_converter: when use_ner is switched on, it will convert NER encodings to more proper version.
+                    This is recommended mostly for embedding models, since it's better understood by embedding matrix.
+    - use_twitter_data_preprocessing: preprocesses texts, so that it is easier for GloVe twitter embeddings
+                                    to understand the text.
+    """
     def __init__(self,
                  replace_numbers=False,
                  use_ner=False,
@@ -93,6 +103,8 @@ def binary_output(output):
 class OutputCleaner:
     """
     Output cleaner will remove rows, for which output is invalid.
+        Takes in verifier_func, which should allow to pass 1 argument
+        and return boolean value based on the argument's correctness.
     """
 
     def __init__(self, verifier_func=None):
@@ -107,6 +119,9 @@ class OutputCleaner:
 
 
 class PresetDataCleaner(DataCleaner):
+    """
+    Uses TextCleaner and OutputCleaner to clean the whole dataset.
+    """
     def __init__(self, text_cleaner: TextCleaner, output_cleaner: OutputCleaner):
         self.text_cleaner = text_cleaner
         self.output_cleaner = output_cleaner
