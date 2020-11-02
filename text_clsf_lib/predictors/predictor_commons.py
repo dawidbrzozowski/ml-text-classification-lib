@@ -7,6 +7,11 @@ from utils.files_io import read_pickle, read_numpy
 
 
 def get_embedding_preprocessor(preprocessing_params: dict):
+    """
+    Prepares embedding preprocessor for predictor from preset and saved preprocessing files during training.
+    :param preprocessing_params: dict.
+    :return: RealDataPreprocessor object.
+    """
 
     text_cleaner = TextCleaner(**preprocessing_params['text_cleaning_params'])
     vectorizer_params = preprocessing_params['vectorizer_params']
@@ -26,6 +31,11 @@ def get_embedding_preprocessor(preprocessing_params: dict):
 
 
 def get_tfidf_preprocessor(preprocessing_params: dict):
+    """
+    Prepares tfidf preprocessor for predictor from preset and saved preprocessing files during traning.
+    :param preprocessing_params: dict.
+    :return: RealDataPreprocessor object.
+    """
     text_cleaner = TextCleaner(**preprocessing_params['text_cleaning_params'])
     vectorizer_params = preprocessing_params['vectorizer_params']
     vectorizer = read_pickle(vectorizer_params['vectorizer_path'])

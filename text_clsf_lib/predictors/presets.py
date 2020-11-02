@@ -46,6 +46,19 @@ def create_predictor_preset(
         ner_converter: bool = False,
         twitter_preprocessing: bool = False,
         max_seq_len: int = None):
+    """
+    This function should be used for preparing predictor preset.
+    It uses base presets, that are overridden by values provided in arguments.
+    :param model_name: str, Your model name. This will be used for determining where is your model located.
+    :param type_: str, 'embedding' if the model is based on embeddings or 'tfidf' if the model is based on tfidf.
+    :param model_dir: parent directory of a model. Default value: '_models'
+    :param ner_cleaning: bool, Whether the NER cleaning should be used on text.
+    :param ner_converter: bool, whether the NER cleaning should be converted to proper names,
+     better undestood by embedding matrix.
+    :param twitter_preprocessing: bool, Use twitter data preprocessing.
+    :param max_seq_len: If embedding model is used, here you should specify the max_seq_len.
+    :return: dict, predictor preset.
+    """
     preset = PRESETS['tfidf_predictor'] if type_ == 'tfidf' else PRESETS['embedding_predictor']
     preset['model_path'] = f'{model_dir}/{model_name}/{model_name}.h5'
     preset['preprocessing_params']['text_cleaning_params']['use_ner'] = ner_cleaning
