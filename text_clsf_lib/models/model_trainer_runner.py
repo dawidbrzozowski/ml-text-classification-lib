@@ -10,6 +10,11 @@ TARGET_NAMES = ['Offenseless', 'Offensive']
 
 
 class NNModelTrainer:
+    """
+    Class used for model training.
+    Takes in model builder class and preset configuration.
+
+    """
     def __init__(self, model_builder_class, architecture_params, vectorizer_params, training_params):
         model_builder = model_builder_class(architecture_params, vectorizer_params)
         self.training_params = training_params
@@ -42,6 +47,10 @@ class NNModelTrainer:
 
 
 class NNModelRunner:
+    """
+    This class is used after training process.
+    Can be loaded either from a filepath or by using existing model.
+    """
     def __init__(self, model=None, model_path=None):
         self.model: Model = model if model is not None else load_model(model_path)
 

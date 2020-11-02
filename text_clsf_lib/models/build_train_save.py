@@ -5,6 +5,18 @@ from text_clsf_lib.models.presets.presets_base import PRESETS
 
 def train(preset: dict,
           save_tflite_model=False):
+    """
+    This function wraps up the whole training process.
+    It includes the following steps configured by preset:
+    - preparing model data (train/test).
+    - training process.
+    - saving model.
+    - converting to tflite.
+
+    :param preset: dict.
+    :param save_tflite_model: bool
+    :return: NNModelRunner instance.
+    """
     data = prepare_model_data(
         data_params=preset['data_params'],
         vectorizer_params=preset['vectorizer_params'])

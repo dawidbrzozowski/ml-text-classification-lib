@@ -23,6 +23,16 @@ def test_single_model(
         deep_samples_kwargs: dict = None,
         run_metrics_test=False,
         metrics_test_kwargs: dict = None):
+    """
+    Wrapper function for testing model.
+    Enables easy and fast model testing using the preset from training process.
+    :param preset: preset used for model training.
+    :param run_deep_samples: bool.
+    :param deep_samples_kwargs: custom deep_samples_kwargs.
+    :param run_metrics_test: bool
+    :param metrics_test_kwargs: custom metrics_test_kwargs.
+    :return: Predictions of the model and true labels as tuple.
+    """
     model_runner = NNModelRunner(model_path=f"{preset['model_save_dir']}/{preset['model_name']}.h5")
     data = prepare_model_data(
         data_params=preset['data_params'],
@@ -47,6 +57,17 @@ def test_multiple_models(presets: List[dict],
                          plot_roc_curve=True,
                          plot_conf_matrix=True,
                          plot_model_metrics=True):
+    """
+    Wrapper function for testing many models at the same time and comparing them.
+    Takes list of presets, used during training process.
+    Enables showing model comparison plots.
+    :param presets: list of preset used during training process for the tested models.
+    :param plot_precision_recall: bool
+    :param plot_roc_curve: bool
+    :param plot_conf_matrix: bool
+    :param plot_model_metrics: bool
+    :return: dict. Metrics for all models. Metrics include: precision, recall, f1-score, roc_auc_score, confusion_matrix
+    """
     model_name_to_scores = defaultdict(dict)
     for preset in presets:
         predictions, labels = test_single_model(preset)

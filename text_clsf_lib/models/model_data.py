@@ -3,6 +3,12 @@ from text_clsf_lib.preprocessing.preprocessors import DataPreprocessor
 
 
 def prepare_model_data(data_params: dict, vectorizer_params: dict) -> dict:
+    """
+    Prepares data from preset configuration (data_params, vectorizer_params) for model traning and testing.
+    :param data_params: dict
+    :param vectorizer_params: dict
+    :return: dict. Contains cleaned texts (train/test) and also vectorized, ready for model input.
+    """
     # retrieve data
     train_corpus, test_corpus = get_train_test_corpus(data_params['data_extractor'])
 
@@ -31,13 +37,13 @@ def prepare_model_data(data_params: dict, vectorizer_params: dict) -> dict:
 
 
 def get_train_test_corpus(data_extractor):
+    """Retrieves data from a given data_extractor"""
     data_extractor = data_extractor()
     return data_extractor.get_train_test_corpus()
 
 
 def prepare_data_cleaner(cleaning_params):
+    """Prepares DataCleaner"""
     text_cleaner = TextCleaner(**cleaning_params['text'])
     output_cleaner = OutputCleaner(verifier_func=cleaning_params['output']['output_verification_func'])
     return PresetDataCleaner(text_cleaner, output_cleaner)
-
-
