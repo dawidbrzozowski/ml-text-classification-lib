@@ -15,7 +15,7 @@ class NNModelTrainer:
     Takes in model builder class and preset configuration.
 
     """
-    def __init__(self, model_builder_class, architecture_params, vectorizer_params, training_params):
+    def  __init__(self, model_builder_class, architecture_params, vectorizer_params, training_params):
         model_builder = model_builder_class(architecture_params, vectorizer_params)
         self.training_params = training_params
         self.model: Model = model_builder.prepare_model_architecture()

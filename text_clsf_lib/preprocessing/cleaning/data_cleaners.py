@@ -2,7 +2,8 @@ import re
 from abc import abstractmethod
 from typing import List, Tuple
 import en_core_web_sm
-
+from nltk import word_tokenize
+from nltk.stem import PorterStemmer, WordNetLemmatizer
 from utils.files_io import load_json
 
 NER_CONVERTER_DEF_PATH = 'preprocessing/cleaning/resources/ner_converter.json'
@@ -34,15 +35,21 @@ class TextCleaner:
                     This is recommended mostly for embedding models, since it's better understood by embedding matrix.
     - use_twitter_data_preprocessing: preprocesses texts, so that it is easier for GloVe twitter embeddings
                                     to understand the text.
+    - use_stemming: stem texts using PorterStemmer
+    - use_lemmatization: lemmatize texts using WordNetLemmatizer
     """
     def __init__(self,
                  replace_numbers=False,
                  use_ner=False,
                  use_ner_converter=False,
+                 use_stemming=False,
+                 use_lemmatization=False,
                  use_twitter_data_preprocessing=False):
         self.replace_numbers = replace_numbers
         self.ner_tagger = en_core_web_sm.load() if use_ner else None
         self.ner_converter = None
+        self.stemmer = PorterStemmer() if use_stemming else None
+        self.lemmatizer = WordNetLemmatizer() if use_lemmatization else None
         self.use_twitter_data_preprocessing = use_twitter_data_preprocessing
         if use_ner and use_ner_converter:
             self.ner_converter = load_json(NER_CONVERTER_DEF_PATH)
@@ -58,6 +65,12 @@ class TextCleaner:
         if self.replace_numbers:
             print('Replacing numbers...')
             texts = self._replace_numbers(texts)
+        if self.stemmer is not None:
+            print('Stemming text...')
+            texts = self._stem_texts(texts)
+        if self.lemmatizer is not None:
+            print('Lemmatizing text...')
+            texts = self._lemmatize_texts(texts)
         print('Data cleaning finished!')
         return texts
 
@@ -70,6 +83,18 @@ class TextCleaner:
                 text = text.replace(str(ent), convert(ent.label_))
             processed_texts.append(text)
         return processed_texts
+
+    def _stem_texts(self, texts):
+        stemmed_texts = []
+        for text in texts:
+            stemmed_texts.append(' '.join([self.stemmer.stem(word) for word in word_tokenize(text)]))
+        return stemmed_texts
+
+    def _lemmatize_texts(self, texts):
+        lemmatized_texts = []
+        for text in texts:
+            lemmatized_texts.append(' '.join([self.lemmatizer.lemmatize(word) for word in word_tokenize(text)]))
+        return lemmatized_texts
 
     def _replace_numbers(self, texts):
         number_pattern = re.compile(r'[-+]?[.\d]*[\d]+[:,.\d]*')

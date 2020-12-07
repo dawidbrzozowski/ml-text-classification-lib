@@ -14,7 +14,8 @@ TASK_C_PATH = f'{LARGE_DATA_INPUT_DIR}/task_c_distant_ann.tsv'
 
 BASELINE_DATA_DIR = 'data/unprocessed'
 
-
+# TODO get_train_test_corpus() musi być bezargumentowy.
+# jedyne co to konstruktor powinien wszystko wczytać
 class DataType(Enum):
     """
     Holds paths to different kind of SemEval tasks.
@@ -66,7 +67,7 @@ class BaselineJsonDataExtractor(DataExtractor):
     Retrieves data from BASELINE_DATA_DIR. This data comes from SemEval competition.
     """
 
-    def get_train_test_corpus(self, amount=1000000) -> Tuple[List, List]:
+    def get_train_test_corpus(self, amount=5000000) -> Tuple[List, List]:
         data_train = load_json(f'{BASELINE_DATA_DIR}/{amount}/train_corpus.json')
         data_test = load_json(f'{BASELINE_DATA_DIR}/{amount}/test_corpus.json')
         data_train = list(map(add_offensive_drop_avg_std, data_train))
