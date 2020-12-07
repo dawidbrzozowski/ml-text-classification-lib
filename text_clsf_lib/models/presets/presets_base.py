@@ -7,7 +7,8 @@ from text_clsf_lib.models.tfidf.components_preparation import prepare_tfidf_data
 from text_clsf_lib.preprocessing.cleaning.data_cleaners import binary_output
 from text_clsf_lib.preprocessing.vectorization.embeddings.embedding_loaders import GloveEmbeddingsLoader
 from text_clsf_lib.preprocessing.vectorization.output_vectorizers import BasicOutputVectorizer
-from text_clsf_lib.preprocessing.vectorization.text_vectorizers import TfIdfTextVectorizer, EmbeddingTextVectorizer
+from text_clsf_lib.preprocessing.vectorization.text_vectorizers import TfIdfTextVectorizer, EmbeddingTextVectorizer, \
+    BagOfWordsTextVectorizer
 
 PRESETS = {
 
@@ -34,6 +35,51 @@ PRESETS = {
             'save_dir':                            'preprocessor',
             'vector_width':                         1000,
             'text_vectorizer':                      TfIdfTextVectorizer,
+            'output_vectorizer':                    BasicOutputVectorizer
+        },
+
+        'architecture_params': {
+            'hidden_layers_list':                   [],
+            'hidden_layers':                        2,
+            'hidden_units':                         32,
+            'hidden_activation':                   'relu',
+            'output_activation':                   'softmax',
+            'optimizer':                           'adam',
+            'loss':                                'binary_crossentropy',
+            'lr':                                   0.01,
+            'metrics':                              ['accuracy'],
+            'output_units':                         2
+        },
+        'training_params': {
+            'epochs':                               1,
+            'batch_size':                           128,
+            'validation_split':                     0.1,
+            'callbacks':                            None
+        }
+    },
+    'bag_of_words_feedforward': {
+        'model_builder_class':                      TfIdfFFModelBuilder,
+        'model_name':                              'nn_tfidf',
+        'model_save_dir':                          '_models',
+        'data_params': {
+            'data_extractor':                       BaselineJsonDataExtractor,
+            'cleaning_params': {
+                'text': {
+                    'use_ner':                          False,
+                    'use_ner_converter':                True,
+                    'use_twitter_data_preprocessing':   True,
+                },
+                'output': {
+                    'output_verification_func':     binary_output
+
+                }
+            },
+        },
+        'vectorizer_params': {
+            'vectorizer_retriever_func':            prepare_tfidf_data_vectorizer,
+            'save_dir':                            'preprocessor',
+            'vector_width':                         1000,
+            'text_vectorizer':                      BagOfWordsTextVectorizer,
             'output_vectorizer':                    BasicOutputVectorizer
         },
 

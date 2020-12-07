@@ -3,7 +3,7 @@ from typing import List
 
 import os
 
-from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.feature_extraction.text import TfidfVectorizer, CountVectorizer
 
 from text_clsf_lib.preprocessing.vectorization.embeddings.embedding_loaders import EmbeddingsLoader
 from text_clsf_lib.preprocessing.vectorization.embeddings.matrix_preparer import EmbeddingsMatrixPreparer
@@ -31,6 +31,25 @@ class TextVectorizer:
     @abstractmethod
     def save(self, save_dir):
         pass
+
+
+class BagOfWordsTextVectorizer(TextVectorizer):
+    def __init__(self, max_features):
+        self.bag_of_words_vec = CountVectorizer(max_features=max_features)
+
+    def fit(self, texts: List[str]):
+        self.bag_of_words_vec.fit(texts)
+
+    def save(self, save_dir):
+        os.makedirs(f'{save_dir}', exist_ok=True)
+        write_pickle(f'{save_dir}/{VECTORIZER_NAME}', self.bag_of_words_vec)
+        sorted_vocab = [item[0] for item in sorted(self.bag_of_words_vec.vocabulary_.items(), key=lambda item: item[1])]
+        with open(f'{save_dir}/vocab.txt', 'w') as f:
+            for word in sorted_vocab:
+                f.write(f'{word}\n')
+
+    def vectorize(self, texts: List[str]):
+        return self.bag_of_words_vec.transform(texts).toarray()
 
 
 class TfIdfTextVectorizer(TextVectorizer):
@@ -80,6 +99,7 @@ class LoadedTextVectorizer:
     This is a base class for LoadedTextVectorizers.
     Their goal is to vectorize data, using preprocessing files created during training.
     """
+
     @abstractmethod
     def vectorize(self, texts: List[str]):
         pass
