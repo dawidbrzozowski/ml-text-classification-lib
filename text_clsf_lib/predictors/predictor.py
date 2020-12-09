@@ -24,7 +24,6 @@ class Predictor:
 
 
 if __name__ == '__main__':
-    # change TFIDF to tfidf and bow shared
     preset = create_predictor_preset(model_name='bpe_rnn',
                                      type_='bpe')
     pr = Predictor(preset)

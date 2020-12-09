@@ -86,9 +86,8 @@ def create_preset(
 
     preset = PRESETS[preset_base]
     _put_or_default(preset, model_name, '', 'model_name')
-    _put_or_default(preset, model_save_dir, '', 'model_save_dir')
     model_save_dir = model_save_dir if model_save_dir is not None else preset['model_save_dir']
-    _put_or_default(preset, f'{model_save_dir}/{model_name}', '', 'model_save_dir')
+    _put_or_default(preset, f'{model_save_dir}/{model_name}/model', '', 'model_save_dir')
     _put_or_default(preset, data_extractor, 'data_params', 'data_extractor')
     _put_or_default(preset, ner_cleaning, 'data_params:cleaning_params:text', 'use_ner')
     _put_or_default(preset, ner_converter, 'data_params:cleaning_params:text', 'use_ner_converter')

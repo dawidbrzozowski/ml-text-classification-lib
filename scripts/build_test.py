@@ -27,4 +27,4 @@ if __name__ == '__main__':
                             epochs=1,
                             lr=0.001,
                             ner_cleaning=False)
-    print(train(my_bow))
+    print(test_multiple_models([bpe_rnn]))

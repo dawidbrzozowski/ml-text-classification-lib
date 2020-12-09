@@ -66,5 +66,5 @@ def create_predictor_preset(
     model_dir = f'{model_dir}/{model_name}'
     model = f'{model_name}.h5'
     preset['preprocessing_params']['model_dir'] = model_dir
-    preset['model_path'] = f'{model_dir}/{model}'
+    preset['model_path'] = f'{model_dir}/model/{model}'
     return preset
