@@ -67,7 +67,7 @@ class BaselineJsonDataExtractor(DataExtractor):
     Retrieves data from BASELINE_DATA_DIR. This data comes from SemEval competition.
     """
 
-    def get_train_test_corpus(self, amount=100000) -> Tuple[List, List]:
+    def get_train_test_corpus(self, amount=2000000) -> Tuple[List, List]:
         data_train = load_json(f'{BASELINE_DATA_DIR}/{amount}/train_corpus.json')
         data_test = load_json(f'{BASELINE_DATA_DIR}/{amount}/test_corpus.json')
         data_train = list(map(add_offensive_drop_avg_std, data_train))

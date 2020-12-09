@@ -8,6 +8,10 @@ def create_preset(
         model_save_dir: str = None,
         # data parameters
         data_extractor=None,
+        use_corpus_balancing=None,
+        corpus_word_limit=None,
+        X_name=None,
+        y_name=None,
         ner_cleaning: bool = None,
         ner_converter: bool = None,
         twitter_preprocessing: bool = None,
@@ -18,6 +22,10 @@ def create_preset(
         output_verification_func=None,
         # vectorization parameters
         vector_width: int = None,
+        embedding_type: str = None,
+        max_vocab_size: int = None,
+        max_seq_len: int = None,
+        embedding_dim: int = None,
         preprocessor_save_dir: str = None,
         # architecture_parameters
         hidden_layers: int = None,
@@ -48,6 +56,10 @@ def create_preset(
     :param data_extractor: If you want to train your model on custom data,
      use one of the provided data_extractor from the library or create your own.
      More in: text_clsf_lib/data_preparation/data_extraction.py
+    :param use_corpus_balancing: bool. Define if you want your samples to be even in terms of categories (using undersampling method).
+    :param y_name: str. if use_corpus_balancing is used, you must provide key name for your y label in the corpus.
+    :param corpus_word_limit: int. Define if you want to get rid of samples, that have more than corpus_word_limit words.
+    :param X_name: str. If corpus_word_limit is used, you must provide name for the key for your X input texts.
     :param ner_cleaning: whether to use or not NER (Named Entity Recognition) preprocessor. This NER comes from SpaCy.
     It is not recommended for large dataset, since this might take a long time.
     :param ner_converter: When ner_cleaning is set to True, NER converter translates the names for better emedding understanding.
@@ -60,6 +72,11 @@ def create_preset(
     :param output_verification_func: provide your own function, for data verification.
         This function should check if the model output is correct.
     :param vector_width: Used for Tfidf vectorizer if used.
+    :param embedding_type: str. Used for defining embedding type that is used. Choices: [bpe, glove_twitter, glove_wiki]
+    :param embedding_dim: int. Define embedding dimension if embedding vectorizer is used.
+    :param max_vocab_size: int. Define max vocab size for your embeddings if embedding vectorizer is used.
+    :param max_seq_len: int. Define max sequence length for your embeddings if embedding vectorizer is used.
+                Padding used.
     :param preprocessor_save_dir: if you want to have a custom preprocessor_save_dir provide it here.
     :param hidden_layers_list: If you want to create your model architecture using layer descriptions,
         provide layer descriptions here.
@@ -82,13 +99,18 @@ def create_preset(
     :param validation_split: float.
     :param callbacks: Provide callbacks for your model. Recommended usage of Keras callbacks.
     :return: dict. Model preset.
+
     """
 
-    preset = PRESETS[preset_base]
+    preset = dict(PRESETS[preset_base])
     _put_or_default(preset, model_name, '', 'model_name')
     model_save_dir = model_save_dir if model_save_dir is not None else preset['model_save_dir']
     _put_or_default(preset, f'{model_save_dir}/{model_name}/model', '', 'model_save_dir')
     _put_or_default(preset, data_extractor, 'data_params', 'data_extractor')
+    _put_or_default(preset, use_corpus_balancing, 'data_params', 'use_corpus_balancing')
+    _put_or_default(preset, corpus_word_limit, 'data_params', 'corpus_word_limit')
+    _put_or_default(preset, X_name, 'data_params', 'X_name')
+    _put_or_default(preset, y_name, 'data_params', 'y_name')
     _put_or_default(preset, ner_cleaning, 'data_params:cleaning_params:text', 'use_ner')
     _put_or_default(preset, ner_converter, 'data_params:cleaning_params:text', 'use_ner_converter')
     _put_or_default(preset, twitter_preprocessing, 'data_params:cleaning_params:text', 'use_twitter_data_preprocessing')
@@ -98,6 +120,10 @@ def create_preset(
     _put_or_default(preset, use_stemming, 'data_params:cleaning_params:text', 'use_stemming')
     _put_or_default(preset, output_verification_func, 'data_params:cleaning_params:output', 'output_verification_func')
     _put_or_default(preset, vector_width, 'vectorizer_params', 'vector_width')
+    _put_or_default(preset, embedding_type, 'vectorizer_params', 'embedding_type')
+    _put_or_default(preset, max_vocab_size, 'vectorizer_params', 'max_vocab_size')
+    _put_or_default(preset, max_seq_len, 'vectorizer_params', 'max_seq_len')
+    _put_or_default(preset, embedding_dim, 'vectorizer_params', 'embedding_dim')
     _put_or_default(preset, preprocessor_save_dir, 'vectorizer_params', 'save_dir')
     preprocessor_save_dir = preprocessor_save_dir if preprocessor_save_dir is not None else preset['vectorizer_params']['save_dir']
     _put_or_default(preset, f'{model_save_dir}/{model_name}/{preprocessor_save_dir}', 'vectorizer_params', 'save_dir')

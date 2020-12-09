@@ -19,6 +19,10 @@ PRESETS = {
         'model_save_dir':                          '_models',
         'data_params': {
             'data_extractor':                       BaselineJsonDataExtractor,
+            'use_corpus_balancing':                 False,
+            'corpus_word_limit':                    None,
+            'X_name':                               None,
+            'y_name':                               None,
             'cleaning_params': {
                 'text': {
                     'replace_numbers':              False,
@@ -68,6 +72,11 @@ PRESETS = {
         'model_save_dir':                          '_models',
         'data_params': {
             'data_extractor':                       BaselineJsonDataExtractor,
+            'use_corpus_balancing':                 False,
+            'corpus_word_limit':                    None,
+            'X_name':                               None,
+            'y_name':                               None,
+
             'cleaning_params': {
                 'text': {
                     'replace_numbers':              False,
@@ -118,6 +127,11 @@ PRESETS = {
         'model_save_dir':                          '_models',
         'data_params': {
             'data_extractor':                       BaselineJsonDataExtractor,
+            'use_corpus_balancing':                 False,
+            'corpus_word_limit':                    None,
+            'X_name':                               None,
+            'y_name':                               None,
+
             'cleaning_params': {
                 'text': {
                     'replace_numbers':              False,
@@ -174,6 +188,11 @@ PRESETS = {
         'model_save_dir':                          '_models',
         'data_params': {
             'data_extractor':                       BaselineJsonDataExtractor,
+            'use_corpus_balancing':                 False,
+            'corpus_word_limit':                    None,
+            'X_name':                               None,
+            'y_name':                               None,
+
             'cleaning_params': {
                 'text': {
                     'replace_numbers':              False,
@@ -227,6 +246,11 @@ PRESETS = {
         'model_save_dir':                          '_models',
         'data_params': {
             'data_extractor':                       BaselineJsonDataExtractor,
+            'use_corpus_balancing':                 False,
+            'corpus_word_limit':                    None,
+            'X_name':                               None,
+            'y_name':                               None,
+
             'cleaning_params': {
                 'text': {
                     'replace_numbers':              False,
@@ -248,7 +272,7 @@ PRESETS = {
             'embedding_type':                      'bpe',
             'output_vectorizer':                    BasicOutputVectorizer,
             'max_vocab_size':                       5000,
-            'max_seq_len':                          200,
+            'max_seq_len':                          167,
             'embedding_dim':                        50,
             'save_dir':                            'preprocessor',
 

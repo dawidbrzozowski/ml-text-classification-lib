@@ -123,13 +123,18 @@ class BPEEmbeddingTextVectorizer(TextVectorizer):
 
 def _vectorize_padded(bpemb, max_seq_len, texts: List[str]):
     ids_not_padded = bpemb.encode_ids(texts)
+    ids_padded = []
+    max_len_found = 0
     for text_enc in ids_not_padded:
+        if len(text_enc) > max_len_found: max_len_found = len(text_enc)
         if len(text_enc) > max_seq_len:
             text_enc = text_enc[:max_seq_len]
         elif len(text_enc) < max_seq_len:
             padding = [0] * (max_seq_len - len(text_enc))
             text_enc.extend(padding)
-    padded = np.array(ids_not_padded)
+        ids_padded.append(text_enc)
+    padded = np.array(ids_padded)
+    print(f'Max len: {max_len_found}')
     return padded
 
 
