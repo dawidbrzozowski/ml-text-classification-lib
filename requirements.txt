@@ -7,3 +7,4 @@ pandas
 sortedcontainers==2.2.2
 spacy==2.3.2
 matplotlib==3.3.2
+bpemb

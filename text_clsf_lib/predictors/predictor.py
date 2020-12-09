@@ -24,7 +24,8 @@ class Predictor:
 
 
 if __name__ == '__main__':
-    preset = create_predictor_preset(model_name='my_tfidf',
+    # change TFIDF to tfidf and bow shared
+    preset = create_predictor_preset(model_name='my_bow',
                                      type_='tfidf')
     pr = Predictor(preset)
     print(pr.predict('easy text with no special meaning fuck fucking trump'))

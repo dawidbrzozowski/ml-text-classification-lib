@@ -3,7 +3,7 @@ from typing import List
 
 from keras_preprocessing.sequence import pad_sequences
 from keras_preprocessing.text import Tokenizer
-from utils.files_io import write_pickle
+from utils.files_io import write_pickle, read_pickle, write_json_file, load_json
 import os
 
 TOKENIZER_NAME = 'tokenizer.pickle'
@@ -20,7 +20,6 @@ class TextEncoderBase:
     def __init__(self, max_vocab_size, max_seq_len):
         self.max_vocab_size = max_vocab_size
         self.max_seq_len = max_seq_len
-        self.word2idx = None
 
     @abstractmethod
     def fit(self, texts: List[str]):
@@ -38,6 +37,7 @@ class TextEncoderBase:
 class TextEncoder(TextEncoderBase):
     def __init__(self, max_vocab_size, max_seq_len):
         super().__init__(max_vocab_size, max_seq_len)
+        self.word2idx = None
         self.tokenizer = Tokenizer(num_words=max_vocab_size, lower=True)
 
     def fit(self, texts):
@@ -52,17 +52,20 @@ class TextEncoder(TextEncoderBase):
             f.write('<pad>\n')
             for word in vocab:
                 f.write(f'{word}\n')
+        predictor_config = {'max_seq_len': self.max_seq_len}
+        write_json_file(f'{save_dir}/predictor_config.json', predictor_config)
 
     def encode(self, texts):
         sequences = self.tokenizer.texts_to_sequences(texts)
-        padded = pad_sequences(sequences=sequences, maxlen=self.max_seq_len)
+        padded = pad_sequences(sequences=sequences, maxlen=self.max_seq_len, padding='post', truncating='post')
         return padded
 
 
 class LoadedTextEncoder:
-    def __init__(self, tokenizer, max_seq_len):
-        self.tokenizer = tokenizer
-        self.max_seq_len = max_seq_len
+    def __init__(self, tokenizer_path, predictor_config_path):
+        self.tokenizer = read_pickle(tokenizer_path)
+        predictor_config = load_json(predictor_config_path)
+        self.max_seq_len = predictor_config['max_seq_len']
 
     def encode(self, texts):
         sequences = self.tokenizer.texts_to_sequences(texts)

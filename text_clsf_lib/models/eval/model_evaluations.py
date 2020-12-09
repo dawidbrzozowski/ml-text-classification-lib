@@ -5,7 +5,7 @@ from sortedcontainers.sortedlist import SortedList
 from sklearn import metrics
 from text_clsf_lib.models.eval.model_prediction import ModelPrediction
 import matplotlib
-
+from sklearn.metrics import classification_report
 from text_clsf_lib.models.eval.plots import _plot_multiple_precision_recall_curves, _plot_multiple_roc_curves, \
     _plot_multiple_conf_matrices, _plot_precision_recall, _plot_roc_curve, _plot_confusion_matrix, _plot_model_metrics
 
@@ -172,6 +172,7 @@ def metrics_test(predictions, true_labels,
         _plot_roc_curve(predictions, true_labels, 1)
     if plot_conf_matrix:
         _plot_confusion_matrix(pred_labels, true_labels)
+    print(classification_report(true_labels, pred_labels))
     return {
         'precision': metrics.precision_score(true_labels, pred_labels),
         'recall': metrics.recall_score(true_labels, pred_labels),

@@ -5,11 +5,12 @@ import os
 
 from sklearn.feature_extraction.text import TfidfVectorizer, CountVectorizer
 
-from text_clsf_lib.preprocessing.vectorization.embeddings.embedding_loaders import EmbeddingsLoader
+from text_clsf_lib.preprocessing.vectorization.embeddings.embedding_loaders import WordEmbeddingsLoader
 from text_clsf_lib.preprocessing.vectorization.embeddings.matrix_preparer import EmbeddingsMatrixPreparer
-from text_clsf_lib.preprocessing.vectorization.embeddings.text_encoders import TextEncoderBase, LoadedTextEncoder
-from utils.files_io import write_pickle, write_numpy
+from text_clsf_lib.preprocessing.vectorization.embeddings.text_encoders import TextEncoder, LoadedTextEncoder
+from utils.files_io import write_pickle, write_numpy, read_pickle, read_numpy, write_json_file, load_json
 import numpy as np
+from bpemb import BPEmb
 
 VECTORIZER_NAME = 'vectorizer.vec'
 EMBEDDING_MATRIX_NAME = 'embedding_matrix.npy'
@@ -72,12 +73,12 @@ class TfIdfTextVectorizer(TextVectorizer):
         return self.tfidf_vec.transform(texts).toarray()
 
 
-class EmbeddingTextVectorizer(TextVectorizer):
-    def __init__(self, text_encoder: TextEncoderBase, embedding_dim, embeddings_loader: EmbeddingsLoader):
-        self.text_encoder = text_encoder
+class GloveEmbeddingTextVectorizer(TextVectorizer):
+    def __init__(self, max_vocab_size, max_seq_len, embedding_dim, embedding_type):
+        self.text_encoder = TextEncoder(max_vocab_size=max_vocab_size, max_seq_len=max_seq_len)
         self.embedding_dim = embedding_dim
         self.embedding_matrix = None
-        self.embeddings_loader = embeddings_loader
+        self.embeddings_loader = WordEmbeddingsLoader(embedding_type)
 
     def fit(self, texts: List[str]):
         self.text_encoder.fit(texts)
@@ -94,6 +95,43 @@ class EmbeddingTextVectorizer(TextVectorizer):
         return self.text_encoder.encode(texts)
 
 
+class BPEEmbeddingTextVectorizer(TextVectorizer):
+    def __init__(self, embedding_dim, max_seq_len, max_vocab_size, **kwargs):
+        self.bpemb = BPEmb(lang='en', vs=max_vocab_size, dim=embedding_dim, add_pad_emb=True)
+        self.max_seq_len = max_seq_len
+
+    def fit(self, texts: List[str]):
+        pass
+
+    def save(self, save_dir):
+        os.makedirs(f'{save_dir}', exist_ok=True)
+        write_numpy(f'{save_dir}/{EMBEDDING_MATRIX_NAME}', self.bpemb.vectors)
+        predictor_config = {
+            'max_seq_len': self.max_seq_len,
+            'embedding_dim': self.bpemb.dim,
+            'max_vocab_size': self.bpemb.vs
+        }
+        write_json_file(f'{save_dir}/bpemb_config.json', predictor_config)
+        with open(f'{save_dir}/vocab.txt', 'w') as f:
+            for word in self.bpemb.words:
+                f.write(f'{word}\n')
+
+    def vectorize(self, texts: List[str]):
+        return _vectorize_padded(bpemb=self.bpemb, max_seq_len=self.max_seq_len, texts=texts)
+
+
+def _vectorize_padded(bpemb, max_seq_len, texts: List[str]):
+    ids_not_padded = bpemb.encode_ids(texts)
+    for text_enc in ids_not_padded:
+        if len(text_enc) > max_seq_len:
+            text_enc = text_enc[:max_seq_len]
+        elif len(text_enc) < max_seq_len:
+            padding = [0] * (max_seq_len - len(text_enc))
+            text_enc.extend(padding)
+    padded = np.array(ids_not_padded)
+    return padded
+
+
 class LoadedTextVectorizer:
     """
     This is a base class for LoadedTextVectorizers.
@@ -106,17 +144,28 @@ class LoadedTextVectorizer:
 
 
 class LoadedEmbeddingTextVectorizer(LoadedTextVectorizer):
-    def __init__(self, text_encoder: LoadedTextEncoder, embedding_matrix):
-        self.text_encoder = text_encoder
-        self.embedding_matrix = embedding_matrix
+    def __init__(self, predictor_config_path, tokenizer_path):
+        self.text_encoder = LoadedTextEncoder(tokenizer_path=tokenizer_path,
+                                              predictor_config_path=predictor_config_path)
 
     def vectorize(self, texts: List[str]):
         return self.text_encoder.encode(texts)
 
 
 class LoadedTfIdfTextVectorizer(LoadedTextVectorizer):
-    def __init__(self, vectorizer):
-        self.tfidf_vec = vectorizer
+    def __init__(self, vectorizer_path):
+        self.tfidf_vec = read_pickle(vectorizer_path)
 
     def vectorize(self, texts: List[str]):
         return self.tfidf_vec.transform(texts).toarray()
+
+
+class LoadedBPEEmbeddingTextVectorizer(LoadedTextVectorizer):
+    def __init__(self, predictor_config_path):
+        predictor_config = load_json(predictor_config_path)
+        self.bpemb = BPEmb(lang='en', dim=predictor_config['embedding_dim'],
+                           vs=predictor_config['max_vocab_size'], add_pad_emb=True)
+        self.max_seq_len = predictor_config['max_seq_len']
+
+    def vectorize(self, texts: List[str]):
+        return _vectorize_padded(bpemb=self.bpemb, max_seq_len=self.max_seq_len, texts=texts)

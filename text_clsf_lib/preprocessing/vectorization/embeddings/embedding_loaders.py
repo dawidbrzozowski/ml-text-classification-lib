@@ -1,30 +1,21 @@
-from abc import abstractmethod
-
 import numpy as np
 
-EMBEDDINGS_DIR = 'text_clsf_lib/preprocessing/vectorization/resources/embeddings/glove'
+EMBEDDINGS_DIR = 'text_clsf_lib/preprocessing/vectorization/resources/embeddings'
+
+EMBEDDING_TYPES = {
+    'glove_twitter': 'glove/twitter',
+    'glove_wiki': 'glove/wiki'
+}
 
 
-class EmbeddingsLoader:
-    """
-    This class is a base for Embedding loaders.
-    It's goal is to return word2vec. (Dict with keys of type str and values ndarray of size embedding_dim)
-    """
-    def __init__(self, embedding_dir):
-        self.embedding_dir = embedding_dir
-
-    @abstractmethod
-    def load_word_vectors(self, embedding_dim) -> dict:
-        pass
-
-
-class GloveEmbeddingsLoader(EmbeddingsLoader):
+class WordEmbeddingsLoader:
     """
     Loads in GloVe embeddings for twitter or wiki, depending on glove_type.
     """
-    def __init__(self, glove_type):
-        embedding_dir = f'{EMBEDDINGS_DIR}/{glove_type}'
-        super().__init__(embedding_dir)
+    def __init__(self, embedding_type: str):
+        assert  embedding_type in EMBEDDING_TYPES, \
+            f'Embedding type should be one of the following: {[key for key in EMBEDDING_TYPES]}'
+        self.embedding_dir = f'{EMBEDDINGS_DIR}/{EMBEDDING_TYPES[embedding_type]}'
 
     def load_word_vectors(self, embedding_dim) -> dict:
         print(f'Loading pre-trained GloVe word vectors from {self.embedding_dir}/{embedding_dim}d.txt.')
