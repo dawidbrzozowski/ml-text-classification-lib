@@ -4,49 +4,33 @@ from text_clsf_lib.predictors.predictor_commons import get_embedding_preprocesso
 
 PRESETS = {
 
-    'tfidf_predictor': {
+    'count_predictor': {
         'preprocessor_func':                        get_tfidf_preprocessor,
         'model_func':                               get_model,
         'preprocessing_params': {
-            'text_cleaning_params': {
-                'use_ner':                          None,
-                'use_ner_converter':                None,
-                'use_twitter_data_preprocessing':   None
-            },
+            'config_path':                         'preprocessor/predictor_config.json',
             'vectorizer_params': {
                 'vectorizer_path':                 'preprocessor/vectorizer.vec',
             }
         }
     },
 
-
     'embedding_predictor': {
         'model_func':                               get_model,
         'preprocessor_func':                        get_embedding_preprocessor,
         'preprocessing_params': {
-            'text_cleaning_params': {
-                'use_ner':                          None,
-                'use_ner_converter':                None,
-                'use_twitter_data_preprocessing':   None
-            },
+            'config_path':                         'preprocessor/predictor_config.json',
             'vectorizer_params': {
                 'text_encoder_path':               'preprocessor/tokenizer.pickle',
-                'config_path':                     'preprocessor/predictor_config.json',
             },
         }
     },
+
     'bpe_predictor': {
         'model_func':                               get_model,
         'preprocessor_func':                        get_bpe_preprocessor,
         'preprocessing_params': {
-            'text_cleaning_params': {
-                'use_ner':                          None,
-                'use_ner_converter':                None,
-                'use_twitter_data_preprocessing':   None
-            },
-            'vectorizer_params': {
                 'config_path':                     'preprocessor/predictor_config.json',
-            },
         }
     },
 }
@@ -73,7 +57,7 @@ def create_predictor_preset(
     :return: dict, predictor preset.
     """
     predictor_presets = {
-        'tfidf': 'tfidf_predictor',
+        'count': 'count_predictor',
         'embedding': 'embedding_predictor',
         'bpe': 'bpe_predictor'
     }
@@ -83,7 +67,4 @@ def create_predictor_preset(
     model = f'{model_name}.h5'
     preset['preprocessing_params']['model_dir'] = model_dir
     preset['model_path'] = f'{model_dir}/{model}'
-    preset['preprocessing_params']['text_cleaning_params']['use_ner'] = ner_cleaning
-    preset['preprocessing_params']['text_cleaning_params']['use_ner_converter'] = ner_converter
-    preset['preprocessing_params']['text_cleaning_params']['use_twitter_data_preprocessing'] = twitter_preprocessing
     return preset

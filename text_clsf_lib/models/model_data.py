@@ -1,5 +1,6 @@
 from text_clsf_lib.preprocessing.cleaning.data_cleaners import PresetDataCleaner, TextCleaner, OutputCleaner
 from text_clsf_lib.preprocessing.preprocessors import DataPreprocessor
+from utils.files_io import write_json
 
 
 def prepare_model_data(data_params: dict, vectorizer_params: dict) -> dict:

@@ -23,7 +23,8 @@ if __name__ == '__main__':
     bpe_rnn = create_preset('bpe_rnn',
                             model_name='bpe_rnn',
                             twitter_preprocessing=True,
-                            epochs=2,
+                            use_lowercase=True,
+                            epochs=1,
                             lr=0.001,
                             ner_cleaning=False)
-    print(train(preset_glove_rnn))
+    print(train(my_bow))

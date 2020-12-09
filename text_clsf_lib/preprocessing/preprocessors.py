@@ -25,6 +25,7 @@ class DataPreprocessor:
         self.data_vectorizer.fit(texts, outputs)
 
     def save(self, save_dir):
+        self.data_cleaner.save(save_dir)
         self.data_vectorizer.save(save_dir)
 
     def vectorize(self, data: Tuple[list, list]):

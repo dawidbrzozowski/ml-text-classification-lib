@@ -3,7 +3,7 @@ from typing import List
 
 from keras_preprocessing.sequence import pad_sequences
 from keras_preprocessing.text import Tokenizer
-from utils.files_io import write_pickle, read_pickle, write_json_file, load_json
+from utils.files_io import write_pickle, read_pickle, load_json, append_json
 import os
 
 TOKENIZER_NAME = 'tokenizer.pickle'
@@ -52,8 +52,10 @@ class TextEncoder(TextEncoderBase):
             f.write('<pad>\n')
             for word in vocab:
                 f.write(f'{word}\n')
-        predictor_config = {'max_seq_len': self.max_seq_len}
-        write_json_file(f'{save_dir}/predictor_config.json', predictor_config)
+        predictor_config = {
+            'vectorizer': {'max_seq_len': self.max_seq_len}
+        }
+        append_json(f'{save_dir}/predictor_config.json', predictor_config)
 
     def encode(self, texts):
         sequences = self.tokenizer.texts_to_sequences(texts)
@@ -65,7 +67,7 @@ class LoadedTextEncoder:
     def __init__(self, tokenizer_path, predictor_config_path):
         self.tokenizer = read_pickle(tokenizer_path)
         predictor_config = load_json(predictor_config_path)
-        self.max_seq_len = predictor_config['max_seq_len']
+        self.max_seq_len = predictor_config['vectorizer']['max_seq_len']
 
     def encode(self, texts):
         sequences = self.tokenizer.texts_to_sequences(texts)

@@ -4,8 +4,8 @@ from typing import List, Tuple
 import en_core_web_sm
 from nltk import word_tokenize
 from nltk.stem import PorterStemmer, WordNetLemmatizer
-from utils.files_io import load_json
-
+from utils.files_io import load_json, write_json
+import os
 NER_CONVERTER_DEF_PATH = 'preprocessing/cleaning/resources/ner_converter.json'
 
 
@@ -19,8 +19,15 @@ class DataCleaner:
     def clean(self, data: List[dict]) -> Tuple[list, list]:
         pass
 
+    @abstractmethod
+    def save(self, save_dir):
+        pass
+
 
 class BaselineDataCleaner(DataCleaner):
+    def save(self, save_dir):
+        write_json(f'{save_dir}/predictor_config.json', {'text_cleaner': {}})
+
     def clean(self, data: List[dict]):
         return data
 
@@ -44,15 +51,32 @@ class TextCleaner:
                  use_ner_converter=False,
                  use_stemming=False,
                  use_lemmatization=False,
-                 use_twitter_data_preprocessing=False):
+                 use_twitter_data_preprocessing=False,
+                 lowercase=True):
         self.replace_numbers = replace_numbers
         self.ner_tagger = en_core_web_sm.load() if use_ner else None
         self.ner_converter = None
         self.stemmer = PorterStemmer() if use_stemming else None
         self.lemmatizer = WordNetLemmatizer() if use_lemmatization else None
         self.use_twitter_data_preprocessing = use_twitter_data_preprocessing
+        self.lowercase = lowercase
         if use_ner and use_ner_converter:
             self.ner_converter = load_json(NER_CONVERTER_DEF_PATH)
+
+    def save(self, save_dir):
+        text_cleaner_config = {
+            'text_cleaner': {
+                'replace_numbers': self.replace_numbers,
+                'use_ner': True if self.ner_tagger is not None else False,
+                'use_ner_converter': True if self.ner_converter is not None else False,
+                'use_stemming': True if self.stemmer is not None else False,
+                'use_lemmatization': True if self.lemmatizer is not None else False,
+                'use_twitter_data_preprocessing': self.use_twitter_data_preprocessing,
+                'lowercase': self.lowercase
+                }
+        }
+        os.makedirs(f'{save_dir}', exist_ok=True)
+        write_json(f'{save_dir}/predictor_config.json', text_cleaner_config)
 
     def clean(self, texts: List[str]):
         print('Started data cleaning...')
@@ -71,8 +95,14 @@ class TextCleaner:
         if self.lemmatizer is not None:
             print('Lemmatizing text...')
             texts = self._lemmatize_texts(texts)
+        if self.lowercase:
+            print('Lowercasing...')
+            texts = self._lowercase_texts(texts)
         print('Data cleaning finished!')
         return texts
+
+    def _lowercase_texts(self, texts):
+        return [text.lower() for text in texts]
 
     def _perform_ner_on_texts(self, texts):
         processed_texts = []
@@ -147,6 +177,10 @@ class PresetDataCleaner(DataCleaner):
     """
     Uses TextCleaner and OutputCleaner to clean the whole dataset.
     """
+
+    def save(self, save_dir):
+        self.text_cleaner.save(save_dir)
+
     def __init__(self, text_cleaner: TextCleaner, output_cleaner: OutputCleaner):
         self.text_cleaner = text_cleaner
         self.output_cleaner = output_cleaner

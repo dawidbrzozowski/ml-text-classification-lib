@@ -4,7 +4,7 @@ from argparse import ArgumentParser
 from sklearn.model_selection import train_test_split
 
 from text_clsf_lib.data_preparation.data_extracton import SemevalDataRetriever
-from utils.files_io import write_json_file, load_json
+from utils.files_io import write_json, load_json
 from project_settings import RANDOM_STATE
 
 MIN_AMOUNT = 1
@@ -34,7 +34,7 @@ def download_corpus(size: int, verbose=1):
 def save_downloaded_corpus(corpus, verbose=1):
     os.makedirs(f'{DIR_NAME}/{len(corpus)}', exist_ok=True)
     file_path = f'{DIR_NAME}/{len(corpus)}/{FILE_NAME}'
-    write_json_file(file_path, corpus)
+    write_json(file_path, corpus)
     if verbose == 1:
         print(f'Processed {len(corpus)} rows and saved to {file_path}')
 
@@ -46,8 +46,8 @@ def save_train_test_split(corpus, test_size: float, verbose=1, stratify_fraction
     if verbose == 1:
         print('Performing train test split...')
     train, test = train_test_split(corpus, stratify=stratify_column, test_size=test_size, random_state=RANDOM_STATE)
-    write_json_file(f'{DIR_NAME}/{len(corpus)}/train_{FILE_NAME}', train)
-    write_json_file(f'{DIR_NAME}/{len(corpus)}/test_{FILE_NAME}', test)
+    write_json(f'{DIR_NAME}/{len(corpus)}/train_{FILE_NAME}', train)
+    write_json(f'{DIR_NAME}/{len(corpus)}/test_{FILE_NAME}', test)
     if verbose == 1:
         print(f'Train test files saved to: {DIR_NAME}/{len(corpus)}')
 

@@ -21,9 +21,13 @@ PRESETS = {
             'data_extractor':                       BaselineJsonDataExtractor,
             'cleaning_params': {
                 'text': {
-                    'use_ner':                          False,
-                    'use_ner_converter':                True,
-                    'use_twitter_data_preprocessing':   True,
+                    'replace_numbers':              False,
+                    'use_ner':                      False,
+                    'use_ner_converter':            False,
+                    'use_stemming':                 False,
+                    'use_lemmatization':            False,
+                    'use_twitter_data_preprocessing':False,
+                    'lowercase':                    True
                 },
                 'output': {
                     'output_verification_func':     binary_output
@@ -66,9 +70,13 @@ PRESETS = {
             'data_extractor':                       BaselineJsonDataExtractor,
             'cleaning_params': {
                 'text': {
-                    'use_ner':                          False,
-                    'use_ner_converter':                True,
-                    'use_twitter_data_preprocessing':   True,
+                    'replace_numbers':              False,
+                    'use_ner':                      False,
+                    'use_ner_converter':            False,
+                    'use_stemming':                 False,
+                    'use_lemmatization':            False,
+                    'use_twitter_data_preprocessing':False,
+                    'lowercase':                    True
                 },
                 'output': {
                     'output_verification_func':     binary_output
@@ -112,9 +120,13 @@ PRESETS = {
             'data_extractor':                       BaselineJsonDataExtractor,
             'cleaning_params': {
                 'text': {
-                    'use_ner':                          False,
-                    'use_ner_converter':                True,
-                    'use_twitter_data_preprocessing':   True,
+                    'replace_numbers':              False,
+                    'use_ner':                      False,
+                    'use_ner_converter':            False,
+                    'use_stemming':                 False,
+                    'use_lemmatization':            False,
+                    'use_twitter_data_preprocessing':False,
+                    'lowercase':                    True
                 },
                 'output': {
                     'output_verification_func':     binary_output
@@ -164,9 +176,13 @@ PRESETS = {
             'data_extractor':                       BaselineJsonDataExtractor,
             'cleaning_params': {
                 'text': {
-                    'use_ner':                          False,
-                    'use_ner_converter':                True,
-                    'use_twitter_data_preprocessing':   True,
+                    'replace_numbers':              False,
+                    'use_ner':                      False,
+                    'use_ner_converter':            False,
+                    'use_stemming':                 False,
+                    'use_lemmatization':            False,
+                    'use_twitter_data_preprocessing':False,
+                    'lowercase':                    True
                 },
                 'output': {
                     'output_verification_func':     binary_output
@@ -213,9 +229,13 @@ PRESETS = {
             'data_extractor':                       BaselineJsonDataExtractor,
             'cleaning_params': {
                 'text': {
-                    'use_ner':                          False,
-                    'use_ner_converter':                True,
-                    'use_twitter_data_preprocessing':   True,
+                    'replace_numbers':              False,
+                    'use_ner':                      False,
+                    'use_ner_converter':            False,
+                    'use_stemming':                 False,
+                    'use_lemmatization':            False,
+                    'use_twitter_data_preprocessing':False,
+                    'lowercase':                    True
                 },
                 'output': {
                     'output_verification_func':     binary_output

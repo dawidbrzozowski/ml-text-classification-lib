@@ -8,7 +8,7 @@ from sklearn.feature_extraction.text import TfidfVectorizer, CountVectorizer
 from text_clsf_lib.preprocessing.vectorization.embeddings.embedding_loaders import WordEmbeddingsLoader
 from text_clsf_lib.preprocessing.vectorization.embeddings.matrix_preparer import EmbeddingsMatrixPreparer
 from text_clsf_lib.preprocessing.vectorization.embeddings.text_encoders import TextEncoder, LoadedTextEncoder
-from utils.files_io import write_pickle, write_numpy, read_pickle, read_numpy, write_json_file, load_json
+from utils.files_io import write_pickle, write_numpy, read_pickle, load_json, append_json
 import numpy as np
 from bpemb import BPEmb
 
@@ -107,11 +107,12 @@ class BPEEmbeddingTextVectorizer(TextVectorizer):
         os.makedirs(f'{save_dir}', exist_ok=True)
         write_numpy(f'{save_dir}/{EMBEDDING_MATRIX_NAME}', self.bpemb.vectors)
         predictor_config = {
-            'max_seq_len': self.max_seq_len,
-            'embedding_dim': self.bpemb.dim,
-            'max_vocab_size': self.bpemb.vs
+            'vectorizer': {
+                'max_seq_len': self.max_seq_len,
+                'embedding_dim': self.bpemb.dim,
+                'max_vocab_size': self.bpemb.vs}
         }
-        write_json_file(f'{save_dir}/bpemb_config.json', predictor_config)
+        append_json(f'{save_dir}/predictor_config.json', predictor_config)
         with open(f'{save_dir}/vocab.txt', 'w') as f:
             for word in self.bpemb.words:
                 f.write(f'{word}\n')
@@ -162,7 +163,7 @@ class LoadedTfIdfTextVectorizer(LoadedTextVectorizer):
 
 class LoadedBPEEmbeddingTextVectorizer(LoadedTextVectorizer):
     def __init__(self, predictor_config_path):
-        predictor_config = load_json(predictor_config_path)
+        predictor_config = load_json(predictor_config_path)['vectorizer']
         self.bpemb = BPEmb(lang='en', dim=predictor_config['embedding_dim'],
                            vs=predictor_config['max_vocab_size'], add_pad_emb=True)
         self.max_seq_len = predictor_config['max_seq_len']

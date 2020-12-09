@@ -11,6 +11,10 @@ def create_preset(
         ner_cleaning: bool = None,
         ner_converter: bool = None,
         twitter_preprocessing: bool = None,
+        replace_numbers: bool = None,
+        use_lemmatization: bool = None,
+        use_stemming: bool = None,
+        use_lowercase: bool = None,
         output_verification_func=None,
         # vectorization parameters
         vector_width: int = None,
@@ -48,7 +52,11 @@ def create_preset(
     It is not recommended for large dataset, since this might take a long time.
     :param ner_converter: When ner_cleaning is set to True, NER converter translates the names for better emedding understanding.
     :param twitter_preprocessing: When set to True, it will run twitter data preprocessing.
-        Recommended especially when using GloVe Twitter embeddings.
+    :param replace_numbers: bool Replaces numbers in corpus with a special token.
+    :param use_lemmatization: bool Lemmatizes corpus.
+    :param use_stemming: bool Performs stemming on corpus.
+    :param use_lowercase: bool: bool Performs lowercasing on corpus.
+    Recommended especially when using GloVe Twitter embeddings.
     :param output_verification_func: provide your own function, for data verification.
         This function should check if the model output is correct.
     :param vector_width: Used for Tfidf vectorizer if used.
@@ -85,6 +93,10 @@ def create_preset(
     _put_or_default(preset, ner_cleaning, 'data_params:cleaning_params:text', 'use_ner')
     _put_or_default(preset, ner_converter, 'data_params:cleaning_params:text', 'use_ner_converter')
     _put_or_default(preset, twitter_preprocessing, 'data_params:cleaning_params:text', 'use_twitter_data_preprocessing')
+    _put_or_default(preset, replace_numbers, 'data_params:cleaning_params:text', 'replace_numbers')
+    _put_or_default(preset, use_lemmatization, 'data_params:cleaning_params:text', 'use_lemmatization')
+    _put_or_default(preset, use_lowercase, 'data_params:cleaning_params:text', 'lowercase')
+    _put_or_default(preset, use_stemming, 'data_params:cleaning_params:text', 'use_stemming')
     _put_or_default(preset, output_verification_func, 'data_params:cleaning_params:output', 'output_verification_func')
     _put_or_default(preset, vector_width, 'vectorizer_params', 'vector_width')
     _put_or_default(preset, preprocessor_save_dir, 'vectorizer_params', 'save_dir')
