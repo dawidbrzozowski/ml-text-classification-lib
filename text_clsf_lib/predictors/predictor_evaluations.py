@@ -63,8 +63,8 @@ def deep_test_on_sample_lime(predictor: Predictor,
 
 
 if __name__ == '__main__':
-    text = "I don't like when such situation happens! It rains again!"
-    preset = create_predictor_preset('bpe_current_best', 'bpe')
+    text = "I hate when such situation happens! It rains again!"
+    preset = create_predictor_preset('bpe_word_limit', 'bpe')
     predictor = Predictor(preset)
     deep_test_on_sample_lime(predictor=predictor,
                              text=text,

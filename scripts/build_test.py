@@ -1,4 +1,4 @@
-from text_clsf_lib.models.presets.preset_creation import create_preset
+from text_clsf_lib.models.presets.preset_creation import create_preset, load_preset
 from text_clsf_lib.models.build_train_save import train
 from text_clsf_lib.models.test_trained_model import test_single_model, test_multiple_models, test_single_model_sample_analysis
 
@@ -9,9 +9,7 @@ if __name__ == '__main__':
                                      epochs=1,
                                      lr=0.001,
                                      ner_cleaning=False)
-    my_tfidf = create_preset('tfidf_feedforward',
-                             model_name='my_tfidf',
-                             twitter_preprocessing=False, epochs=2)
+    my_tfidf = load_preset('my_tfidf')
     my_bow = create_preset('bag_of_words_feedforward',
                            model_name='my_bow',
                            twitter_preprocessing=False)
@@ -30,5 +28,5 @@ if __name__ == '__main__':
                             ],
                             epochs=4,
                             lr=0.001)
-    #train(bpe_rnn)
-    test_single_model_sample_analysis(bpe_rnn, )
+    test_single_model(my_tfidf)
+    # test_single_model_sample_analysis(bpe_rnn, )

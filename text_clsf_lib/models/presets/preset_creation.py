@@ -1,4 +1,8 @@
 from text_clsf_lib.models.presets.presets_base import PRESETS
+from utils.files_io import write_json, load_json
+import os
+
+PRESET_FILE_NAME = 'preset_config.json'
 
 
 def create_preset(
@@ -101,7 +105,7 @@ def create_preset(
     :return: dict. Model preset.
 
     """
-
+    args = locals()
     preset = dict(PRESETS[preset_base])
     _put_or_default(preset, model_name, '', 'model_name')
     model_save_dir = model_save_dir if model_save_dir is not None else preset['model_save_dir']
@@ -142,6 +146,8 @@ def create_preset(
     _put_or_default(preset, validation_split, 'training_params', 'validation_split')
     _put_or_default(preset, callbacks, 'training_params', 'callbacks')
 
+    save_preset(f'{model_save_dir}/{model_name}', args)
+
     return preset
 
 
@@ -155,3 +161,16 @@ def _put_or_default(preset: dict, value, context_path: str, attribute_name: str)
             context = context.get(el)
     if attribute_name in context.keys():
         context[attribute_name] = value
+
+
+def load_preset(model_name: str, model_dir='_models'):
+    preset_path = f'{model_dir}/{model_name}/{PRESET_FILE_NAME}'
+    preset_args = load_json(preset_path)
+    return create_preset(**preset_args)
+
+
+def save_preset(save_dir: str, preset_args: dict):
+    not_null_preset_args = {k: v for k, v in preset_args.items() if v is not None}
+    os.makedirs(save_dir, exist_ok=True)
+    write_json(f'{save_dir}/{PRESET_FILE_NAME}', not_null_preset_args)
+
