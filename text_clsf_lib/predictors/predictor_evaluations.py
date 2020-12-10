@@ -2,9 +2,12 @@ from typing import List
 
 from text_clsf_lib.predictors.predictor import Predictor
 import numpy as np
+from lime.lime_text import LimeTextExplainer
+
+from text_clsf_lib.predictors.presets import create_predictor_preset
 
 
-def deep_predictor_test_on_sample(predictor: Predictor, text: str, desired_label=1) -> List[tuple]:
+def deep_predictor_test_on_sample_own_impl(predictor: Predictor, text: str, desired_label=1) -> List[tuple]:
     """
     This function should be used for analyzing predictions made by predictor.
     The function will print the importance of each word when making a prediction.
@@ -27,5 +30,43 @@ def deep_predictor_test_on_sample(predictor: Predictor, text: str, desired_label
         probs_without_word[word] = predictor.predict(subtext)[0][desired_label]
         print(probs_without_word[word])
     std_deviation = np.std([probs_without_word[word] for word in words])
-    impact_on_text = {word: (probs_without_word[word] - whole_sentence_prob)/std_deviation for word in words}
+    impact_on_text = {word: (probs_without_word[word] - whole_sentence_prob) / std_deviation for word in words}
     return sorted(impact_on_text.items(), key=lambda item: item[1])
+
+
+class LimePredictor:
+    def __init__(self, predictor: Predictor):
+        self.preprocessor = predictor.preprocessor
+        self.model_runner = predictor.model_runner
+
+    def predict(self, text: list or str):
+        preprocessed = self.preprocessor.clean_vectorize(text)
+        return self.model_runner.run(preprocessed)
+
+
+def deep_test_on_sample_lime(predictor: Predictor,
+                             text: str,
+                             labels_to_explain: List[int],
+                             true_label=None):
+    lime_predictor = LimePredictor(predictor)
+    explainer = LimeTextExplainer()
+    explained_instance = explainer.explain_instance(
+        text_instance=text,
+        classifier_fn=lime_predictor.predict,
+        labels=labels_to_explain)
+    print(f'Explaining text: {text}')
+    print(f'Model prediction: {predictor.predict(text)}')
+    print(f'True label: {true_label}')
+    for label in labels_to_explain:
+        print(f'Explanation for label: {label}')
+        print('\n'.join(map(str, explained_instance.as_list(label=label))))
+
+
+if __name__ == '__main__':
+    text = "I don't like when such situation happens! It rains again!"
+    preset = create_predictor_preset('bpe_current_best', 'bpe')
+    predictor = Predictor(preset)
+    deep_test_on_sample_lime(predictor=predictor,
+                             text=text,
+                             labels_to_explain=[1],
+                             true_label=0)
