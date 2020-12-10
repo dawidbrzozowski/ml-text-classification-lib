@@ -3,7 +3,7 @@ from typing import List
 
 from keras_preprocessing.sequence import pad_sequences
 from keras_preprocessing.text import Tokenizer
-from utils.files_io import write_pickle, read_pickle, load_json, append_json
+from text_clsf_lib.utils.files_io import write_pickle, read_pickle, load_json, append_json
 import os
 
 TOKENIZER_NAME = 'tokenizer.pickle'

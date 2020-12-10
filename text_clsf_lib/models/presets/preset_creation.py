@@ -1,4 +1,8 @@
 from text_clsf_lib.models.presets.presets_base import PRESETS
+from text_clsf_lib.utils.files_io import write_json, load_json
+import os
+
+PRESET_FILE_NAME = 'preset_config.json'
 
 
 def create_preset(
@@ -7,11 +11,13 @@ def create_preset(
         model_name: str = None,
         model_save_dir: str = None,
         # data parameters
-        data_extractor=None,
+        data_path=None,
+        test_size=None,
         use_corpus_balancing=None,
         corpus_word_limit=None,
         X_name=None,
         y_name=None,
+        train_test_random_state=None,
         ner_cleaning: bool = None,
         ner_converter: bool = None,
         twitter_preprocessing: bool = None,
@@ -45,6 +51,7 @@ def create_preset(
         callbacks: list = None):
     """
     This function creates a preset for a custom model architecture.
+    :param train_test_random_state: random state for train/test split for single file extraction.
     :param preset_base: Each model should be based on a base preset.
         This helps to speed up the process of model creation.
         Currently implemented preset_base:
@@ -53,9 +60,8 @@ def create_preset(
             - glove_rnn : use if you want your model to be based on embeddings and RNN architecture.
     :param model_name: this will be the name of your model and also the directory in which it will be stored.
     :param model_save_dir: model parent directory. _models for default.
-    :param data_extractor: If you want to train your model on custom data,
-     use one of the provided data_extractor from the library or create your own.
-     More in: text_clsf_lib/data_preparation/data_extraction.py
+    :param data_path: str or tuple of two strings (train path, test path). If one provided, train_test_split will be executed.
+    :param test_size: float if one data_path is provided, train test split will be executed with given test_size. Default 0.2.
     :param use_corpus_balancing: bool. Define if you want your samples to be even in terms of categories (using undersampling method).
     :param y_name: str. if use_corpus_balancing is used, you must provide key name for your y label in the corpus.
     :param corpus_word_limit: int. Define if you want to get rid of samples, that have more than corpus_word_limit words.
@@ -101,16 +107,18 @@ def create_preset(
     :return: dict. Model preset.
 
     """
-
+    args = locals()
     preset = dict(PRESETS[preset_base])
     _put_or_default(preset, model_name, '', 'model_name')
     model_save_dir = model_save_dir if model_save_dir is not None else preset['model_save_dir']
     _put_or_default(preset, f'{model_save_dir}/{model_name}/model', '', 'model_save_dir')
-    _put_or_default(preset, data_extractor, 'data_params', 'data_extractor')
+    _put_or_default(preset, data_path, 'data_params', 'data_extractor')
     _put_or_default(preset, use_corpus_balancing, 'data_params', 'use_corpus_balancing')
     _put_or_default(preset, corpus_word_limit, 'data_params', 'corpus_word_limit')
-    _put_or_default(preset, X_name, 'data_params', 'X_name')
-    _put_or_default(preset, y_name, 'data_params', 'y_name')
+    _put_or_default(preset, X_name, 'data_params:extraction_params', 'X_name')
+    _put_or_default(preset, y_name, 'data_params:extraction_params', 'y_name')
+    _put_or_default(preset, data_path, 'data_params:extraction_params', 'path')
+    _put_or_default(preset, test_size, 'data_params:extraction_params', 'test_size')
     _put_or_default(preset, ner_cleaning, 'data_params:cleaning_params:text', 'use_ner')
     _put_or_default(preset, ner_converter, 'data_params:cleaning_params:text', 'use_ner_converter')
     _put_or_default(preset, twitter_preprocessing, 'data_params:cleaning_params:text', 'use_twitter_data_preprocessing')
@@ -142,6 +150,8 @@ def create_preset(
     _put_or_default(preset, validation_split, 'training_params', 'validation_split')
     _put_or_default(preset, callbacks, 'training_params', 'callbacks')
 
+    save_preset(f'{model_save_dir}/{model_name}', args)
+
     return preset
 
 
@@ -155,3 +165,16 @@ def _put_or_default(preset: dict, value, context_path: str, attribute_name: str)
             context = context.get(el)
     if attribute_name in context.keys():
         context[attribute_name] = value
+
+
+def load_preset(model_name: str, model_dir='_models'):
+    preset_path = f'{model_dir}/{model_name}/{PRESET_FILE_NAME}'
+    preset_args = load_json(preset_path)
+    return create_preset(**preset_args)
+
+
+def save_preset(save_dir: str, preset_args: dict):
+    not_null_preset_args = {k: v for k, v in preset_args.items() if v is not None}
+    os.makedirs(save_dir, exist_ok=True)
+    write_json(f'{save_dir}/{PRESET_FILE_NAME}', not_null_preset_args)
+

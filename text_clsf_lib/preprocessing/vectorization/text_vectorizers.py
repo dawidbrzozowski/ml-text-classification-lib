@@ -8,7 +8,7 @@ from sklearn.feature_extraction.text import TfidfVectorizer, CountVectorizer
 from text_clsf_lib.preprocessing.vectorization.embeddings.embedding_loaders import WordEmbeddingsLoader
 from text_clsf_lib.preprocessing.vectorization.embeddings.matrix_preparer import EmbeddingsMatrixPreparer
 from text_clsf_lib.preprocessing.vectorization.embeddings.text_encoders import TextEncoder, LoadedTextEncoder
-from utils.files_io import write_pickle, write_numpy, read_pickle, load_json, append_json
+from text_clsf_lib.utils.files_io import write_pickle, write_numpy, read_pickle, load_json, append_json
 import numpy as np
 from bpemb import BPEmb
 
@@ -130,7 +130,7 @@ def _vectorize_padded(bpemb, max_seq_len, texts: List[str]):
         if len(text_enc) > max_seq_len:
             text_enc = text_enc[:max_seq_len]
         elif len(text_enc) < max_seq_len:
-            padding = [0] * (max_seq_len - len(text_enc))
+            padding = [len(bpemb.words)-1] * (max_seq_len - len(text_enc))
             text_enc.extend(padding)
         ids_padded.append(text_enc)
     padded = np.array(ids_padded)

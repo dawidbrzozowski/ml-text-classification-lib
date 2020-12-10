@@ -1,6 +1,6 @@
 import unittest
 
-from text_clsf_lib.data_preparation.data_extracton import SemevalDataRetriever, DataType
+from scripts.get_tweets import DataType, SemevalDataRetriever
 
 
 class DataRetrievalTest(unittest.TestCase):

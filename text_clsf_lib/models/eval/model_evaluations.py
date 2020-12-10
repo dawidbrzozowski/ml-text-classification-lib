@@ -154,7 +154,8 @@ def metrics_test_multiple_models(model_output_true_label: dict,
 def metrics_test(predictions, true_labels,
                  plot_precision_recall=False,
                  plot_roc_curve=False,
-                 plot_conf_matrix=False) -> dict:
+                 plot_conf_matrix=False,
+                 output_idx: int = 1) -> dict:
     """
     Metrics test for a single model.
     Provides: precision, recall, f1-score, roc_auc_score, confusion matrix.
@@ -163,16 +164,16 @@ def metrics_test(predictions, true_labels,
     :param plot_precision_recall: plots precision recall curve if set to True.
     :param plot_roc_curve: plots ROC curve if set to True.
     :param plot_conf_matrix: plots confusion matrix if set to True.
+    :param output_idx: for which output plots should be generated.
     :return: dict containing metrics for provided predictions and true labels.
     """
     pred_labels = [np.argmax(prediction) for prediction in predictions]
     if plot_precision_recall:
-        _plot_precision_recall(predictions, true_labels, 1)
+        _plot_precision_recall(predictions, true_labels, output_idx)
     if plot_roc_curve:
-        _plot_roc_curve(predictions, true_labels, 1)
+        _plot_roc_curve(predictions, true_labels, output_idx)
     if plot_conf_matrix:
         _plot_confusion_matrix(pred_labels, true_labels)
-    print(classification_report(true_labels, pred_labels))
     return {
         'precision': metrics.precision_score(true_labels, pred_labels),
         'recall': metrics.recall_score(true_labels, pred_labels),

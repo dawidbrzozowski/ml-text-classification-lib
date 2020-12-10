@@ -39,10 +39,7 @@ PRESETS = {
 def create_predictor_preset(
         model_name: str,
         type_: str,  # tfidf or glove or bpe
-        model_dir: str = '_models',
-        ner_cleaning: bool = False,
-        ner_converter: bool = False,
-        twitter_preprocessing: bool = False):
+        model_dir: str = '_models'):
     """
     This function should be used for preparing predictor preset.
     It uses base presets, that are overridden by values provided in arguments.
