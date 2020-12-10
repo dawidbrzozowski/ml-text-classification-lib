@@ -9,8 +9,6 @@ from sklearn.metrics import classification_report
 from text_clsf_lib.models.eval.plots import _plot_multiple_precision_recall_curves, _plot_multiple_roc_curves, \
     _plot_multiple_conf_matrices, _plot_precision_recall, _plot_roc_curve, _plot_confusion_matrix, _plot_model_metrics
 
-matplotlib.use('TkAgg')
-
 
 def deep_samples_test(
         texts: List[str],
