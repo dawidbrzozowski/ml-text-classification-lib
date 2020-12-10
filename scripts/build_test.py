@@ -1,8 +1,7 @@
 from text_clsf_lib.models.presets.preset_creation import create_preset
 from text_clsf_lib.models.build_train_save import train
-from text_clsf_lib.models.test_trained_model import test_single_model, test_multiple_models
+from text_clsf_lib.models.test_trained_model import test_single_model, test_multiple_models, test_single_model_sample_analysis
 
-# TODO generować preset w folderze z modelem
 if __name__ == '__main__':
     preset_glove_rnn = create_preset('glove_rnn',
                                      model_name='glove_rnn',
@@ -17,7 +16,7 @@ if __name__ == '__main__':
                            model_name='my_bow',
                            twitter_preprocessing=False)
     bpe_rnn = create_preset('bpe_rnn',
-                            model_name='bpe_rnn_200',
+                            model_name='bpe_current_best',
                             twitter_preprocessing=True,
                             use_lowercase=True,
                             max_seq_len=200,
@@ -31,5 +30,5 @@ if __name__ == '__main__':
                             ],
                             epochs=4,
                             lr=0.001)
-    train(bpe_rnn)
-    test_single_model(bpe_rnn, run_metrics_test=True)
+    #train(bpe_rnn)
+    test_single_model_sample_analysis(bpe_rnn, )
