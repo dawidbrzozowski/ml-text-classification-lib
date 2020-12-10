@@ -70,9 +70,6 @@ class DoubleJsonDataExtractor(DataExtractor):
         data_test = [swap_key_name(sample, X_name, 'text') for sample in data_test]
         data_test = [swap_key_name(sample, y_name, 'label') for sample in data_test]
 
-        data_train = list(map(change_to_number, data_train))
-        data_test = list(map(change_to_number, data_test))
-
         return data_train, data_test
 
 
@@ -102,16 +99,10 @@ class SingleJsonDataExtractor(DataExtractor):
 
         corpus = [swap_key_name(sample, X_name, 'text') for sample in corpus]
         corpus = [swap_key_name(sample, y_name, 'label') for sample in corpus]
-        corpus = list(map(change_to_number, corpus))
         stratify_column = [sample['label'] for sample in corpus]
         data_train, data_test = train_test_split(
             corpus, stratify=stratify_column, test_size=test_size, random_state=RANDOM_STATE)
         return data_train, data_test
-
-
-def change_to_number(sample):
-    sample['label'] = 1 if sample['label'] else 0
-    return sample
 
 
 def swap_key_name(sample: dict, src_name: str, dest_name: str):
