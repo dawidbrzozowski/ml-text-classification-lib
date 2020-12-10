@@ -1,6 +1,6 @@
 import unittest
-from data_preparation.data_extracton import CustomPathJsonDataExtractor, BaselineJsonDataExtractor, \
-    CustomPathSingleFileJsonDataExtractor, SingleFileCustomPathTxtDataExtractor, CustomPathTxtDataExtractor
+from text_clsf_lib.data_preparation.data_extracton import DoubleJsonDataExtractor, BaselineJsonDataExtractor, \
+    SingleJsonDataExtractor, SingleFileCustomPathTxtDataExtractor, CustomPathTxtDataExtractor
 
 DATA_EXTRACTOR_TEST_DIR = 'tests/resources/data_extractor_tests'
 
@@ -8,12 +8,12 @@ DATA_EXTRACTOR_TEST_DIR = 'tests/resources/data_extractor_tests'
 class DataExtractionTest(unittest.TestCase):
     @classmethod
     def setUp(cls):
-        cls.required_fields = ('id', 'text', 'offensive')
+        cls.required_fields = ('text', 'offensive')
 
     def test_json_train_test_baseline(self):
         extr = BaselineJsonDataExtractor()
         data_tr, data_te = extr.get_train_test_corpus()
-        req_fields = ('id', 'text', 'offensive')
+        req_fields = ('text', 'offensive')
         for field in req_fields:
             self.assertIn(field, data_tr[0].keys())
 
@@ -41,27 +41,27 @@ class DataExtractionTest(unittest.TestCase):
 
     def test_json_train_test_bool(self):
         self.prepare_test_for_train_test_extr(
-            extractor=CustomPathJsonDataExtractor,
+            extractor=DoubleJsonDataExtractor,
             train_path=f'{DATA_EXTRACTOR_TEST_DIR}/train_test_separate/json_train_bool.json',
             test_path=f'{DATA_EXTRACTOR_TEST_DIR}/train_test_separate/json_test_bool.json',
             expected_offensive_type=int)
 
     def test_json_train_test_number(self):
         self.prepare_test_for_train_test_extr(
-            extractor=CustomPathJsonDataExtractor,
+            extractor=DoubleJsonDataExtractor,
             train_path=f'{DATA_EXTRACTOR_TEST_DIR}/train_test_separate/json_train_number.json',
             test_path=f'{DATA_EXTRACTOR_TEST_DIR}/train_test_separate/json_test_number.json',
             expected_offensive_type=int)
 
     def test_json_corpus_bool(self):
         self.prepare_test_for_corpus_extr(
-            extractor=CustomPathSingleFileJsonDataExtractor,
+            extractor=SingleJsonDataExtractor,
             corpus_path=f'{DATA_EXTRACTOR_TEST_DIR}/one_corpus/json_bool.json',
             expected_offensive_type=int)
 
     def test_json_corpus_number(self):
         self.prepare_test_for_corpus_extr(
-            extractor=CustomPathSingleFileJsonDataExtractor,
+            extractor=SingleJsonDataExtractor,
             corpus_path=f'{DATA_EXTRACTOR_TEST_DIR}/one_corpus/json_number.json',
             expected_offensive_type=int)
 

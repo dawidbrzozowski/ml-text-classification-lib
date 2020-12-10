@@ -1,11 +1,9 @@
 [
   {
-    "id": 123,
     "text": "First test sample text",
     "offensive": true
   },
   {
-    "id": 124,
     "text": "Second test sample text",
     "offensive": false
   }
