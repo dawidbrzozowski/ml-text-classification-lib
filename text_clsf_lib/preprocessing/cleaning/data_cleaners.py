@@ -168,7 +168,7 @@ class OutputCleaner:
     def clean(self, data: List[dict]):
         correct_data = []
         for sample in data:
-            if self.verifier_func is None or self.verifier_func(sample['offensive']):
+            if self.verifier_func is None or self.verifier_func(sample['label']):
                 correct_data.append(sample)
         return correct_data
 
@@ -192,9 +192,9 @@ class PresetDataCleaner(DataCleaner):
         for sample, cleaned_text in zip(data, cleaned_texts):
             cleaned_data.append({
                 'text': cleaned_text,
-                'offensive': sample['offensive']})
+                'label': sample['label']})
         cleaned_data = self.output_cleaner.clean(cleaned_data)
         cleaned_texts = [sample['text'] for sample in cleaned_data]
-        cleaned_outputs = [sample['offensive'] for sample in cleaned_data]
+        cleaned_outputs = [sample['label'] for sample in cleaned_data]
         return cleaned_texts, cleaned_outputs
 

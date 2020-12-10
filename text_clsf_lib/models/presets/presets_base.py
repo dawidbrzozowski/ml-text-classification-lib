@@ -1,6 +1,5 @@
 from keras import layers
 
-from text_clsf_lib.data_preparation.data_extracton import BaselineJsonDataExtractor
 from text_clsf_lib.models.embedding.components_preparation import prepare_embedding_data_vectorizer
 from text_clsf_lib.models.build.model_builder import TfIdfFFModelBuilder, EmbeddingFFModelBuilder, EmbeddingRNNModelBuilder
 from text_clsf_lib.models.tfidf.components_preparation import prepare_tfidf_data_vectorizer
@@ -18,11 +17,14 @@ PRESETS = {
         'model_name':                              'nn_tfidf',
         'model_save_dir':                          '_models',
         'data_params': {
-            'data_extractor':                       BaselineJsonDataExtractor,
+            'extraction_params': {
+                'X_name':                           None,
+                'y_name':                           None,
+                'path':                             None,
+                'test_size':                        None,
+            },
             'use_corpus_balancing':                 False,
             'corpus_word_limit':                    None,
-            'X_name':                               None,
-            'y_name':                               None,
             'cleaning_params': {
                 'text': {
                     'replace_numbers':              False,
@@ -71,11 +73,14 @@ PRESETS = {
         'model_name':                              'nn_tfidf',
         'model_save_dir':                          '_models',
         'data_params': {
-            'data_extractor':                       BaselineJsonDataExtractor,
+            'extraction_params': {
+                'X_name':                           None,
+                'y_name':                           None,
+                'path':                             None,
+                'test_size':                        None,
+            },
             'use_corpus_balancing':                 False,
             'corpus_word_limit':                    None,
-            'X_name':                               None,
-            'y_name':                               None,
 
             'cleaning_params': {
                 'text': {
@@ -126,11 +131,14 @@ PRESETS = {
         'model_name':                              'nn_embedding',
         'model_save_dir':                          '_models',
         'data_params': {
-            'data_extractor':                       BaselineJsonDataExtractor,
+            'extraction_params': {
+                'X_name':                           None,
+                'y_name':                           None,
+                'path':                             None,
+                'test_size':                        None,
+            },
             'use_corpus_balancing':                 False,
             'corpus_word_limit':                    None,
-            'X_name':                               None,
-            'y_name':                               None,
 
             'cleaning_params': {
                 'text': {
@@ -187,11 +195,15 @@ PRESETS = {
         'model_name':                              'nn_embedding',
         'model_save_dir':                          '_models',
         'data_params': {
-            'data_extractor':                       BaselineJsonDataExtractor,
+            'extraction_params': {
+                'X_name':                           None,
+                'y_name':                           None,
+                'path':                             None,
+                'test_size':                        None
+             },
+
             'use_corpus_balancing':                 False,
             'corpus_word_limit':                    None,
-            'X_name':                               None,
-            'y_name':                               None,
 
             'cleaning_params': {
                 'text': {
@@ -245,11 +257,14 @@ PRESETS = {
         'model_name':                              'nn_embedding',
         'model_save_dir':                          '_models',
         'data_params': {
-            'data_extractor':                       BaselineJsonDataExtractor,
+            'extraction_params': {
+                'X_name':                           None,
+                'y_name':                           None,
+                'path':                             None,
+                'test_size':                        None,
+            },
             'use_corpus_balancing':                 False,
             'corpus_word_limit':                    None,
-            'X_name':                               None,
-            'y_name':                               None,
 
             'cleaning_params': {
                 'text': {
