@@ -5,6 +5,7 @@ if __name__ == '__main__':
     data_args = generate_semeval_load_data_args(100000)
 
     my_bow = create_preset(preset_base='bpe_rnn',
+                           model_name='test',
                            use_corpus_balancing=True,
                            **data_args)
     train(my_bow)

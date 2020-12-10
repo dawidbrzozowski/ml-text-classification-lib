@@ -8,11 +8,12 @@ PRESET_FILE_NAME = 'preset_config.json'
 def create_preset(
         # meta inf parameters
         preset_base: str,
-        model_name: str = None,
+        model_name: str,
         model_save_dir: str = None,
         # data parameters
         data_path=None,
         test_size=None,
+        use_cache=None,
         use_corpus_balancing=None,
         corpus_word_limit=None,
         X_name=None,
@@ -61,6 +62,7 @@ def create_preset(
     :param model_name: this will be the name of your model and also the directory in which it will be stored.
     :param model_save_dir: model parent directory. _models for default.
     :param data_path: str or tuple of two strings (train path, test path). If one provided, train_test_split will be executed.
+    :param use_cache: if set to true, it will try to store cached processed data, to test faster later on.
     :param test_size: float if one data_path is provided, train test split will be executed with given test_size. Default 0.2.
     :param use_corpus_balancing: bool. Define if you want your samples to be even in terms of categories (using undersampling method).
     :param y_name: str. if use_corpus_balancing is used, you must provide key name for your y label in the corpus.
@@ -118,6 +120,8 @@ def create_preset(
     _put_or_default(preset, X_name, 'data_params:extraction_params', 'X_name')
     _put_or_default(preset, y_name, 'data_params:extraction_params', 'y_name')
     _put_or_default(preset, data_path, 'data_params:extraction_params', 'path')
+    _put_or_default(preset, f'{model_save_dir}/{model_name}/_cache', 'data_params', 'cache_dir')
+    _put_or_default(preset, use_cache, 'data_params', 'use_cache')
     _put_or_default(preset, test_size, 'data_params:extraction_params', 'test_size')
     _put_or_default(preset, ner_cleaning, 'data_params:cleaning_params:text', 'use_ner')
     _put_or_default(preset, ner_converter, 'data_params:cleaning_params:text', 'use_ner_converter')
