@@ -1,5 +1,5 @@
 from text_clsf_lib.models.presets.presets_base import PRESETS
-from utils.files_io import write_json, load_json
+from text_clsf_lib.utils.files_io import write_json, load_json
 import os
 
 PRESET_FILE_NAME = 'preset_config.json'
@@ -17,6 +17,7 @@ def create_preset(
         corpus_word_limit=None,
         X_name=None,
         y_name=None,
+        train_test_random_state=None,
         ner_cleaning: bool = None,
         ner_converter: bool = None,
         twitter_preprocessing: bool = None,
@@ -50,6 +51,7 @@ def create_preset(
         callbacks: list = None):
     """
     This function creates a preset for a custom model architecture.
+    :param train_test_random_state: random state for train/test split for single file extraction.
     :param preset_base: Each model should be based on a base preset.
         This helps to speed up the process of model creation.
         Currently implemented preset_base:

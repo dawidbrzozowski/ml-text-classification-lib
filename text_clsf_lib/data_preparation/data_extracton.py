@@ -1,22 +1,22 @@
 from abc import abstractmethod
 from typing import List, Tuple
 
-from project_settings import RANDOM_STATE
-from utils.files_io import load_json
+from text_clsf_lib.utils.files_io import load_json
 from sklearn.model_selection import train_test_split
 
 
 def load_data(path: str or tuple,
               X_name: str,
               y_name: str,
-              test_size: float = 0.2):
+              test_size: float = 0.2,
+              random_state=None):
     if type(path) is str:
         assert test_size is not None, 'Test size must be provided for split!'
         path_extension = path.split('.')[-1]
         if path_extension == 'json':
             data_extractor = SingleJsonDataExtractor()
             return data_extractor.get_train_test_corpus(corpus_path=path, test_size=test_size,
-                                                        X_name=X_name, y_name=y_name)
+                                                        X_name=X_name, y_name=y_name, random_state=random_state)
         else:
             raise Exception('Data should be in json format!')
         # jeden zbior i trzeba podzielic
@@ -83,8 +83,9 @@ class SingleJsonDataExtractor(DataExtractor):
     """
 
     def get_train_test_corpus(self, corpus_path: str, test_size: float,
-                              X_name: str, y_name: str) -> Tuple[List, List]:
+                              X_name: str, y_name: str, random_state: int = 42) -> Tuple[List, List]:
         """
+        :param random_state: int for train test split
         :param X_name: name for X in your corpus.
         :param y_name: name for y in your corpus.
         :param corpus_path: Path to corpus.
@@ -101,7 +102,7 @@ class SingleJsonDataExtractor(DataExtractor):
         corpus = [swap_key_name(sample, y_name, 'label') for sample in corpus]
         stratify_column = [sample['label'] for sample in corpus]
         data_train, data_test = train_test_split(
-            corpus, stratify=stratify_column, test_size=test_size, random_state=RANDOM_STATE)
+            corpus, stratify=stratify_column, test_size=test_size, random_state=random_state)
         return data_train, data_test
 
 

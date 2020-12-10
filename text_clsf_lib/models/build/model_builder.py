@@ -3,7 +3,7 @@ from keras import layers, Model
 from keras.optimizers import Adam
 
 from text_clsf_lib.models.build.layers_builder import build_layers
-from utils.files_io import read_numpy
+from text_clsf_lib.utils.files_io import read_numpy
 
 
 class ModelBuilder:

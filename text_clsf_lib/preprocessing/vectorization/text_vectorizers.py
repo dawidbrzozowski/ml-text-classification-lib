@@ -8,7 +8,7 @@ from sklearn.feature_extraction.text import TfidfVectorizer, CountVectorizer
 from text_clsf_lib.preprocessing.vectorization.embeddings.embedding_loaders import WordEmbeddingsLoader
 from text_clsf_lib.preprocessing.vectorization.embeddings.matrix_preparer import EmbeddingsMatrixPreparer
 from text_clsf_lib.preprocessing.vectorization.embeddings.text_encoders import TextEncoder, LoadedTextEncoder
-from utils.files_io import write_pickle, write_numpy, read_pickle, load_json, append_json
+from text_clsf_lib.utils.files_io import write_pickle, write_numpy, read_pickle, load_json, append_json
 import numpy as np
 from bpemb import BPEmb
 

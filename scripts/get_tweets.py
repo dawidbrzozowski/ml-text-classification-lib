@@ -6,7 +6,7 @@ from typing import List
 import pandas as pd
 from sklearn.model_selection import train_test_split
 
-from utils.files_io import write_json, load_json
+from text_clsf_lib.utils.files_io import write_json, load_json
 from project_settings import RANDOM_STATE
 
 

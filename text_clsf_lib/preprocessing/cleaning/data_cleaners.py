@@ -4,7 +4,7 @@ from typing import List, Tuple
 import en_core_web_sm
 from nltk import word_tokenize
 from nltk.stem import PorterStemmer, WordNetLemmatizer
-from utils.files_io import load_json, write_json
+from text_clsf_lib.utils.files_io import load_json, write_json
 import os
 NER_CONVERTER_DEF_PATH = 'preprocessing/cleaning/resources/ner_converter.json'
 
