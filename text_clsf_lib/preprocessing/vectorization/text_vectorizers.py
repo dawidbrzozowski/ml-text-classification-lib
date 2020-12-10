@@ -130,7 +130,7 @@ def _vectorize_padded(bpemb, max_seq_len, texts: List[str]):
         if len(text_enc) > max_seq_len:
             text_enc = text_enc[:max_seq_len]
         elif len(text_enc) < max_seq_len:
-            padding = [0] * (max_seq_len - len(text_enc))
+            padding = [len(bpemb.words)-1] * (max_seq_len - len(text_enc))
             text_enc.extend(padding)
         ids_padded.append(text_enc)
     padded = np.array(ids_padded)
