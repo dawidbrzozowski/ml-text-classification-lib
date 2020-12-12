@@ -7,8 +7,6 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 
 from text_clsf_lib.utils.files_io import write_json, load_json
-from project_settings import RANDOM_STATE
-
 
 LARGE_DATA_INPUT_DIR = 'data/large_data/input'
 TASK_A_PATH = f'{LARGE_DATA_INPUT_DIR}/task_a_distant.tsv'
@@ -80,11 +78,11 @@ def save_downloaded_corpus(corpus, verbose=1):
         print(f'Processed {len(corpus)} rows and saved to {file_path}')
 
 
-def save_train_test_split(corpus, test_size: float, verbose=1):
+def save_train_test_split(corpus, test_size: float, verbose=1, random_state=42):
     stratify_column = [row['offensive'] for row in corpus]
     if verbose == 1:
         print('Performing train test split...')
-    train, test = train_test_split(corpus, stratify=stratify_column, test_size=test_size, random_state=RANDOM_STATE)
+    train, test = train_test_split(corpus, stratify=stratify_column, test_size=test_size, random_state=random_state)
     write_json(f'{DIR_NAME}/{len(corpus)}/train_{FILE_NAME}', train)
     write_json(f'{DIR_NAME}/{len(corpus)}/test_{FILE_NAME}', test)
     if verbose == 1:
