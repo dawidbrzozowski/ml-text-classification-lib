@@ -3,7 +3,7 @@ from text_clsf_lib.preprocessing.cleaning.data_cleaners import TextCleaner
 from text_clsf_lib.preprocessing.preprocessors import RealDataPreprocessor
 from text_clsf_lib.preprocessing.vectorization.text_vectorizers import LoadedTfIdfTextVectorizer, \
     LoadedEmbeddingTextVectorizer, LoadedBPEEmbeddingTextVectorizer
-from text_clsf_lib.utils.files_io import load_json
+from text_clsf_lib.utils.files_io import load_json, read_pickle
 
 
 def get_embedding_preprocessor(preprocessing_params: dict):
@@ -15,13 +15,14 @@ def get_embedding_preprocessor(preprocessing_params: dict):
 
     vectorizer_params = preprocessing_params['vectorizer_params']
     model_dir = preprocessing_params['model_dir']
-    predictor_config_path = f"{model_dir}/{preprocessing_params['config_path']}"
-    text_cleaner_config = load_json(predictor_config_path)['text_cleaner']
+    predictor_config = preprocessing_params['predictor_config']
+    text_cleaner_config = predictor_config['text_cleaner']
     text_cleaner = TextCleaner(**text_cleaner_config)
     tokenizer_path = f"{model_dir}/{vectorizer_params['text_encoder_path']}"
+    tokenizer = read_pickle(tokenizer_path)
     text_vectorizer = LoadedEmbeddingTextVectorizer(
-        predictor_config_path=predictor_config_path,
-        tokenizer_path=tokenizer_path)
+        predictor_config=predictor_config,
+        tokenizer=tokenizer)
 
     return RealDataPreprocessor(
         text_cleaner=text_cleaner,
@@ -29,10 +30,10 @@ def get_embedding_preprocessor(preprocessing_params: dict):
 
 
 def get_bpe_preprocessor(preprocessing_params: dict):
-    predictor_config_path = f'{preprocessing_params["model_dir"]}/{preprocessing_params["config_path"]}'
-    text_cleaner_config = load_json(predictor_config_path)['text_cleaner']
+    predictor_config = preprocessing_params["predictor_config"]
+    text_cleaner_config = predictor_config['text_cleaner']
     text_cleaner = TextCleaner(**text_cleaner_config)
-    text_vectorizer = LoadedBPEEmbeddingTextVectorizer(predictor_config_path)
+    text_vectorizer = LoadedBPEEmbeddingTextVectorizer(predictor_config=predictor_config)
 
     return RealDataPreprocessor(
         text_cleaner=text_cleaner,
@@ -47,10 +48,11 @@ def get_tfidf_preprocessor(preprocessing_params: dict):
     """
     vectorizer_params = preprocessing_params['vectorizer_params']
     model_dir = preprocessing_params['model_dir']
-    predictor_config_path = f"{model_dir}/{preprocessing_params['config_path']}"
+    predictor_config = preprocessing_params['predictor_config']
     vectorizer_path = f"{model_dir}/{vectorizer_params['vectorizer_path']}"
-    text_vectorizer = LoadedTfIdfTextVectorizer(vectorizer_path=vectorizer_path)
-    text_cleaner_config = load_json(predictor_config_path)['text_cleaner']
+    vectorizer = read_pickle(vectorizer_path)
+    text_vectorizer = LoadedTfIdfTextVectorizer(vectorizer=vectorizer)
+    text_cleaner_config = predictor_config['text_cleaner']
     text_cleaner = TextCleaner(**text_cleaner_config)
 
     return RealDataPreprocessor(

@@ -24,7 +24,6 @@ class Predictor:
 
 
 if __name__ == '__main__':
-    preset = create_predictor_preset(model_name='bpe_rnn_200',
-                                     type_='bpe')
+    preset = create_predictor_preset(model_name='bpe_best_model')
     pr = Predictor(preset)
-    print(pr.predict('easy text with no special meaning fuck fucking trump'))
+    print(pr.predict(['easy text with no special meaning fuck fucking trump']))
