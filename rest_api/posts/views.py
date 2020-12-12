@@ -10,5 +10,5 @@ from .apps import PostsConfig
 def check_text_offensiveness(request):
     data = request.data
     text = data['text']
-    offensive_rate = PostsConfig.predictor.predict(text)[0][1]
+    offensive_rate = PostsConfig.predictor.predict_for_text(text)
     return Response({'offensive_rate': offensive_rate})

@@ -19,11 +19,11 @@ class Predictor:
         :param text: single text or list of texts.
         :return: list of model predictions.
         """
-        preprocessed = self.preprocessor.clean_vectorize(text)
-        return self.model_runner.run(preprocessed).tolist()
+        preprocessed, cut_off_ratios = self.preprocessor.clean_vectorize(text)
+        return self.model_runner.run(preprocessed).tolist(), cut_off_ratios
 
 
 if __name__ == '__main__':
     preset = create_predictor_preset(model_name='bpe_best_model')
     pr = Predictor(preset)
-    print(pr.predict(['easy text with no special meaning fuck fucking trump']))
+    print(pr.predict(['']))

@@ -50,7 +50,8 @@ class RealDataPreprocessor:
     def vectorize(self, data: str or List[str]):
         if type(data) is str:
             data = [data]
-        return self.text_vectorizer.vectorize(texts=data)
+        vectorized, cutoff_ratios = self.text_vectorizer.vectorize(texts=data)
+        return vectorized, cutoff_ratios
 
     def clean_vectorize(self, data: str or List[str]):
         data = self.clean(data)
