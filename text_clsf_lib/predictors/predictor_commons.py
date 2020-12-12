@@ -3,7 +3,7 @@ from text_clsf_lib.preprocessing.cleaning.data_cleaners import TextCleaner
 from text_clsf_lib.preprocessing.preprocessors import RealDataPreprocessor
 from text_clsf_lib.preprocessing.vectorization.text_vectorizers import LoadedTfIdfTextVectorizer, \
     LoadedEmbeddingTextVectorizer, LoadedBPEEmbeddingTextVectorizer
-from text_clsf_lib.utils.files_io import load_json, read_pickle
+from text_clsf_lib.utils.files_io import read_pickle
 
 
 def get_embedding_preprocessor(preprocessing_params: dict):

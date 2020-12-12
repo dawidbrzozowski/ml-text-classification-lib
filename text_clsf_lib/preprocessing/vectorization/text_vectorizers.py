@@ -136,7 +136,7 @@ def _vectorize_padded(bpemb, max_seq_len, texts: List[str]):
         if len(text_enc) > max_seq_len:
             text_enc = text_enc[:max_seq_len]
         elif len(text_enc) < max_seq_len:
-            padding = [len(bpemb.words)-1] * (max_seq_len - len(text_enc))
+            padding = [len(bpemb.words) - 1] * (max_seq_len - len(text_enc))
             text_enc.extend(padding)
         ids_padded.append(text_enc)
     padded = np.array(ids_padded)
@@ -161,7 +161,8 @@ class LoadedEmbeddingTextVectorizer(LoadedTextVectorizer):
                                               predictor_config=predictor_config)
 
     def vectorize(self, texts: List[str]):
-        return self.text_encoder.encode(texts)
+        vectorized, cut_off_ratios = self.text_encoder.encode(texts)
+        return vectorized, cut_off_ratios
 
 
 class LoadedTfIdfTextVectorizer(LoadedTextVectorizer):
@@ -169,7 +170,7 @@ class LoadedTfIdfTextVectorizer(LoadedTextVectorizer):
         self.tfidf_vec = vectorizer
 
     def vectorize(self, texts: List[str]):
-        return self.tfidf_vec.transform(texts).toarray()
+        return self.tfidf_vec.transform(texts).toarray(), [1 for _ in range(len(texts))]
 
 
 class LoadedBPEEmbeddingTextVectorizer(LoadedTextVectorizer):
@@ -179,5 +180,11 @@ class LoadedBPEEmbeddingTextVectorizer(LoadedTextVectorizer):
                            vs=predictor_config['max_vocab_size'], add_pad_emb=True)
         self.max_seq_len = predictor_config['max_seq_len']
 
+    def get_cutoff_ratios(self, texts: List[str]) -> List[float]:
+        sequences = self.bpemb.encode_ids(texts)
+        return [len(sequence) / self.max_seq_len for sequence in sequences]
+
     def vectorize(self, texts: List[str]):
-        return _vectorize_padded(bpemb=self.bpemb, max_seq_len=self.max_seq_len, texts=texts)
+        vectorized = _vectorize_padded(bpemb=self.bpemb, max_seq_len=self.max_seq_len, texts=texts)
+        cut_off_ratios = self.get_cutoff_ratios(texts)
+        return vectorized, cut_off_ratios

@@ -72,5 +72,6 @@ class LoadedTextEncoder:
 
     def encode(self, texts):
         sequences = self.tokenizer.texts_to_sequences(texts)
-        padded = pad_sequences(sequences=sequences, maxlen=self.max_seq_len)
-        return padded
+        padded = pad_sequences(sequences=sequences, maxlen=self.max_seq_len, padding='post', truncating='post')
+        cut_off_ratios = [len(sequence)/self.max_seq_len for sequence in sequences]
+        return padded, cut_off_ratios
