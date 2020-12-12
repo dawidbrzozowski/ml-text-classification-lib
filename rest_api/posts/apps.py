@@ -1,14 +1,16 @@
 from django.apps import AppConfig
-
 import sys
-sys.path.append('/Users/dawidbrzozowski/Projects/offensive-language-semeval')
+import os
 
+BASE_PATH = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+sys.path.append(BASE_PATH)
 from text_clsf_lib.predictors.predictor import Predictor
 from text_clsf_lib.predictors.presets import create_predictor_preset
 
+MODEL_SERVED = 'bpe_best_model'
+
 
 class PostsConfig(AppConfig):
-    preset = create_predictor_preset(model_name='bpe_best_model',
-                                     type_='bpe')
+    preset = create_predictor_preset(model_name=MODEL_SERVED)
     name = 'posts'
     predictor = Predictor(preset)

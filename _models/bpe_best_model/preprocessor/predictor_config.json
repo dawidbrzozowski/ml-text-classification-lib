@@ -11,6 +11,7 @@
     "vectorizer": {
         "max_seq_len": 200,
         "embedding_dim": 50,
-        "max_vocab_size": 5000
+        "max_vocab_size": 5000,
+        "type": "bpe_embedding"
     }
 }

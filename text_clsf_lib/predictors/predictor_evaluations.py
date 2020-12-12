@@ -64,7 +64,7 @@ def deep_test_on_sample_lime(predictor: Predictor,
 
 if __name__ == '__main__':
     text = "You look like a monkey!"
-    preset = create_predictor_preset('bpe_best_model', 'bpe')
+    preset = create_predictor_preset('bpe_best_model')
     predictor = Predictor(preset)
     deep_test_on_sample_lime(predictor=predictor,
                              text=text,

@@ -53,7 +53,8 @@ class TextEncoder(TextEncoderBase):
             for word in vocab:
                 f.write(f'{word}\n')
         predictor_config = {
-            'vectorizer': {'max_seq_len': self.max_seq_len}
+            'vectorizer': {'max_seq_len': self.max_seq_len,
+                           'type': 'word_embedding'}
         }
         append_json(f'{save_dir}/predictor_config.json', predictor_config)
 
@@ -64,9 +65,9 @@ class TextEncoder(TextEncoderBase):
 
 
 class LoadedTextEncoder:
-    def __init__(self, tokenizer_path, predictor_config_path):
-        self.tokenizer = read_pickle(tokenizer_path)
-        predictor_config = load_json(predictor_config_path)
+    def __init__(self, tokenizer, predictor_config):
+        self.tokenizer = tokenizer
+        predictor_config = predictor_config
         self.max_seq_len = predictor_config['vectorizer']['max_seq_len']
 
     def encode(self, texts):

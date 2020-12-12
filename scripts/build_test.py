@@ -4,12 +4,22 @@ from semeval_utils.shortcuts import generate_semeval_load_data_args
 from text_clsf_lib.models.test_trained_model import test_single_model, test_multiple_models
 
 if __name__ == '__main__':
-    bow = load_preset('bow_best')
-    bpe_best_model = load_preset('bpe_best_model')
-    #glove_ff_twitter = load_preset('glove_ff_twitter')
-    #glove_ff_wiki = load_preset('glove_ff_wiki')
-    glove_rnn_twitter = load_preset('glove_rnn_twitter')
-    #glove_rnn_wiki = load_preset('glove_rnn_wiki')
-    tfidf_best = load_preset('tfidf_best')
-    test_multiple_models([bow, bpe_best_model, glove_rnn_twitter, tfidf_best])
+    data_args = generate_semeval_load_data_args(10000)
+    bow_test = create_preset(**data_args,
+                             preset_base='bag_of_words_feedforward',
+                             model_name='test_new_bow')
+    tfidf = create_preset(**data_args,
+                             preset_base='tfidf_feedforward',
+                             model_name='test_new_tfidf')
+    glove = create_preset(**data_args,
+                             preset_base='glove_rnn',
+                             model_name='test_new_glove')
+    bpe = create_preset(**data_args,
+                             preset_base='bpe_rnn',
+                             model_name='test_new_bpe')
+
+    train(bow_test)
+    train(tfidf)
+    train(glove)
+    train(bpe)
 
