@@ -1,11 +1,14 @@
-from django.shortcuts import render
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import AllowAny
+from rest_framework.response import Response
 
-# Create your views here.
-from rest_framework import generics
-from . import models
-from . import serializers
+from .apps import PostsConfig
 
 
-class ListCreatePost(generics.ListCreateAPIView):
-    queryset = models.Post.objects.all()
-    serializer_class = serializers.PostSerializer
+@api_view(['POST'])
+@permission_classes((AllowAny,))
+def check_text_offensiveness(request):
+    data = request.data
+    text = data['text']
+    offensive_rate = PostsConfig.predictor.predict(text)[0][1]
+    return Response({'offensive_rate': offensive_rate})

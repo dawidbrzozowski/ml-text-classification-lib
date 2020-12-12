@@ -1,6 +1,7 @@
-from django.conf.urls import url
+from django.urls import re_path
+
 from . import views
 
 urlpatterns = [
-    url(r'^$', views.ListCreatePost.as_view(), name='post_list'),
+    re_path(r"^check_text$", views.check_text_offensiveness, name='check_text_offensiveness'),
 ]

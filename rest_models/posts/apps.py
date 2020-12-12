@@ -8,7 +8,7 @@ from text_clsf_lib.predictors.presets import create_predictor_preset
 
 
 class PostsConfig(AppConfig):
-    preset = create_predictor_preset(model_name='my_tfidf',
-                                     type_='tfidf')
+    preset = create_predictor_preset(model_name='bpe_best_model',
+                                     type_='bpe')
     name = 'posts'
     predictor = Predictor(preset)
