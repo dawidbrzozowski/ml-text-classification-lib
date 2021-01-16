@@ -1,13 +1,13 @@
 # Bachelor's Thesis
 This project is a part of my Bachelor's Thesis.
 
-<br><br>
+<br>
 
 Project contains of:
 1. Text classification library based on modern machine learning tools.
 2. Django Rest Framework application used to serve model for offensive language detection.
 
-<br><br>
+<br>
 
 ## Project setup
 ---
@@ -16,14 +16,14 @@ Setup the project running the following command from the root folder:
 source scripts/setup_project.sh
 ```
 
-<br><br>
+<br>
 
 ## Introduction
 ---
 
 This project provides convenient methods to build, train, save & evaluate machine learning classifiers for text data.
 
-<br><br>
+<br>
 
 ### Serve model
 ---
@@ -43,7 +43,7 @@ And returns a response looking like this:
 }
 where 0 means not offenseless text and 1 corresponds to offensive.
 
-<br><br>
+<br>
 
 ### Word Embeddings
 ---
