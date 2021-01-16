@@ -25,7 +25,7 @@ This project provides convenient methods to build, train, save & evaluate machin
 
 <br>
 
-### Serve model
+## Serve model
 ---
 You can train and serve your own models, but if you want to use the one existing in the project, created for offensive language detection in social media run the following:
 ```
